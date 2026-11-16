@@ -1,104 +1,72 @@
-# Quad Print Tepatitlán
+# Quad Print Tepatitlán — nueva página
 
-Sitio estático con Bootstrap 5.3.9. No requiere base de datos. Bootstrap se carga desde jsDelivr.
+Carpeta nueva, independiente de los cuatro proyectos auditados. No tiene repositorio Git ni configuración de publicación: es una copia de trabajo para revisar la propuesta antes de autorizar cualquier despliegue.
 
-## Operación diaria: ofertas sin tocar código
+## Qué se tomó de cada proyecto
 
-Todo se hace desde la carpeta `promociones/`. El buscador usa el nombre del archivo; no lee el texto dentro de la imagen.
+| Origen | Uso |
+|---|---|
+| LIGHT | Base técnica: HTML estático, pipeline Node/Sharp, promociones, SEO, 404 y datos oficiales. |
+| Figma | Dirección visual: composición editorial, Manrope/DM Sans, acentos CMYK, tarjetas y bloques negros. |
+| Go | Referencia de taxonomía y concepto de catálogo; no se importaron sus precios ni sus datos comerciales. |
+| Editor Go | Solo referencia conceptual; no se reutilizó código. |
 
-### Agregar una oferta
+## Datos del negocio
 
-1. En GitHub, abre `promociones` → **Add file** → **Upload files**.
-2. Selecciona el JPG (o PNG/WebP/GIF/AVIF) y confirma con **Commit changes** en `main`.
-3. Espera a que Actions termine (~1 min) y recarga la web.
+Se mantienen los datos de LIGHT, contrastados con la página de Facebook `IMPRENTATEPA`:
 
-### Quitar una oferta
+- Quad Print Tepatitlán
+- 21 de Marzo 603-B, Colonia Del Carmen, Tepatitlán de Morelos, Jalisco
+- Teléfono / WhatsApp: **378 109 7423** (`+52 378 109 7423`) para llamadas y WhatsApp; **378 101 1768** (`+52 378 101 1768`) también recibe WhatsApp. Ambos números fueron confirmados por el dueño.
+- Correo: imprentatepa@gmail.com (Facebook). LIGHT mostraba `imprenta.tepa@gmail.com`; Gmail ignora los puntos, así que ambos llegan a la misma cuenta. Se muestra la forma de la página de Facebook.
+- Lunes a viernes 10:00–14:00 / 16:00–20:00; sábados 10:00–14:00; domingos con cita previa
+- Efectivo y SPEI; facturación CFDI
+- Facebook: https://www.facebook.com/IMPRENTATEPA/
 
-1. Abre la imagen dentro de `promociones`.
-2. Usa el icono de eliminar y confirma el commit en `main`.
-3. La tarjeta desaparece y las demás ocupan su lugar.
+No se usaron la dirección de Go, los horarios de Figma ni sus textos de «Imprenta Independencia».
 
-### Pausar una oferta (sin borrarla)
+> Nota: si «página flash» se refiere a otro sitio y no a la página de Facebook, hay que reemplazar esta tabla antes de publicar.
 
-1. Abre la imagen dentro de `promociones`.
-2. Usa el lápiz de edición y cambia el nombre a `pausadas/tazas caja.jpg`. GitHub crea la subcarpeta al guardar.
-3. Confirma el commit. El escáner solo lee archivos sueltos en `promociones/`, así que la oferta deja de aparecer.
-4. Para reactivarla, edita el nombre y quita `pausadas/`.
+## Estructura
 
-### Renombrar una oferta
+- `index.html`: página completa.
+- `css/estilos.css`: diseño nuevo, sin Bootstrap.
+- `js/sitio.js`: menú móvil, catálogo, búsqueda, visor y cotización.
+- `datos/catalogo.js`: títulos, categorías y descripciones de las 19 promociones.
+- `promociones/`: imágenes originales.
+- `scripts/`: build, derivados, servidor local y verificación.
+- `fonts/`: Manrope y DM Sans locales.
+- `LOGOS/`: logotipos y favicon.
 
-1. Abre la imagen y usa el lápiz de edición.
-2. Cambia el nombre: minúsculas, guiones y palabras que el cliente buscaría. Conserva la extensión original (`.jpg` en estas ofertas).
-3. Confirma el commit. El título, el `alt`, el buscador y el mensaje de WhatsApp se actualizan solos.
-
-### Reglas de nombres
-
-- Para nombres nuevos usa minúsculas y guiones: `tazas-personalizadas.jpg`, `termos-personalizados-30-oz.jpg`.
-- Los archivos existentes con espacios siguen funcionando; no hace falta renombrarlos todos.
-- No uses acentos raros, símbolos ni espacios al inicio. La extensión debe ser una de: JPG, JPEG, PNG, WebP, GIF o AVIF.
-- **Nunca edites `datos/promociones.js`: es generado automáticamente.**
-
-## Qué hace el build
-
-`node scripts/preparar.mjs` lee `promociones/`, escribe `datos/promociones.js`, copia los archivos públicos a `_site/` y genera los derivados en `_site/derivados/`:
-
-- Cada oferta: miniatura de 800 px en WebP y JPG de respaldo.
-- Banner: variantes de 1600 y 800 px.
-- Foto del local: variante de 960 px.
-
-Los derivados viven **fuera de `promociones/`** a propósito. Si estuvieran dentro, el escáner los tomaría como ofertas nuevas y duplicaría la galería. En local se guardan en `.cache/derivados/`, que está ignorada por git. Los originales de las ofertas se conservan porque el visor y “Abrir imagen original” los usan. En local, borra `_site/` antes de rehacer el build: el script no reutiliza una publicación anterior.
-
-## Vista previa local
-
-Instala una sola vez las dependencias:
+## Comandos
 
 ```bash
 npm install
+npm run build      # genera _site y derivados 800/1600 WebP + JPG
+npm start          # http://localhost:4173
+npm run verificar  # revisa manifiesto, rutas, SEO y derivados
 ```
 
-Arranca el servidor:
+`node_modules` ya está copiado desde la copia de trabajo de LIGHT para poder compilar sin instalar nada. Si se mueve la carpeta a otro equipo, ejecutar `npm install`.
 
-```bash
-node scripts/servir.mjs
-```
+## Promociones
 
-Abre http://localhost:4173. Al agregar, quitar, pausar o renombrar imágenes, solo recarga la página: el servidor actualiza el listado y genera la miniatura bajo demanda. En GitHub, el cambio aparece después del push y del build (~1 min).
+El flujo se conserva: se agrega, reemplaza o elimina una imagen en `promociones/`, se ejecuta el build y la galería se regenera. El buscador lee el nombre del archivo, además del título y la descripción de `datos/catalogo.js`.
 
-## Instalación única de dependencias
+Para una promoción nueva:
 
-`npm install` es parte del setup inicial, no una tarea diaria. Instala `sharp`, que genera las miniaturas. En GitHub Actions el workflow ejecuta `npm ci` antes de `node scripts/preparar.mjs`; no tienes que instalar nada a mano en el servidor.
+1. Guardar la imagen cuadrada en `promociones/` con un nombre descriptivo y sin acentos raros.
+2. Agregar su entrada en `datos/catalogo.js` con título, categoría, descripción y orden.
+3. Ejecutar `npm run build`.
 
-## Publicación
+No editar `datos/promociones.js`: se genera automáticamente.
 
-1. Haz commit en `main` (o usa **Upload files**).
-2. Abre **Actions** y espera a que “Actualizar ofertas y publicar” termine en verde.
-3. Recarga la URL de GitHub Pages. El build tarda aproximadamente 1 minuto.
+## Pendientes antes de publicar
 
-## Troubleshooting
-
-- **No aparece una oferta**: revisa que la extensión sea válida, que el archivo esté directamente en `promociones/` y no dentro de una subcarpeta (salvo que esté pausada). Si acabas de renombrar, borra el buscador y recarga.
-- **Build rojo en Actions**: abre la ejecución fallida y revisa el paso “Detectar imágenes y preparar página”. Suele ser una imagen corrupta o una dependencia sin instalar; el workflow ya ejecuta `npm ci`.
-- **No aparece la foto o el banner**: no son ofertas de la galería; son piezas fijas de la portada y de contacto. Se regeneran desde `banner.jpg` y `foto real del local.jpg`.
-- **Se ve borroso**: la imagen original es más pequeña que el tamaño de visualización. Sube una versión de mayor resolución.
-- **No veo mi cambio**: espera al despliegue, recarga sin caché y confirma que el commit llegó a `main`.
-
-## Banner y foto del local
-
-- `banner.jpg` alimenta las variantes 1600/800. Si lo reemplazas, conserva la proporción 6533:2828 o actualiza `width`/`height` en `index.html`.
-- `foto real del local.jpg` alimenta la variante de 960 px. En desktop se muestra a 4:3 para conservar la fachada completa.
-- Los originales `banner.jpg` y `foto real del local.jpg` se quedan en la raíz del proyecto; `_site/` solo recibe sus derivados.
-- No renombres los archivos de `derivados/` a mano: se generan en cada build.
-
-## Módulos del proyecto
-
-- `scripts/promociones.mjs`: escanea `promociones/` y genera el manifiesto.
-- `scripts/imagenes.mjs`: lógica compartida de sharp y nombres de derivados.
-- `scripts/preparar.mjs`: build de `_site/` para GitHub Pages.
-- `scripts/servir.mjs`: preview local con generación bajo demanda.
-- `js/sitio.js`: galería, buscador, visor y enlaces de WhatsApp.
-- `css/estilos.css`: estilos y ajustes responsive.
-- `index.html`: contenido, banner y foto del local.
-
-## Activación inicial en GitHub (pendiente)
-
-Subir el sitio incluyendo `.github/workflows/pages.yml`. En Settings → Pages → Build and deployment, elegir GitHub Actions. La rama de publicación configurada es `main`. Después de esta configuración inicial, solo hay que mantener las imágenes. El flujo se basa en https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages.
+- Confirmar que la fuente de datos correcta es la página de Facebook o, si es otra, sustituir la tabla.
+- Validar precios y vigencias de las promociones; están dentro de las imágenes y cambian con el tiempo.
+- Decidir si se mantiene el catálogo solo con promociones reales o se agrega un catálogo de productos con fotografías definitivas.
+- Confirmar servicios y textos comerciales con el dueño.
+- Revisar la propuesta visual en móvil y escritorio.
+- Actualizar canonical, `og:url`, sitemap y JSON-LD con la URL definitiva. Ahora apuntan a `https://impenta-tepa.github.io/imprentatepatitlan/` como marcador, porque aún no hay dominio de publicación para esta carpeta.
+- Autorizar cualquier publicación; esta carpeta no está conectada a GitHub Pages ni tiene flujo de despliegue.

@@ -1,117 +1,333 @@
 'use strict';
-const whatsapp = message => 'https://wa.me/523781011768?text=' + encodeURIComponent(message);
-document.querySelectorAll('[data-wa]').forEach(link => {
-  link.href = whatsapp(link.dataset.message || 'Hola, me gustaría cotizar un proyecto con Quad Print.');
-  link.target = '_blank'; link.rel = 'noopener noreferrer';
+
+/* =========================================================
+   Quad Print Tepatitlán — interacciones
+   Sin dependencias. Menú, catálogo, visor y cotización.
+   ========================================================= */
+
+const WA_NUMBER = '5213781097423';
+const WA_DEFAULT = 'Hola, quiero cotizar un proyecto con Quad Print.';
+const waLink = mensaje => 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(mensaje);
+
+/* Año del pie */
+const year = document.getElementById('year');
+if (year) year.textContent = new Date().getFullYear();
+
+/* Todos los enlaces de WhatsApp se construyen desde un solo número. */
+document.querySelectorAll('[data-wa]').forEach(enlace => {
+  enlace.href = waLink(enlace.dataset.message || WA_DEFAULT);
+  enlace.target = '_blank';
+  enlace.rel = 'noopener noreferrer';
 });
-document.getElementById('year').textContent = new Date().getFullYear();
-const toggle = document.querySelector('.navbar-toggler');
+
+/* ---------- Menú móvil ---------- */
+const toggle = document.querySelector('.nav-toggle');
 const menu = document.getElementById('menu');
-function setMenu(open, focusToggle = false) {
-  menu.classList.toggle('show', open);
-  document.body.classList.toggle('menu-open', open);
-  toggle.setAttribute('aria-expanded', String(open));
-  toggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
-  if (!open && focusToggle) toggle.focus();
+
+function setMenu(abierto, devolverFoco = false) {
+  if (!toggle || !menu) return;
+  menu.classList.toggle('is-open', abierto);
+  toggle.classList.toggle('is-open', abierto);
+  document.body.classList.toggle('menu-open', abierto);
+  toggle.setAttribute('aria-expanded', String(abierto));
+  toggle.setAttribute('aria-label', abierto ? 'Cerrar menú' : 'Abrir menú');
+  if (!abierto && devolverFoco) toggle.focus();
 }
-const desktop = matchMedia('(min-width: 992px)');
-desktop.addEventListener('change', e => { if (e.matches) setMenu(false); });
-toggle.addEventListener('click', () => setMenu(!menu.classList.contains('show')));
-menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && menu.classList.contains('show')) setMenu(false, true);
-});
-document.addEventListener('click', e => {
-  if (!menu.classList.contains('show') || menu.contains(e.target) || toggle.contains(e.target)) return;
-  setMenu(false);
-});
-const gallery = document.getElementById('galeria');
-const more = document.getElementById('ver-mas');
-const status = document.getElementById('estado-galeria');
-const viewer = document.getElementById('visor');
-const fullImage = document.getElementById('imagen-ampliada');
-const viewerTitle = document.getElementById('visor-titulo');
-const consultLink = document.getElementById('consultar-promocion');
-const originalImage = document.getElementById('abrir-original');
-let viewerTrigger = null;
-const promotions = (window.PROMOCIONES || []).filter(p => p.activa !== false);
-const search = document.getElementById('buscar-ofertas');
-const normalize = value => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[_-]/g, ' ');
-const title = promotion => promotion.archivo.replace(/\.[^.]+$/, '').replace(/[_-]+/g, ' ').replace(/\s+/g, ' ').trim();
-let expanded = false;
-let shown = 0;
-function showBatch() {
-  const terms = normalize(search.value).trim().split(/\s+/).filter(Boolean);
-  const matches = promotions.filter(p => terms.every(term => normalize(title(p)).includes(term)));
-  const next = expanded || terms.length ? matches : matches.slice(0, 6);
-  gallery.replaceChildren();
-  shown = 0;
-  next.forEach((promotion, offset) => {
-    const number = shown + offset + 1;
-    const path = 'promociones/' + encodeURIComponent(promotion.archivo);
-    const thumbBase = 'derivados/promociones/' + encodeURIComponent(promotion.archivo);
-    const thumbWebp = thumbBase + '-800.webp';
-    const thumbJpg = thumbBase + '-800.jpg';
-    const column = document.createElement('div'); column.className = 'col-12 col-sm-6 col-xl-4';
-    const card = document.createElement('article'); card.className = 'promo-card';
-    const name = title(promotion);
-    const button = document.createElement('button'); button.className = 'promo-open'; button.type = 'button'; button.setAttribute('aria-label', 'Ampliar oferta: ' + name);
-    const media = document.createElement('div'); media.className = 'promo-media';
-    const picture = document.createElement('picture');
-    const source = document.createElement('source'); source.type = 'image/webp'; source.srcset = thumbWebp;
-    const img = document.createElement('img'); img.src = thumbJpg; img.alt = name; img.loading = 'lazy'; img.decoding = 'async';
-    picture.append(source, img); media.append(picture); button.append(media);
-    const query = whatsapp('Hola, me interesa esta promoción: ' + name + '. ¿Me comparten información?');
-    const openViewer = trigger => {
-      viewerTrigger = trigger;
-      fullImage.src = path; fullImage.alt = name;
-      viewerTitle.textContent = name;
-      consultLink.href = query;
-      originalImage.href = path;
-      viewer.showModal();
-    };
-    button.addEventListener('click', () => openViewer(button));
-    const footer = document.createElement('div'); footer.className = 'promo-footer';
-    const zoom = document.createElement('button'); zoom.type = 'button'; zoom.className = 'promo-zoom'; zoom.textContent = 'Ver en grande ↗'; zoom.setAttribute('aria-label', 'Ver en grande: ' + name);
-    zoom.addEventListener('click', () => openViewer(zoom));
-    const link = document.createElement('a'); link.href = query; link.target = '_blank'; link.rel = 'noopener noreferrer'; link.textContent = 'Consultar por WhatsApp';
-    footer.append(zoom, link); card.append(button, footer); column.append(card); gallery.append(column);
+
+if (toggle && menu) {
+  toggle.addEventListener('click', () => setMenu(!menu.classList.contains('is-open')));
+  menu.querySelectorAll('a').forEach(enlace => enlace.addEventListener('click', () => setMenu(false)));
+
+  document.addEventListener('keydown', evento => {
+    if (evento.key === 'Escape' && menu.classList.contains('is-open')) setMenu(false, true);
   });
-  shown = next.length;
-  const canToggle = !terms.length && matches.length > 6;
-  more.hidden = !canToggle;
-  more.setAttribute('aria-expanded', String(canToggle && expanded));
-  more.replaceChildren(document.createTextNode(expanded ? 'Ver menos ' : 'Ver todas las ofertas '));
-  const arrow = document.createElement('span'); arrow.setAttribute('aria-hidden', 'true'); arrow.textContent = expanded ? '↑' : '↓'; more.append(arrow);
-  status.textContent = !promotions.length ? 'Pronto tendremos nuevas ofertas. Escríbenos para cotizar.' : !matches.length ? 'No encontramos ofertas con ese nombre. Prueba otra palabra o escríbenos.' : terms.length ? matches.length + ' ofertas encontradas' : shown + ' de ' + promotions.length + ' ofertas';
+
+  document.addEventListener('click', evento => {
+    if (!menu.classList.contains('is-open')) return;
+    if (menu.contains(evento.target) || toggle.contains(evento.target)) return;
+    setMenu(false);
+  });
+
+  const escritorio = window.matchMedia('(min-width: 961px)');
+  escritorio.addEventListener('change', evento => {
+    if (evento.matches) setMenu(false);
+  });
 }
-more.addEventListener('click', () => {
-  if (expanded) {
-    expanded = false;
-    showBatch();
-    more.focus({ preventScroll: true });
-    document.getElementById('promociones').scrollIntoView({ block: 'start' });
+
+/* Sombra del header al hacer scroll */
+const header = document.querySelector('.site-header');
+const actualizarHeader = () => {
+  if (header) header.classList.toggle('is-scrolled', window.scrollY > 8);
+};
+actualizarHeader();
+window.addEventListener('scroll', actualizarHeader, { passive: true });
+
+/* ---------- Catálogo ---------- */
+const galeria = document.getElementById('galeria');
+const destacadosGrid = document.getElementById('destacados-grid');
+const buscador = document.getElementById('buscar');
+const filtros = document.getElementById('filtros');
+const estado = document.getElementById('estado');
+const verMas = document.getElementById('ver-mas');
+
+const promociones = (window.PROMOCIONES || []).filter(promocion => promocion.activa !== false);
+const metadatos = window.CATALOGO || {};
+const categorias = window.CATEGORIAS || [{ id: 'todas', nombre: 'Todas' }];
+
+const normalizar = valor => String(valor)
+  .normalize('NFD')
+  .replace(/[\u0300-\u036f]/g, '')
+  .toLowerCase()
+  .replace(/[_-]+/g, ' ')
+  .replace(/\s+/g, ' ')
+  .trim();
+
+const variantes = palabra => {
+  const formas = [palabra];
+  if (palabra.length > 4 && palabra.endsWith('s')) {
+    formas.push(palabra.slice(0, -1));
+    if (palabra.endsWith('es')) formas.push(palabra.slice(0, -2));
+  }
+  return formas;
+};
+
+const tituloDesdeArchivo = archivo => archivo
+  .replace(/\.[^.]+$/, '')
+  .replace(/[_-]+/g, ' ')
+  .replace(/\s+/g, ' ')
+  .trim();
+
+const nombreCategoria = id => {
+  const encontrada = categorias.find(categoria => categoria.id === id);
+  return encontrada ? encontrada.nombre : 'Promociones';
+};
+
+const escapar = valor => String(valor).replace(/[&<>"']/g, caracter => ({
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;'
+}[caracter]));
+
+const productos = promociones.map((promocion, indice) => {
+  const meta = metadatos[promocion.archivo] || {};
+  const titulo = meta.titulo || tituloDesdeArchivo(promocion.archivo);
+  const categoria = meta.categoria || 'otros';
+  return {
+    ...promocion,
+    titulo,
+    categoria,
+    categoriaNombre: nombreCategoria(categoria),
+    descripcion: meta.descripcion || '',
+    destacado: Boolean(meta.destacado),
+    orden: Number.isFinite(meta.orden) ? meta.orden : 1000 + indice
+  };
+}).sort((a, b) => a.orden - b.orden || a.titulo.localeCompare(b.titulo, 'es'));
+
+let categoriaActiva = 'todas';
+let consulta = '';
+let expandido = false;
+const VISIBLES_INICIALES = 9;
+
+const coincidencias = () => {
+  const terminos = normalizar(consulta).split(' ').filter(Boolean);
+  return productos.filter(producto => {
+    if (categoriaActiva !== 'todas' && producto.categoria !== categoriaActiva) return false;
+    if (!terminos.length) return true;
+    const texto = normalizar([
+      producto.titulo,
+      producto.descripcion,
+      producto.categoriaNombre,
+      producto.archivo
+    ].join(' '));
+    return terminos.every(termino => variantes(termino).some(forma => texto.includes(forma)));
+  });
+};
+
+const tarjeta = producto => {
+  const archivo = encodeURIComponent(producto.archivo);
+  const miniaturaWebp = 'derivados/promociones/' + archivo + '-800.webp';
+  const miniaturaJpg = 'derivados/promociones/' + archivo + '-800.jpg';
+  const mensaje = waLink('Hola, me interesa esta promoción: ' + producto.titulo + '. ¿Me comparten información?');
+  const titulo = escapar(producto.titulo);
+  const descripcion = escapar(producto.descripcion);
+  return `
+    <article class="promo-card" data-file="${escapar(producto.archivo)}">
+      <button class="promo-open" type="button" aria-label="Ampliar promoción: ${titulo}">
+        <picture>
+          <source type="image/webp" srcset="${miniaturaWebp}">
+          <img src="${miniaturaJpg}" alt="${titulo}" loading="lazy" decoding="async">
+        </picture>
+      </button>
+      <div class="promo-body">
+        <span class="promo-kicker">${escapar(producto.categoriaNombre)}</span>
+        <h3 class="promo-title">${titulo}</h3>
+        <p class="promo-desc">${descripcion}</p>
+        <div class="promo-actions">
+          <button class="promo-zoom" type="button" aria-label="Ver en grande: ${titulo}">Ver en grande</button>
+          <a href="${escapar(mensaje)}" target="_blank" rel="noopener noreferrer">Consultar ↗</a>
+        </div>
+      </div>
+    </article>`;
+};
+
+const pintarDestacados = () => {
+  if (!destacadosGrid) return;
+  const seleccion = productos.filter(producto => producto.destacado).slice(0, 4);
+  if (!seleccion.length) {
+    document.getElementById('promociones')?.setAttribute('hidden', '');
     return;
   }
-  const firstNew = 6;
-  expanded = true;
-  showBatch();
-  const firstNewCard = gallery.children[firstNew]?.querySelector('.promo-open');
-  if (firstNewCard) {
-    firstNewCard.focus({ preventScroll: true });
-    firstNewCard.scrollIntoView({ block: 'center' });
+  destacadosGrid.innerHTML = seleccion.map(tarjeta).join('');
+};
+
+const pintarFiltros = () => {
+  if (!filtros) return;
+  filtros.innerHTML = categorias.map(categoria => `
+    <button class="filter${categoria.id === categoriaActiva ? ' is-active' : ''}" type="button"
+      data-category="${escapar(categoria.id)}" aria-pressed="${categoria.id === categoriaActiva}">
+      ${escapar(categoria.nombre)}
+    </button>`).join('');
+};
+
+const pintarCatalogo = () => {
+  if (!galeria) return;
+  const resultados = coincidencias();
+  const mostrandoFiltro = Boolean(normalizar(consulta)) || categoriaActiva !== 'todas';
+  const visibles = expandido || mostrandoFiltro ? resultados : resultados.slice(0, VISIBLES_INICIALES);
+
+  galeria.innerHTML = visibles.map(tarjeta).join('');
+
+  if (estado) {
+    if (!resultados.length) {
+      estado.textContent = 'No encontramos promociones con ese nombre. Prueba otra palabra o escríbenos por WhatsApp.';
+    } else if (mostrandoFiltro) {
+      estado.textContent = resultados.length + (resultados.length === 1 ? ' promoción encontrada' : ' promociones encontradas');
+    } else {
+      estado.textContent = visibles.length + ' de ' + resultados.length + ' promociones';
+    }
   }
-});
-search.addEventListener('input', () => { expanded = false; showBatch(); });
-document.getElementById('limpiar-busqueda').addEventListener('click', () => { search.value = ''; expanded = false; showBatch(); search.focus(); });
-document.getElementById('cerrar-visor').addEventListener('click', () => viewer.close());
-viewer.addEventListener('click', e => { if (e.target === viewer) { const rect = viewer.getBoundingClientRect(); if (e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom) viewer.close(); } });
-viewer.addEventListener('close', () => { if (viewerTrigger) { viewerTrigger.focus(); viewerTrigger = null; } });
-viewer.addEventListener('keydown', e => {
-  if (e.key !== 'Tab') return;
-  const focusables = [...viewer.querySelectorAll('a[href],button:not([disabled])')];
-  const first = focusables[0], last = focusables[focusables.length - 1];
-  if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-  else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-});
-showBatch();
+
+  if (verMas) {
+    const puedeAlternar = !mostrandoFiltro && resultados.length > VISIBLES_INICIALES;
+    verMas.hidden = !puedeAlternar;
+    verMas.setAttribute('aria-expanded', String(expandido && puedeAlternar));
+    verMas.textContent = expandido ? 'Ver menos promociones' : 'Ver todas las promociones';
+  }
+};
+
+const abrirVisor = (archivo, disparador) => {
+  const visor = document.getElementById('visor');
+  const tituloVisor = document.getElementById('visor-titulo');
+  const imagen = document.getElementById('imagen-ampliada');
+  const fuenteWebp = document.getElementById('visor-webp');
+  const original = document.getElementById('abrir-original');
+  const consultar = document.getElementById('consultar-promocion');
+  const producto = productos.find(item => item.archivo === archivo);
+  if (!visor || !imagen || !producto) return;
+
+  const codificado = encodeURIComponent(producto.archivo);
+  const titulo = producto.titulo;
+
+  if (tituloVisor) tituloVisor.textContent = titulo;
+  if (fuenteWebp) fuenteWebp.srcset = 'derivados/promociones/' + codificado + '-1600.webp';
+  imagen.src = 'derivados/promociones/' + codificado + '-1600.jpg';
+  imagen.alt = 'Promoción ampliada: ' + titulo;
+  if (original) original.href = 'promociones/' + codificado;
+  if (consultar) consultar.href = waLink('Hola, me interesa esta promoción: ' + titulo + '. ¿Me comparten información?');
+
+  visor.dataset.trigger = '';
+  if (disparador) {
+    visor._disparador = disparador;
+  }
+  if (!visor.open) visor.showModal();
+};
+
+const conectarGaleria = contenedor => {
+  if (!contenedor) return;
+  contenedor.addEventListener('click', evento => {
+    const disparador = evento.target.closest('.promo-open, .promo-zoom');
+    if (!disparador) return;
+    const tarjeta = disparador.closest('[data-file]');
+    if (tarjeta) abrirVisor(tarjeta.dataset.file, disparador);
+  });
+};
+
+/* Visor */
+const visor = document.getElementById('visor');
+const cerrarVisor = document.getElementById('cerrar-visor');
+if (visor) {
+  cerrarVisor?.addEventListener('click', () => visor.close());
+  visor.addEventListener('click', evento => {
+    if (evento.target === visor) visor.close();
+  });
+  visor.addEventListener('close', () => {
+    if (visor._disparador && typeof visor._disparador.focus === 'function') {
+      visor._disparador.focus();
+    }
+    visor._disparador = null;
+  });
+}
+
+/* Eventos del catálogo */
+if (buscador) {
+  buscador.addEventListener('input', () => {
+    consulta = buscador.value;
+    if (expandido) expandido = false;
+    pintarCatalogo();
+  });
+}
+
+if (verMas) {
+  verMas.addEventListener('click', () => {
+    expandido = !expandido;
+    pintarCatalogo();
+  });
+}
+
+if (filtros) {
+  filtros.addEventListener('click', evento => {
+    const boton = evento.target.closest('[data-category]');
+    if (!boton) return;
+    categoriaActiva = boton.dataset.category;
+    expandido = false;
+    pintarFiltros();
+    pintarCatalogo();
+  });
+}
+
+/* ---------- Formulario de cotización ---------- */
+const formulario = document.getElementById('quoteForm');
+if (formulario) {
+  formulario.addEventListener('submit', evento => {
+    evento.preventDefault();
+    const servicio = document.getElementById('quoteService');
+    const cantidad = document.getElementById('quoteQty');
+    const fecha = document.getElementById('quoteDate');
+    const detalles = document.getElementById('quoteDetails');
+    if (!servicio || !servicio.value.trim()) {
+      servicio?.focus();
+      return;
+    }
+
+    const lineas = [
+      'Hola, quiero cotizar un proyecto con Quad Print.',
+      '',
+      'Servicio: ' + servicio.value.trim()
+    ];
+    if (cantidad?.value.trim()) lineas.push('Cantidad: ' + cantidad.value.trim());
+    if (fecha?.value.trim()) lineas.push('Fecha aproximada: ' + fecha.value.trim());
+    if (detalles?.value.trim()) lineas.push('Detalles: ' + detalles.value.trim());
+    lineas.push('', '¿Me pueden ayudar?');
+
+    window.open(waLink(lineas.join('\n')), '_blank', 'noopener');
+  });
+}
+
+/* ---------- Arranque ---------- */
+pintarFiltros();
+pintarDestacados();
+pintarCatalogo();
+conectarGaleria(destacadosGrid);
+conectarGaleria(galeria);

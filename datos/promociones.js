@@ -16,7 +16,7 @@ window.PROMOCIONES = [
     "activa": true
   },
   {
-    "archivo": "etiquera circular.jpg",
+    "archivo": "etiqueta circular.jpg",
     "activa": true
   },
   {

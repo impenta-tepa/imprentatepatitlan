@@ -14,7 +14,11 @@ const mime = {
   '.webp': 'image/webp',
   '.avif': 'image/avif',
   '.gif': 'image/gif',
-  '.json': 'application/json'
+  '.woff2': 'font/woff2',
+  '.svg': 'image/svg+xml',
+  '.json': 'application/json',
+  '.xml': 'application/xml; charset=utf-8',
+  '.txt': 'text/plain; charset=utf-8'
 };
 http.createServer(async (req,res) => {
   try {
@@ -24,7 +28,7 @@ http.createServer(async (req,res) => {
       res.end('window.PROMOCIONES = ' + JSON.stringify(await listPromotions()) + ';'); return;
     }
     if (pathname.startsWith('/.cache/') || pathname.startsWith('/.git/')) { res.writeHead(404); res.end(); return; }
-    if (pathname.startsWith('/derivados/')) {
+    if (pathname.startsWith('/derivados/') || pathname === '/og-image.jpg') {
       let file;
       try {
         file = await asegurarDerivado({ sourceRoot: root, baseDir: path.join(root, '.cache'), urlPath: pathname });
@@ -42,5 +46,14 @@ http.createServer(async (req,res) => {
     const data = await readFile(file);
     res.writeHead(200, {'Content-Type': mime[path.extname(file).toLowerCase()] || 'application/octet-stream'});
     res.end(data);
-  } catch {res.writeHead(404);res.end('No encontrado');}
+  } catch {
+    try {
+      const html = await readFile(path.join(root, '404.html'));
+      res.writeHead(404, {'Content-Type': 'text/html; charset=utf-8'});
+      res.end(html);
+    } catch {
+      res.writeHead(404);
+      res.end('No encontrado');
+    }
+  }
 }).listen(4173,'127.0.0.1',() => console.log('http://localhost:4173'));

@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Página no encontrada | Quad Print Tepatitlán</title>
+<meta name="robots" content="noindex, follow">
+<meta name="theme-color" content="#111111">
+<link rel="icon" href="LOGOS/quad-print-favicon.png">
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+  :root {
+    --ink: #111;
+    --paper: #f7f6f1;
+    --gray: #5a5e60;
+    --line: #e2e1db;
+    --magenta: #b5005e;
+    --yellow: #ffed00;
+    --head: "Manrope", system-ui, sans-serif;
+    --body: "DM Sans", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--body);
+    line-height: 1.6;
+  }
+  main {
+    width: 100%;
+    max-width: 620px;
+    background: #fff;
+    border: 1px solid var(--line);
+    padding: clamp(26px, 6vw, 54px);
+    text-align: center;
+  }
+  .strip { display: flex; height: 4px; margin: -1px -1px 28px; }
+  .strip i { flex: 1; }
+  .strip .c { background: #00a4e4; }
+  .strip .m { background: #e5007d; }
+  .strip .y { background: var(--yellow); }
+  .strip .k { background: var(--ink); }
+  .logo { width: 112px; height: auto; display: block; margin: 0 auto 26px; }
+  a:focus-visible { outline: 3px solid #007da3; outline-offset: 4px; }
+  .code {
+    margin: 0 0 12px;
+    font-size: 10px;
+    letter-spacing: 1.8px;
+    font-weight: 800;
+    color: var(--magenta);
+  }
+  h1 {
+    font-family: var(--head);
+    font-size: clamp(2rem, 6vw, 3rem);
+    line-height: 1;
+    letter-spacing: -.055em;
+    margin: 0 0 16px;
+    font-weight: 800;
+  }
+  h1 span {
+    background: linear-gradient(transparent 72%, var(--yellow) 72%, var(--yellow) 94%, transparent 94%);
+  }
+  p {
+    max-width: 42ch;
+    margin: 0 auto 26px;
+    color: var(--gray);
+    font-size: 14px;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 12px 20px;
+    border: 1px solid var(--ink);
+    font-size: 12px;
+    font-weight: 800;
+    text-decoration: none;
+  }
+  .btn--ink { background: var(--ink); color: #fff; }
+  .btn--line { background: #fff; color: var(--ink); }
+  .btn--line:hover { background: var(--ink); color: #fff; }
+  .foot {
+    margin: 30px 0 0;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+    color: #8a8f92;
+    font-size: 10px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+<main>
+  <div class="strip" aria-hidden="true"><i class="c"></i><i class="m"></i><i class="y"></i><i class="k"></i></div>
+  <img class="logo" src="LOGOS/logo%20negro.png" width="112" height="81" alt="Quad Print Tepatitlán">
+  <p class="code">ERROR 404</p>
+  <h1>Esta página <span>no existe.</span></h1>
+  <p>Puede que el enlace esté mal escrito o que la promoción ya no esté disponible. Todo lo demás sigue en su lugar.</p>
+  <div class="actions">
+    <a class="btn btn--ink" href="./">Volver al inicio</a>
+    <a class="btn btn--line" href="https://wa.me/5213781097423?text=Hola%2C%20no%20encontr%C3%A9%20una%20p%C3%A1gina%20en%20su%20sitio.%20%C2%BFMe%20ayudan%3F" target="_blank" rel="noopener noreferrer">Escribir por WhatsApp</a>
+  </div>
+  <p class="foot">Quad Print Tepatitlán · Impresión, diseño y personalización</p>
+</main>
+</body>
+</html>
