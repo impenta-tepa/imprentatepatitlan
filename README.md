@@ -1,6 +1,10 @@
-# Quad Print Tepatitlán — nueva página
+# Quad Print Tepatitlán — página web
 
-Carpeta nueva, independiente de los cuatro proyectos auditados. No tiene repositorio Git ni configuración de publicación: es una copia de trabajo para revisar la propuesta antes de autorizar cualquier despliegue.
+Sitio estático de Quad Print Tepatitlán, publicado en:
+
+**https://impenta-tepa.github.io/imprentatepatitlan/**
+
+Repositorio: `impenta-tepa/imprentatepatitlan` (rama `main`). Cada push a `main` ejecuta GitHub Actions, genera `_site` y publica en GitHub Pages.
 
 ## Qué se tomó de cada proyecto
 
@@ -13,7 +17,7 @@ Carpeta nueva, independiente de los cuatro proyectos auditados. No tiene reposit
 
 ## Datos del negocio
 
-Se mantienen los datos de LIGHT, contrastados con la página de Facebook `IMPRENTATEPA`:
+Datos contrastados con la página de Facebook `IMPRENTATEPA`:
 
 - Quad Print Tepatitlán
 - 21 de Marzo 603-B, Colonia Del Carmen, Tepatitlán de Morelos, Jalisco
@@ -25,7 +29,7 @@ Se mantienen los datos de LIGHT, contrastados con la página de Facebook `IMPREN
 
 No se usaron la dirección de Go, los horarios de Figma ni sus textos de «Imprenta Independencia».
 
-> Nota: si «página flash» se refiere a otro sitio y no a la página de Facebook, hay que reemplazar esta tabla antes de publicar.
+> Nota: si «página flash» se refiere a otro sitio y no a la página de Facebook, hay que reemplazar esta tabla.
 
 ## Estructura
 
@@ -37,6 +41,7 @@ No se usaron la dirección de Go, los horarios de Figma ni sus textos de «Impre
 - `scripts/`: build, derivados, servidor local y verificación.
 - `fonts/`: Manrope y DM Sans locales.
 - `LOGOS/`: logotipos y favicon.
+- `.github/workflows/pages.yml`: build y publicación automática en GitHub Pages.
 
 ## Comandos
 
@@ -47,7 +52,17 @@ npm start          # http://localhost:4173
 npm run verificar  # revisa manifiesto, rutas, SEO y derivados
 ```
 
-`node_modules` ya está copiado desde la copia de trabajo de LIGHT para poder compilar sin instalar nada. Si se mueve la carpeta a otro equipo, ejecutar `npm install`.
+Si no existe `node_modules`, ejecutar `npm install`. En GitHub Actions se ejecuta `npm ci`.
+
+## Publicación
+
+- URL: https://impenta-tepa.github.io/imprentatepatitlan/
+- Repositorio: https://github.com/impenta-tepa/imprentatepatitlan
+- Rama de publicación: `main`.
+- Flujo: `.github/workflows/pages.yml` ejecuta `npm ci`, `node scripts/preparar.mjs` y publica `_site` con GitHub Pages.
+- Respaldo del sitio anterior: rama `respaldo-antes-quad-print-2026-11-16`.
+- Para actualizar: editar, ejecutar `npm run build`, `npm run verificar`, hacer commit y push a `main`.
+- No se sube `_site` ni `node_modules`; GitHub Actions los genera en cada publicación.
 
 ## Promociones
 
@@ -61,12 +76,10 @@ Para una promoción nueva:
 
 No editar `datos/promociones.js`: se genera automáticamente.
 
-## Pendientes antes de publicar
+## Pendientes
 
-- Confirmar que la fuente de datos correcta es la página de Facebook o, si es otra, sustituir la tabla.
 - Validar precios y vigencias de las promociones; están dentro de las imágenes y cambian con el tiempo.
 - Decidir si se mantiene el catálogo solo con promociones reales o se agrega un catálogo de productos con fotografías definitivas.
 - Confirmar servicios y textos comerciales con el dueño.
-- Revisar la propuesta visual en móvil y escritorio.
-- Actualizar canonical, `og:url`, sitemap y JSON-LD con la URL definitiva. Ahora apuntan a `https://impenta-tepa.github.io/imprentatepatitlan/` como marcador, porque aún no hay dominio de publicación para esta carpeta.
-- Autorizar cualquier publicación; esta carpeta no está conectada a GitHub Pages ni tiene flujo de despliegue.
+- Confirmar que la página de Facebook es la fuente correcta de datos o sustituir la tabla si «página flash» era otro sitio.
+- Aplicar los ajustes visuales o de contenido que pida el dueño después de la publicación.
