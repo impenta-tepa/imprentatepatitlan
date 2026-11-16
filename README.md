@@ -1,5 +1,7 @@
 # Quad Print Tepatitlán — página web
 
+**Versión 1.0** · 16 de noviembre de 2026
+
 Sitio estático de Quad Print Tepatitlán, publicado en:
 
 **https://impenta-tepa.github.io/imprentatepatitlan/**
@@ -56,6 +58,8 @@ Si no existe `node_modules`, ejecutar `npm install`. En GitHub Actions se ejecut
 
 ## Publicación
 
+- Versión: 1.0 (etiqueta de Git `v1.0`).
+- Commit del sitio: `4cd3c5e`.
 - URL: https://impenta-tepa.github.io/imprentatepatitlan/
 - Repositorio: https://github.com/impenta-tepa/imprentatepatitlan
 - Rama de publicación: `main`.
