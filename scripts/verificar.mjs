@@ -2,7 +2,7 @@
 // Uso: npm run verificar  (ejecuta antes npm run build)
 import { readFile, readdir, stat } from 'node:fs/promises';
 import path from 'node:path';
-import { root, readPromociones, readTestimonios } from './promociones.mjs';
+import { root, readPromociones, readTestimonios, readServicios } from './promociones.mjs';
 import { SERVICIOS, ANCHOS_SERVICIO } from './imagenes.mjs';
 
 const sitio = path.join(root, '_site');
@@ -261,20 +261,41 @@ if (derivadosServicio === SERVICIOS.length * ANCHOS_SERVICIO.length * 2) {
   ok.push(`${derivadosServicio} derivados de servicio presentes (800 y 1200 px, WebP y JPG)`);
 }
 
-const serviciosEnHtml = SERVICIOS.every(servicio => html.includes(`derivados/servicios/${servicio.base}-1200.jpg`));
-const altsServicios = SERVICIOS.every(servicio =>
-  new RegExp(`derivados/servicios/${servicio.base}-1200\\.jpg[^>]*alt="[^"]+"`).test(html)
-);
+const { servicios } = await readServicios(root);
+let serviciosDatosOk = servicios.length === 6;
+for (const [indice, servicio] of servicios.entries()) {
+  const etiqueta = servicio.base || `#${indice + 1}`;
+  if (!/^[a-z0-9-]+$/.test(String(servicio.base || ''))) {
+    fallos.push(`servicio ${etiqueta}: base inválida`);
+    serviciosDatosOk = false;
+  }
+  if (typeof servicio.alt !== 'string' || !servicio.alt.trim()) {
+    fallos.push(`servicio ${etiqueta}: falta alt`);
+    serviciosDatosOk = false;
+  }
+  if (typeof servicio.ilustrativa !== 'boolean') {
+    fallos.push(`servicio ${etiqueta}: ilustrativa debe ser booleano`);
+    serviciosDatosOk = false;
+  }
+}
+
+const serviciosEnHtml = servicios.every(servicio => html.includes(`data-servicio="${servicio.base}"`));
+const serviciosEnJs = jsFuente.includes('data-servicio') && jsFuente.includes('service-card__flag') && jsFuente.includes('Imagen ilustrativa: ');
+const etiquetaRequerida = servicios.some(servicio => servicio.ilustrativa === true);
+const etiquetaCss = css.includes('.service-card__flag');
 
 const fase4 = [
+  ['fuente de servicios publicada', await existe(path.join(sitio, 'data/servicios.js'))],
+  ['6 servicios con base, alt y flag', serviciosDatosOk],
+  ['contenedores de servicio en HTML', serviciosEnHtml],
+  ['render de servicios desde datos', serviciosEnJs],
+  ['etiqueta ilustrativa cuando aplica', !etiquetaRequerida || etiquetaCss],
   ['fuente de testimonios publicada', await existe(path.join(sitio, 'data/testimonios.js'))],
   ['script de testimonios antes de sitio.js', html.includes('src="data/testimonios.js"') && html.indexOf('data/testimonios.js') < html.indexOf('js/sitio.js')],
   ['sección oculta sin 3 testimonios', minimosTestimonios || /<section[^>]*id="testimonios"[^>]*hidden/.test(html)],
   ['render de testimonios desde datos', jsFuente.includes("getElementById('testimonios-grid')") && jsFuente.includes("getElementById('galeria-trabajos')")],
   ['activación por 3 testimonios y galería opcional', jsFuente.includes('testimonios.length < 3') && jsFuente.includes('trabajos.length >= 4')],
-  ['carpeta de galería publicada', await existe(path.join(sitio, 'galeria/LEEME.txt'))],
-  ['6 fotos de servicio en el HTML', serviciosEnHtml],
-  ['alt en las 6 fotos de servicio', altsServicios]
+  ['carpeta de galería publicada', await existe(path.join(sitio, 'galeria/LEEME.txt'))]
 ];
 for (const [nombre, cumple] of fase4) {
   if (!cumple) fallos.push('Fase 4: ' + nombre);
@@ -287,11 +308,13 @@ const bytesFuente = (await stat(path.join(root, 'css/estilos.css'))).size
   + (await stat(path.join(root, 'fonts/fonts.css'))).size
   + (await stat(path.join(root, 'js/sitio.js'))).size
   + (await stat(path.join(root, 'data/promociones.js'))).size
+  + (await stat(path.join(root, 'data/servicios.js'))).size
   + (await stat(path.join(root, 'data/testimonios.js'))).size;
 const bytesPublicado = (await stat(path.join(sitio, 'css/estilos.css'))).size
   + (await stat(path.join(sitio, 'fonts/fonts.css'))).size
   + (await stat(path.join(sitio, 'js/sitio.js'))).size
   + (await stat(path.join(sitio, 'data/promociones.js'))).size
+  + (await stat(path.join(sitio, 'data/servicios.js'))).size
   + (await stat(path.join(sitio, 'data/testimonios.js'))).size;
 if (bytesPublicado < bytesFuente) ok.push(`minificación: ${kb(bytesFuente)} → ${kb(bytesPublicado)} (CSS + fuentes + JS + datos)`);
 else fallos.push('la minificación no redujo CSS + fuentes + JS + datos');

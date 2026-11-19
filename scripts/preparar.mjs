@@ -23,6 +23,7 @@ async function minificar(relativa, loader) {
 await minificar('css/estilos.css', 'css');
 await minificar('js/sitio.js', 'js');
 await minificar('data/promociones.js', 'js');
+await minificar('data/servicios.js', 'js');
 await minificar('data/testimonios.js', 'js');
 await minificar('fonts/fonts.css', 'css');
 

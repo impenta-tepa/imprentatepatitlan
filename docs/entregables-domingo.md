@@ -29,7 +29,7 @@ Nota: estos nombres sustituyen a los archivos actuales de `promociones/`. En el 
 Formato de entrega: JPG o WebP de alta calidad. El build recorta a 16:10 y publica 800 y 1200 px en WebP y JPG.
 Peso máximo publicado: 200 KB por archivo.
 
-**Estado:** las 6 fotos se recibieron el 2026-11-19. Son mockups/ilustraciones de 1376 x 768 px (no fotos reales de trabajos). Se recortaron a 16:10 y ya están integradas como imágenes provisionales en `borrador`. Falta que Domingo confirme si se quedan o entrega fotos reales.
+**Estado:** las 6 fotos se recibieron el 2026-11-19. Son mockups/ilustraciones de 1376 x 768 px (no fotos reales de trabajos). Se recortaron a 16:10 y están integradas con la etiqueta “Imagen ilustrativa”. El origen y la licencia están registrados en `docs/notas.md`. Al recibir una foto real, cambiar `ilustrativa: false` en `data/servicios.js`; la etiqueta y el prefijo del alt desaparecen sin editar HTML.
 
 | # | Archivo exacto | Servicio | Alt sugerido |
 |---|---|---|---|

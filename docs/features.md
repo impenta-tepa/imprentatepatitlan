@@ -68,11 +68,11 @@ La home es HTML estático con CSS y JavaScript nativo. No hay frameworks de inte
   4. Corte y grabado láser.
   5. Toldos y anuncios.
   6. Diseño gráfico.
-- **Cada tarjeta:** placeholder de foto, nombre, 3–4 ejemplos y enlace “Ver más”.
+- **Cada tarjeta:** foto desde `data/servicios.js`, nombre, 3–4 ejemplos y enlace “Ver más”.
 - **“Ver más”:** aplica el filtro correspondiente del catálogo (`data-filtro`), hace scroll al catálogo, mueve el foco al encabezado del catálogo y actualiza la URL a `#catalogo`. Queda preparado para cambiar el enlace a una subpágina futura.
-- **Fotos:** las seis están integradas como mockups/ilustraciones entregadas por Domingo (originales de 1376 x 768 px). El build las recorta a 16:10 y publica 800 y 1200 px en WebP y JPG en `derivados/servicios/`. No son fotos reales de trabajos: quedan como provisionales hasta que Domingo confirme o entregue fotos reales.
+- **Fotos:** `data/servicios.js` define `base`, `alt` e `ilustrativa`. Las seis actuales son mockups entregados por Domingo (1376 x 768 originales); el build las recorta a 16:10 y publica 800 y 1200 px en WebP y JPG en `derivados/servicios/`. Mientras `ilustrativa: true`, se muestra la etiqueta “Imagen ilustrativa” y el `alt` lleva el prefijo; al cambiar a `false`, ambos desaparecen sin tocar HTML.
 - **Rejilla:** 3 columnas en escritorio, 2 en tablet y 1 en móvil.
-- **Para cambiar textos:** editar `index.html`.
+- **Para cambiar textos:** editar `index.html`. **Para cambiar fotos o quitar la etiqueta:** editar `data/servicios.js`.
 
 ## 5. Promociones destacadas
 

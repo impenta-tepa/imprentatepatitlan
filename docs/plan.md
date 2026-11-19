@@ -188,7 +188,9 @@ Una fase a la vez. Al terminar cada fase: build, verificación, commit en `borra
 - Logo SVG con caja reservada: header 92 x 66.7 px (80 x 58 px en móvil) y footer 120 x 87 px. Al sustituir se re-verifican header, anclas, safe areas y LCP.
 - Primera carga medida por transferencia real, no por tamaño en disco: **255.4 KiB** móvil (HTML 6.8, CSS 6.6, JS 5.5, datos 2.3, fuentes 85.8, imágenes 127.5, favicon 21.0). Coincide con los ~250 KiB de PSI de Fase 3. Lighthouse móvil actual: 98/100/100/100, LCP 2.4 s, TBT 0 ms, CLS 0.
 - Pruebas de activación: 3 testimonios sin galería → sección visible; 0 testimonios + 4 fotos → oculta; 3 + 4 → ambas visibles.
-- Pruebas de categorías: Láser muestra el mensaje de categoría vacía; Toldos muestra “Anuncio circular con luz”; Todas muestra 18 promociones.
+- Pruebas de categorías: Láser y Diseño muestran el mensaje de categoría vacía; Toldos muestra “Anuncio circular con luz”; Todas muestra 18 promociones.
+- Fotos de servicio con etiqueta “Imagen ilustrativa”: origen y licencia registrados por archivo en `docs/notas.md`; el flag `ilustrativa` vive en `data/servicios.js` y al cambiarlo a `false` desaparece la etiqueta y el prefijo del `alt`, sin tocar HTML.
+- Publicación de Fase 4.0 autorizada el 2026-11-20; se publica junto con esta condición y se registran las mediciones en vivo.
 
 **Regla del hero:** al integrar la foto real se mide una vez en PSI móvil y escritorio con `eager` + `fetchpriority="high"`. Si el LCP móvil sigue ≤ 2.5 s, se deja eager; si empeora, se regresa a `lazy`. Se reportan ambos números.
 

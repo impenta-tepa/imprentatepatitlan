@@ -39,6 +39,7 @@ No se usaron la dirección de Go, los horarios de Figma ni sus textos de «Impre
 - `css/estilos.css`: diseño nuevo, sin Bootstrap.
 - `js/sitio.js`: menú móvil, catálogo, búsqueda, visor y cotización.
 - `data/promociones.js`: fuente única de las 18 promociones activas y las 6 macrocategorías.
+- `data/servicios.js`: fuente de las 6 fotos de servicio y del flag `ilustrativa`; controla la etiqueta y el alt.
 - `data/testimonios.js`: fuente única de testimonios y fotos de la galería; la sección se activa sola con 3 testimonios y 4 fotos.
 - `docs/`: plan, funcionamiento, formato de promociones, formato de testimonios y entregables de Domingo.
 - `promociones/`: imágenes originales.

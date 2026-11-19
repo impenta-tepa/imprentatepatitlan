@@ -151,6 +151,20 @@
 45. **Primera carga medida por transferencia real.**
     Método: build local servido con Brotli, Chrome móvil 390 x 844, `PerformanceResourceTiming` y 3 s después del load. Total **255.4 KiB**: HTML 6.8, CSS 6.6, JS 5.5, datos 2.3, fuentes 85.8, imágenes 127.5 y favicon 21.0. Coincide con los ~250 KiB de PSI de la Fase 3. El estimado anterior de 679 KB era tamaño en disco sin comprimir y contaba 6 miniaturas del catálogo que no se cargan al inicio porque el catálogo es diferido. Lighthouse móvil del build actual: 98/100/100/100, LCP 2.4 s, TBT 0 ms, CLS 0. Guarda cumplida.
 
+46. **Etiqueta “Imagen ilustrativa” y origen de las fotos de servicio.**
+    Las 6 imágenes actuales son mockups con la marca Quad Print, entregados por Domingo el 2026-11-19 en `imagenes faltantes/`. No son fotos de trabajos reales ni imágenes de stock identificadas. Se usan con autorización del dueño para este sitio. El registro por archivo es:
+
+    | Archivo | Origen | Licencia | Estado |
+    |---|---|---|---|
+    | `servicios/01-papeleria.jpg` | Mockup con marca Quad Print, entregado por Domingo | Uso autorizado por el dueño para este sitio | Temporal, con etiqueta |
+    | `servicios/02-gran-formato.jpg` | Mockup con marca Quad Print, entregado por Domingo | Uso autorizado por el dueño para este sitio | Temporal, con etiqueta |
+    | `servicios/03-textiles.jpg` | Mockup con marca Quad Print, entregado por Domingo | Uso autorizado por el dueño para este sitio | Temporal, con etiqueta |
+    | `servicios/04-laser.jpg` | Mockup con marca Quad Print, entregado por Domingo | Uso autorizado por el dueño para este sitio | Temporal, con etiqueta |
+    | `servicios/05-toldos.jpg` | Mockup con marca Quad Print, entregado por Domingo | Uso autorizado por el dueño para este sitio | Temporal, con etiqueta |
+    | `servicios/06-diseno.jpg` | Mockup con marca Quad Print, entregado por Domingo | Uso autorizado por el dueño para este sitio | Temporal, con etiqueta |
+
+    La etiqueta visible “Imagen ilustrativa” y el prefijo del `alt` se generan desde `data/servicios.js`. Al recibir una foto real, se cambia `ilustrativa: false` y la etiqueta desaparece sin editar HTML. Si una imagen no se puede documentar, vuelve al placeholder digno hasta la foto real.
+
 ---
 
 ## Pendientes para Domingo (TODO-DOMINGO)
@@ -220,3 +234,4 @@
 | 2026-11-19 | Fase 4: prueba de activación en `_site` con datos ficticios no commiteados; 3 testimonios + 4 fotos visibles, arreglos vacíos ocultos, sin scroll horizontal a 320 px; build y verificar en verde. | DeepSeek V4.1 Flash Free (OpenCode) |
 | 2026-11-19 | Fase 4: recibidas 6 fotos de servicio (mockups de 1376 x 768); integradas con recorte 16:10 y 24 derivados de 800/1200 px en WebP/JPG. Pendientes hero, SVG, galería y testimonios. | DeepSeek V4.1 Flash Free (OpenCode) |
 | 2026-11-20 | Fase 4.0: WhatsApp confirmado; Anuncio circular pasa a Toldos; Sellos consolidado y catálogo en 18 fichas; activación de testimonios desacoplada; peso real 255.4 KiB y Lighthouse móvil 98/100/100/100. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-20 | Fase 4.0: etiqueta “Imagen ilustrativa” y origen/licencia de las 6 fotos de servicio registrados; fotos renderizadas desde data/servicios.js. | DeepSeek V4.1 Flash Free (OpenCode) |

@@ -514,6 +514,28 @@ if (formulario) {
   });
 }
 
+/* ---------- Fotos de servicios (Fase 4) ---------- */
+const serviciosFuente = Array.isArray(window.SERVICIOS) ? window.SERVICIOS : [];
+
+const servicioHTML = servicio => {
+  const base = String(servicio.base || '').trim();
+  if (!base) return '';
+  const ilustrativa = servicio.ilustrativa !== false;
+  const alt = (ilustrativa ? 'Imagen ilustrativa: ' : '') + String(servicio.alt || 'Servicio de Quad Print.');
+  return '<picture>'
+    + '<source type="image/webp" srcset="derivados/servicios/' + escapar(base) + '-800.webp 800w, derivados/servicios/' + escapar(base) + '-1200.webp 1200w" sizes="(min-width: 961px) 33vw, 100vw">'
+    + '<img src="derivados/servicios/' + escapar(base) + '-1200.jpg" srcset="derivados/servicios/' + escapar(base) + '-800.jpg 800w, derivados/servicios/' + escapar(base) + '-1200.jpg 1200w" sizes="(min-width: 961px) 33vw, 100vw" width="1200" height="750" loading="lazy" decoding="async" alt="' + escapar(alt) + '">'
+    + '</picture>'
+    + (ilustrativa ? '<span class="service-card__flag">Imagen ilustrativa</span>' : '');
+};
+
+document.querySelectorAll('.service-card__media[data-servicio]').forEach(contenedor => {
+  const servicio = serviciosFuente.find(item => item.base === contenedor.dataset.servicio);
+  if (!servicio) return;
+  contenedor.innerHTML = servicioHTML(servicio);
+  contenedor.classList.add('has-photo');
+});
+
 /* ---------- Testimonios y galería (Fase 4) ---------- */
 const testimoniosFuente = Array.isArray(window.TESTIMONIOS) ? window.TESTIMONIOS : [];
 const trabajosFuente = Array.isArray(window.TRABAJOS) ? window.TRABAJOS : [];

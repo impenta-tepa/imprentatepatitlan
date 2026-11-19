@@ -42,3 +42,13 @@ export async function readTestimonios(base = root) {
     trabajos: contexto.window.TRABAJOS || []
   };
 }
+
+/* Lee la fuente de fotos de servicios de la Fase 4. */
+export async function readServicios(base = root) {
+  const archivo = path.join(base, 'data/servicios.js');
+  const texto = await readFile(archivo, 'utf8');
+  const contexto = { window: {} };
+  vm.createContext(contexto);
+  vm.runInContext(texto, contexto, { filename: 'data/servicios.js' });
+  return { servicios: contexto.window.SERVICIOS || [] };
+}
