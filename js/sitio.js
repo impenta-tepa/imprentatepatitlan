@@ -198,6 +198,35 @@ const productos = promociones.map((promocion, indice) => ({
   orden: indice
 }));
 
+/* Enlaces de servicio: el conteo de promociones activas decide si van al
+   catálogo o a WhatsApp. Al agregar la primera promo de una categoría, la
+   tarjeta vuelve sola a "Ver más" en la siguiente carga, sin tocar HTML. */
+const promocionesPorCategoria = productos.reduce((conteo, producto) => {
+  conteo.set(producto.categoria, (conteo.get(producto.categoria) || 0) + 1);
+  return conteo;
+}, new Map());
+
+const prepararEnlacesServicio = () => {
+  document.querySelectorAll('.service-card__link[data-filtro]').forEach(enlace => {
+    const categoria = enlace.dataset.filtro;
+    const total = promocionesPorCategoria.get(categoria) || 0;
+    if (total > 0) {
+      enlace.setAttribute('href', '#catalogo');
+      enlace.removeAttribute('target');
+      enlace.removeAttribute('rel');
+      enlace.innerHTML = 'Ver más <span aria-hidden="true">↗</span>';
+      return;
+    }
+    enlace.removeAttribute('data-filtro');
+    enlace.classList.add('service-card__link--wa');
+    enlace.href = waLink('Hola, quiero cotizar ' + nombreCategoria(categoria) + '. No vi promociones en su página.');
+    enlace.target = '_blank';
+    enlace.rel = 'noopener noreferrer';
+    enlace.innerHTML = 'Cotizar por WhatsApp <span aria-hidden="true">↗</span>';
+  });
+};
+prepararEnlacesServicio();
+
 let categoriaActiva = 'todas';
 let consulta = '';
 let expandido = false;
@@ -312,6 +341,13 @@ const pintarFiltros = () => {
     </button>`).join('');
 };
 
+const pintarEstadoVacio = (textoHTML, mensaje) => {
+  if (!estado) return;
+  estado.classList.add('has-action');
+  estado.innerHTML = '<span class="catalog__empty-text">' + textoHTML + '</span>'
+    + '<a class="btn btn--dark catalog__empty-cta" href="' + escapar(waLink(mensaje)) + '" target="_blank" rel="noopener noreferrer">Cotizar por WhatsApp <span aria-hidden="true">↗</span></a>';
+};
+
 const pintarCatalogo = () => {
   if (!galeria) return;
   const resultados = coincidencias();
@@ -324,14 +360,27 @@ const pintarCatalogo = () => {
   if (estado) {
     const nombreActivo = categoriaActiva === 'todas' ? '' : nombreCategoria(categoriaActiva);
     if (!resultados.length) {
-      const prefijo = nombreActivo ? nombreActivo + ': ' : '';
-      estado.textContent = prefijo + (normalizar(consulta)
-        ? 'No encontramos promociones con ese nombre. Prueba otra palabra o escríbenos por WhatsApp.'
-        : 'Aún no hay promociones en esta categoría. Escríbenos por WhatsApp y te cotizamos.');
+      if (normalizar(consulta)) {
+        const termino = consulta.trim();
+        pintarEstadoVacio(
+          'No encontramos promociones para “' + escapar(termino) + '”. Prueba otra palabra o pide una cotización.',
+          'Hola, busco ' + termino + ' y no lo encontré en su catálogo. ¿Lo pueden hacer?'
+        );
+      } else {
+        const mensaje = nombreActivo
+          ? 'Hola, quiero cotizar ' + nombreActivo + '. No vi promociones en su página.'
+          : WA_DEFAULT;
+        pintarEstadoVacio(
+          (nombreActivo ? escapar(nombreActivo) + ': ' : '') + 'Aún no hay promociones en esta categoría. Te cotizamos lo que necesites.',
+          mensaje
+        );
+      }
     } else if (mostrandoFiltro) {
+      estado.classList.remove('has-action');
       const prefijo = nombreActivo ? nombreActivo + ' · ' : '';
       estado.textContent = prefijo + resultados.length + (resultados.length === 1 ? ' promoción encontrada' : ' promociones encontradas');
     } else {
+      estado.classList.remove('has-action');
       estado.textContent = visibles.length + ' de ' + resultados.length + ' promociones';
     }
   }

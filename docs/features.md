@@ -68,8 +68,10 @@ La home es HTML estático con CSS y JavaScript nativo. No hay frameworks de inte
   4. Corte y grabado láser.
   5. Toldos y anuncios.
   6. Diseño gráfico.
-- **Cada tarjeta:** foto desde `data/servicios.js`, nombre, 3–4 ejemplos y enlace “Ver más”.
-- **“Ver más”:** aplica el filtro correspondiente del catálogo (`data-filtro`), hace scroll al catálogo, mueve el foco al encabezado del catálogo y actualiza la URL a `#catalogo`. Queda preparado para cambiar el enlace a una subpágina futura.
+- **Cada tarjeta:** foto desde `data/servicios.js`, nombre, 3–4 ejemplos y un enlace que decide el conteo de promociones activas de su categoría:
+  - **Con promociones:** “Ver más”; aplica el filtro correspondiente (`data-filtro`), hace scroll al catálogo, mueve el foco al encabezado del catálogo y actualiza la URL a `#catalogo`. Queda preparado para cambiar el enlace a una subpágina futura.
+  - **Sin promociones:** “Cotizar por WhatsApp”; abre `wa.me` con “Hola, quiero cotizar [categoría]. No vi promociones en su página.”
+  - La decisión se toma en `js/sitio.js` desde `data/promociones.js`, sin excepciones escritas en el HTML. Al agregar la primera promo de una categoría, la tarjeta vuelve sola a “Ver más” en la siguiente carga.
 - **Fotos:** `data/servicios.js` define `base`, `alt` e `ilustrativa`. Las seis actuales son mockups entregados por Domingo (1376 x 768 originales); el build las recorta a 16:10 y publica 800 y 1200 px en WebP y JPG en `derivados/servicios/`. Mientras `ilustrativa: true`, se muestra la etiqueta “Imagen ilustrativa” y el `alt` lleva el prefijo; al cambiar a `false`, ambos desaparecen sin tocar HTML.
 - **Rejilla:** 3 columnas en escritorio, 2 en tablet y 1 en móvil.
 - **Para cambiar textos:** editar `index.html`. **Para cambiar fotos o quitar la etiqueta:** editar `data/servicios.js`.
@@ -92,7 +94,8 @@ La home es HTML estático con CSS y JavaScript nativo. No hay frameworks de inte
   - Muestra 9 promociones y un botón “Ver todas” (18 activas en total).
   - Busca por título, descripción, categoría, etiquetas y nombre de archivo.
   - Filtra por las 6 macrocategorías; el estado muestra el nombre de la categoría activa.
-  - Si una categoría no tiene promociones, muestra un mensaje para cotizar por WhatsApp.
+  - **Categoría sin promociones:** muestra el nombre de la categoría y un botón real de WhatsApp de 44 px, con foco visible y mensaje precargado: “Hola, quiero cotizar [categoría]. No vi promociones en su página.”
+  - **Búsqueda sin resultados:** muestra el término buscado y el mismo tipo de botón, con mensaje: “Hola, busco [término] y no lo encontré en su catálogo. ¿Lo pueden hacer?”
   - Si `precio` es `null`, muestra “Precio: confirmar por WhatsApp”.
   - En móvil, el filtro “Todas” queda visible con `position: sticky` para volver fácilmente.
 - **Foco:** al usar “Ver más” desde una tarjeta de servicio, el foco pasa al encabezado `#catalogo-titulo`; el encabezado tiene `tabindex="-1"` y `scroll-margin-top`.

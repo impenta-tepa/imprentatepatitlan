@@ -168,6 +168,9 @@
 47. **Favicon optimizado (2026-11-20).**
     `LOGOS/quad-print-favicon.png` pasó de 502 × 502 px y 21,251 bytes a 128 × 128 px y 4,454 bytes, con paleta PNG y la misma proporción. Se conserva la ruta para no tocar HTML ni el JSON-LD; 128 px supera el mínimo de 112 px que pide Google para el logo estructurado. El verificador falla si el favicon supera 5 KiB.
 
+48. **Estados vacíos con salida a WhatsApp (2026-11-20).**
+    Las categorías sin promociones activas (hoy Láser y Diseño) y las búsquedas sin resultados muestran un botón real de WhatsApp, no solo texto. El mensaje de categoría es “Hola, quiero cotizar [nombre visible]. No vi promociones en su página.”; el de búsqueda es “Hola, busco [término] y no lo encontré en su catálogo. ¿Lo pueden hacer?”. Las tarjetas de servicio cambian entre “Ver más” y “Cotizar por WhatsApp” contando las promociones activas por categoría en `data/promociones.js`; no hay excepciones escritas en el HTML y al agregar la primera promo la tarjeta vuelve sola a “Ver más”. Los botones de estado vacío miden 44 px y usan el foco visible global. Firma: DeepSeek V4.1 Flash Free (OpenCode).
+
 ---
 
 ## Pendientes para Domingo (TODO-DOMINGO)
@@ -241,3 +244,4 @@
 | 2026-11-20 | Fase 4.0 publicada en `main` (merge `f3d0109`, run `44576882173`); verificación en vivo completa y Lighthouse móvil 99/100/100/100 (LCP 1.56 s). | DeepSeek V4.1 Flash Free (OpenCode) |
 | 2026-11-20 | Cierre de rendimiento aceptado: PSI móvil 98 / LCP 1.4 s y Lighthouse móvil 99 / LCP 1.56 s; sin nuevas corridas hasta el Lote 4B. | DeepSeek V4.1 Flash Free (OpenCode) |
 | 2026-11-20 | Micro-lote: favicon 502 × 502 / 21,251 bytes → 128 × 128 / 4,454 bytes; verificador con guarda menor a 5 KiB. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-20 | Micro-lote 4.0.2: categorías y búsquedas vacías con CTA de WhatsApp de 44 px y foco visible; enlaces de servicio decididos por el conteo de promociones activas. | DeepSeek V4.1 Flash Free (OpenCode) |
