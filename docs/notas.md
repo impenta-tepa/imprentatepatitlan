@@ -66,12 +66,12 @@
 
 ---
 
-## Preguntas para el asesor
+## Respuestas del asesor (2026-11-19)
 
-1. **Headline:** el brief pide conservar “Tu idea merece una gran impresión”, pero el dueño lo cambió. ¿Se respeta el cambio del dueño o se regresa al del brief?
-2. **Destacadas dentro del catálogo:** hoy las 4 destacadas también aparecen en el catálogo completo. ¿El brief pide eliminarlas del catálogo o solo eliminar la duplicación hardcodeada? Se interpretó lo segundo.
-3. **Categorías vacías:** ¿se dejan visibles las 3 categorías sin promociones (Láser, Toldos y anuncios, Diseño gráfico) o se ocultan hasta que tengan contenido?
-4. **Publicación:** el brief pide push a la rama que publica y verificar la URL en vivo. El dueño pidió no publicar hasta aprobar. ¿Se autoriza pasar `borrador` a `main` al cerrar la Fase 1?
+1. **Headline:** regresar a “Tu idea merece una gran impresión.” y renombrar el botón primario a “Cotiza tu pedido por WhatsApp”. Hecho.
+2. **Destacadas dentro del catálogo:** sí se quedan. El catálogo es el inventario (19); destacadas es la vitrina curada. La duplicación que se eliminó era la hardcodeada.
+3. **Categorías vacías:** sí se quedan visibles con el mensaje de invitación a cotizar. En Fase 2 las tarjetas de servicio enlazan a esos filtros.
+4. **Publicación:** autorizada. Se publicó la Fase 1 en `main` con el ajuste del headline y se verificó en vivo.
 
 ---
 
@@ -93,3 +93,5 @@
 | Fecha | Cambio | Firma |
 |---|---|---|
 | 2026-11-18 | Fase 1: fuente única, tarjeta unificada, filtros, precio pendiente, visor accesible, build y documentación. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Ajuste aprobado: headline del brief y CTA principal “Cotiza tu pedido por WhatsApp”. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Publicación de Fase 1 en `main` (merge `8523497`), Actions en verde y verificación en vivo. | DeepSeek V4.1 Flash Free (OpenCode) |
