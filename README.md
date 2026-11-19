@@ -66,9 +66,19 @@ Si no existe `node_modules`, ejecutar `npm install`. En GitHub Actions se ejecut
 - Rama de publicación: `main`.
 - Flujo: `.github/workflows/pages.yml` ejecuta `npm ci`, `node scripts/preparar.mjs` y publica `_site` con GitHub Pages.
 - Respaldo del sitio anterior: rama `respaldo-antes-quad-print-2026-11-16`.
-- Para actualizar: editar, ejecutar `npm run build`, `npm run verificar`, hacer commit y push a `main`.
+- Para actualizar: agrupar los cambios, ejecutar `npm run build` y `npm run verificar` en local, hacer un solo commit y push a `main`.
 - No se sube `_site` ni `node_modules`; GitHub Actions los genera en cada publicación.
 - **Fase 2:** implementada y verificada en `borrador`; **no publicada en `main`** hasta que el dueño/asesor la apruebe.
+
+## Límites de GitHub Pages (plan gratuito)
+
+- **10 compilaciones por hora.** No hacer un push por cada ajuste pequeño. Agrupar los cambios en un solo commit/push.
+- **1 GB máximo** para el sitio y el repositorio.
+- **100 GB de ancho de banda al mes.**
+- Antes de publicar: ejecutar `npm run build` y `npm run verificar` en local; subir solo cuando el cambio esté completo.
+- Optimizar las imágenes antes de subirlas: WebP o JPG ligero, ideal 1080 x 1350 px y menos de 150 KB. Evitar originales pesados.
+- No subir `_site/` ni `node_modules/`; se generan en el build.
+- Si después de publicar aparece otro ajuste, esperar y agrupar varios cambios; no hacer despliegues continuos.
 
 ## Promociones
 

@@ -9,6 +9,15 @@
 
 Una fase a la vez. Al terminar cada fase: build, verificación, commit en `borrador`, reporte y pausa. No se publica en `main` hasta que el dueño lo apruebe.
 
+### Límites de GitHub Pages (plan gratuito)
+
+- **10 compilaciones por hora.** Agrupar los cambios en un solo commit/push; no publicar por cada ajuste pequeño.
+- **1 GB máximo** para el sitio y el repositorio, y **100 GB de ancho de banda al mes**.
+- Ejecutar `npm run build` y `npm run verificar` en local antes de publicar.
+- Optimizar las imágenes antes de subirlas: WebP/JPG ligero, ideal 1080 x 1350 px y menos de 150 KB.
+- No subir `_site/` ni `node_modules/`; GitHub Actions los genera en cada publicación.
+- Si se acumulan varios ajustes, esperar y agruparlos en un solo push.
+
 ---
 
 ## Fase 1 — Fuente única de promociones + tarjeta unificada

@@ -115,6 +115,8 @@
 - **`activo: false`:** oculta la promoción del sitio, pero el build sigue generando sus derivados. No afecta la página; se puede optimizar más adelante.
 - **`data/promociones.js` es JavaScript, no JSON:** se eligió así para que funcione abriendo `index.html` sin servidor, como pide el brief. No se usa `fetch`.
 - **El build lee la fuente única con `node:vm`:** así valida el archivo real que usa el navegador, sin duplicarlo.
+- **Límite de compilaciones de GitHub Pages:** el plan gratuito permite 10 por hora. Un push a `main` por cada ajuste pequeño puede agotar el límite. Agrupar cambios en un solo commit/push y hacer build/verificación locales antes de publicar.
+- **Peso y ancho de banda:** 1 GB para el sitio/repositorio y 100 GB al mes. Optimizar las imágenes antes de subirlas (WebP/JPG ligero, ideal 1080 x 1350 px y menos de 150 KB); no subir originales pesados. `_site/` y `node_modules/` no se versionan.
 - **El plan histórico de la raíz (`plan.md`) no se tocó.** El plan vigente es `docs/plan.md`.
 
 ---
