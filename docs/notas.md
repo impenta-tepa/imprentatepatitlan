@@ -2,7 +2,7 @@
 
 **Última actualización:** 2026-11-18
 **Agente:** DeepSeek V4.1 Flash Free (OpenCode)
-**Fase actual:** Fase 1 terminada, pendiente aprobación para publicar.
+**Fase actual:** Fase 1 aprobada y publicada; Fase 2 en ejecución.
 
 ---
 
@@ -11,8 +11,8 @@
 1. **Se usó `data/promociones.js`, no `datos/`.**
    El brief pide esa ruta exacta. Se eliminaron `datos/catalogo.js` y el manifiesto generado `datos/promociones.js`. Ahora hay una sola fuente de verdad y el build ya no la sobrescribe.
 
-2. **Se conservó el headline actual del dueño.**
-   El brief pide “Tu idea merece una gran impresión”, pero el dueño cambió el headline a “¡Contáctanos y cotiza tu pedido!”. Se respetó el cambio del dueño y se marca el conflicto para que el asesor lo confirme.
+2. **El headline regresó a “Tu idea merece una gran impresión.”**
+   El dueño lo había cambiado a “¡Contáctanos y cotiza tu pedido!”. El asesor aprobó la Fase 1 y pidió regresar al headline del brief: el headline vende el beneficio y la acción la pide el botón. El texto del dueño se conserva en el botón primario del hero, ahora “Cotiza tu pedido por WhatsApp”. Se mantiene el estilo del `<span class="mark">`.
 
 3. **Los 19 precios quedan en `null`.**
    Hoy los precios están dentro de las imágenes. No se leyeron, no se transcribieron y no se inventaron. La tarjeta muestra “Precio: confirmar por WhatsApp”.
@@ -43,8 +43,8 @@
 9. **El catálogo pasa a 2 columnas en tablet.**
    Con la tarjeta nueva (precio, vigencia y CTA), 3 columnas a 768 px quedaban muy apretadas. Ahora: 3 columnas en desktop, 2 hasta 900 px y 1 en móvil. Los filtros se desplazan horizontalmente en móvil.
 
-10. **No se publicó en `main`.**
-    Todo quedó en `borrador`. El push a `main` se hará solo con aprobación explícita del dueño.
+10. **Publicación de Fase 1 en `main` autorizada.**
+    El asesor autorizó el merge `borrador` → `main` el 2026-11-19, con el ajuste previo del headline. La publicación se hace con el flujo existente: push a `main` → GitHub Actions ejecuta el build → publica `_site` con `/derivados` generado. El detalle de la verificación en vivo se registra en `docs/plan.md`.
 
 ---
 
@@ -57,7 +57,7 @@
 5. **Destacadas.** Confirmar las 4 actuales o elegir otras. Máximo 4.
 6. **WhatsApp principal.** Hoy todos los enlaces usan `5213781097423` (378 109 7423). Confirmar si ese es el principal o si debe ser 378 101 1768.
 7. **Imágenes nuevas.** Las 19 deben re-exportarse a 1080 x 1350 px, proporción 4:5, WebP menor a 150 KB, solo producto sobre fondo limpio, sin texto ni precio dentro de la imagen.
-8. **Headline.** Confirmar si se queda “¡Contáctanos y cotiza tu pedido!” o se regresa a “Tu idea merece una gran impresión”.
+8. **Headline.** Resuelto: se regresó a “Tu idea merece una gran impresión.” y el botón primario dice “Cotiza tu pedido por WhatsApp”.
 9. **Categorías ambiguas.** Confirmar la asignación de:
    - `anuncio-circular` → hoy en Papelería.
    - `paquete-padrinos` → hoy en Papelería.
