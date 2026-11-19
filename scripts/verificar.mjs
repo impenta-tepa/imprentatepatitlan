@@ -119,7 +119,7 @@ if (!rotas) ok.push(`${locales.length} rutas locales de index.html verificadas`)
 
 // 5b. Estructura y reglas de la Fase 2
 const css = await readFile(path.join(sitio, 'css/estilos.css'), 'utf8');
-const js = await readFile(path.join(sitio, 'js/sitio.js'), 'utf8');
+const jsFuente = await readFile(path.join(root, 'js/sitio.js'), 'utf8');
 const nav = (html.match(/<nav class="nav"[\s\S]*?<\/nav>/) || [])[0] || '';
 const ordenNav = ['#servicios', '#promociones', '#ubicacion', '#contacto']
   .map(ancla => nav.indexOf(`href="${ancla}"`));
@@ -170,20 +170,61 @@ const estructura = [
   ['sin franja negra intermedia', !html.includes('section--dark') && !css.includes('.section--dark')],
   ['contacto claro', /\.section--contact\s*\{[^}]*background:\s*var\(--paper\)/.test(css)],
   ['select con las 6 categorías + Otro', selectOk],
-  ['mensaje de WhatsApp con el nombre visible del servicio', js.includes('servicio.value.trim()')],
+  ['mensaje de WhatsApp con el nombre visible del servicio', jsFuente.includes('servicio.value.trim()')],
   ['marco de promoción 4:5', /\.promo-open\s*\{[^}]*aspect-ratio:\s*4\s*\/\s*5/.test(css)],
   ['miniatura con object-fit cover', /\.promo-open img\s*\{[^}]*object-fit:\s*cover/.test(css)],
   ['arte cuadrado con contain', /\.promo-open\.is-square img\s*\{[^}]*object-fit:\s*contain/.test(css)],
-  ['width/height en tarjetas de promoción', js.includes('width="800" height="1000"')],
-  ['detección de miniaturas cuadradas', js.includes('is-square') && js.includes('naturalWidth')],
-  ['filtro desde las tarjetas de servicio', js.includes("closest('[data-filtro]')")],
-  ['mapa lazy en JavaScript', js.includes("iframe.loading = 'lazy'")],
+  ['width/height en tarjetas de promoción', jsFuente.includes('width="800" height="1000"')],
+  ['detección de miniaturas cuadradas', jsFuente.includes('is-square') && jsFuente.includes('naturalWidth')],
+  ['filtro desde las tarjetas de servicio', jsFuente.includes("closest('[data-filtro]')")],
+  ['mapa lazy en JavaScript', jsFuente.includes("iframe.loading = 'lazy'")],
   ['placeholders TODO-DOMINGO listados', (html.match(/TODO-DOMINGO/g) || []).length >= 8]
 ];
 for (const [nombre, cumple] of estructura) {
   if (!cumple) fallos.push('Fase 2: ' + nombre);
 }
 if (!estructura.some(([, cumple]) => !cumple)) ok.push('estructura de Fase 2 completa: ' + estructura.length + ' comprobaciones');
+
+// 5c. Estructura y reglas de la Fase 3
+let logosFaltantes = 0;
+for (const rel of ['derivados/logo-header.webp', 'derivados/logo-header.png', 'derivados/logo-footer.webp', 'derivados/logo-footer.png']) {
+  if (!(await existe(path.join(sitio, rel)))) {
+    fallos.push('falta ' + rel);
+    logosFaltantes++;
+  }
+}
+if (!logosFaltantes) ok.push('logos optimizados de header y footer presentes (WebP y PNG)');
+
+const fase3 = [
+  ['logo de header optimizado y precargado', html.includes('derivados/logo-header.webp') && /rel="preload"[^>]*href="derivados\/logo-header\.webp"/.test(html)],
+  ['logo de footer optimizado', html.includes('derivados/logo-footer.webp')],
+  ['scroll-margin-top en secciones', css.includes('scroll-margin-top')],
+  ['tap targets de filtros de 44 px', /\.filter\s*\{[^}]*min-height:\s*44px/.test(css)],
+  ['botones del visor de 44 px', /\.viewer__bar button\s*\{[^}]*min-height:\s*44px/.test(css) && /\.viewer__actions \.btn\s*\{[^}]*min-height:\s*44px/.test(css)],
+  ['texto de formulario de 16 px', /\.field input,\s*\.field select,\s*\.field textarea\s*\{[^}]*font-size:\s*16px/.test(css)],
+  ['prefers-reduced-motion', /prefers-reduced-motion:\s*reduce/.test(css)],
+  ['foco al catálogo preparado', html.includes('id="catalogo-titulo"') && html.includes('tabindex="-1"') && jsFuente.includes('catalogo-titulo')],
+  ['catálogo diferido sin bloquear el primer pintado', jsFuente.includes('IntersectionObserver') && jsFuente.includes('renderCatalogo')],
+  ['menú móvil fuera del foco al cerrar', jsFuente.includes("toggleAttribute('inert'") && jsFuente.includes('menuMovil')],
+  ['estado con nombre de la categoría activa', jsFuente.includes('nombreActivo')],
+  ['hero con proporción 21:9 reservada', /\.hero__media picture\s*\{[^}]*aspect-ratio:\s*21\s*\/\s*9/.test(css)],
+  ['safe areas laterales en el nav móvil', css.includes('safe-area-inset-left') && css.includes('safe-area-inset-right')]
+];
+for (const [nombre, cumple] of fase3) {
+  if (!cumple) fallos.push('Fase 3: ' + nombre);
+}
+if (!fase3.some(([, cumple]) => !cumple)) ok.push('estructura de Fase 3 completa: ' + fase3.length + ' comprobaciones');
+
+const bytesFuente = (await stat(path.join(root, 'css/estilos.css'))).size
+  + (await stat(path.join(root, 'fonts/fonts.css'))).size
+  + (await stat(path.join(root, 'js/sitio.js'))).size
+  + (await stat(path.join(root, 'data/promociones.js'))).size;
+const bytesPublicado = (await stat(path.join(sitio, 'css/estilos.css'))).size
+  + (await stat(path.join(sitio, 'fonts/fonts.css'))).size
+  + (await stat(path.join(sitio, 'js/sitio.js'))).size
+  + (await stat(path.join(sitio, 'data/promociones.js'))).size;
+if (bytesPublicado < bytesFuente) ok.push(`minificación: ${kb(bytesFuente)} → ${kb(bytesPublicado)} (CSS + fuentes + JS + datos)`);
+else fallos.push('la minificación no redujo CSS + fuentes + JS + datos');
 
 // 6. Archivos de SEO y de compartir
 for (const archivo of ['robots.txt', 'sitemap.xml', '404.html', 'og-image.jpg']) {
@@ -224,9 +265,11 @@ const peso = async rutas => {
   return total;
 };
 const miniaturas = promociones.slice(0, 6).map(p => `derivados/promociones/${basename(p.imagen)}-800.webp`);
-const primeraCarga = await peso(['index.html', 'css/estilos.css', 'js/sitio.js', 'data/promociones.js',
-  'derivados/banner-1600.webp', 'LOGOS/logo negro.png', ...miniaturas]);
-ok.push('primera carga (sin contador de Bootstrap): ' + kb(primeraCarga));
+const primeraCarga = await peso(['index.html', 'css/estilos.css', 'fonts/fonts.css',
+  'fonts/rP2Hp2ywxg089UriCZOIHQ.woff2', 'fonts/xn7gYHE41ni1AdIRggexSg.woff2',
+  'js/sitio.js', 'data/promociones.js', 'derivados/banner-1600.webp',
+  'derivados/logo-header.webp', ...miniaturas]);
+ok.push('primera carga estimada (incluye fuentes y 6 miniaturas): ' + kb(primeraCarga));
 
 for (const linea of ok) console.log('  OK  ' + linea);
 for (const linea of avisos) console.log('  !   ' + linea);

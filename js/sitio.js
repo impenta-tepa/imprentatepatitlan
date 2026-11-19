@@ -81,6 +81,12 @@ document.querySelectorAll('[data-wa]').forEach(enlace => {
 /* ---------- Menú móvil ---------- */
 const toggle = document.querySelector('.nav-toggle');
 const menu = document.getElementById('menu');
+const menuMovil = window.matchMedia('(max-width: 960px)');
+
+const actualizarInert = abierto => {
+  if (!menu) return;
+  menu.toggleAttribute('inert', menuMovil.matches && !abierto);
+};
 
 function setMenu(abierto, devolverFoco = false) {
   if (!toggle || !menu) return;
@@ -89,10 +95,12 @@ function setMenu(abierto, devolverFoco = false) {
   document.body.classList.toggle('menu-open', abierto);
   toggle.setAttribute('aria-expanded', String(abierto));
   toggle.setAttribute('aria-label', abierto ? 'Cerrar menú' : 'Abrir menú');
+  actualizarInert(abierto);
   if (!abierto && devolverFoco) toggle.focus();
 }
 
 if (toggle && menu) {
+  actualizarInert(false);
   toggle.addEventListener('click', () => setMenu(!menu.classList.contains('is-open')));
   menu.querySelectorAll('a').forEach(enlace => enlace.addEventListener('click', () => setMenu(false)));
 
@@ -106,6 +114,10 @@ if (toggle && menu) {
     setMenu(false);
   });
 
+  menuMovil.addEventListener('change', () => {
+    actualizarInert(menu.classList.contains('is-open'));
+  });
+
   const escritorio = window.matchMedia('(min-width: 961px)');
   escritorio.addEventListener('change', evento => {
     if (evento.matches) setMenu(false);
@@ -117,7 +129,7 @@ const header = document.querySelector('.site-header');
 const actualizarHeader = () => {
   if (header) header.classList.toggle('is-scrolled', window.scrollY > 8);
 };
-actualizarHeader();
+requestAnimationFrame(actualizarHeader);
 window.addEventListener('scroll', actualizarHeader, { passive: true });
 
 /* ---------- Catálogo ---------- */
@@ -310,12 +322,15 @@ const pintarCatalogo = () => {
   marcarMiniaturas(galeria);
 
   if (estado) {
+    const nombreActivo = categoriaActiva === 'todas' ? '' : nombreCategoria(categoriaActiva);
     if (!resultados.length) {
-      estado.textContent = normalizar(consulta)
+      const prefijo = nombreActivo ? nombreActivo + ': ' : '';
+      estado.textContent = prefijo + (normalizar(consulta)
         ? 'No encontramos promociones con ese nombre. Prueba otra palabra o escríbenos por WhatsApp.'
-        : 'Aún no hay promociones en esta categoría. Escríbenos por WhatsApp y te cotizamos.';
+        : 'Aún no hay promociones en esta categoría. Escríbenos por WhatsApp y te cotizamos.');
     } else if (mostrandoFiltro) {
-      estado.textContent = resultados.length + (resultados.length === 1 ? ' promoción encontrada' : ' promociones encontradas');
+      const prefijo = nombreActivo ? nombreActivo + ' · ' : '';
+      estado.textContent = prefijo + resultados.length + (resultados.length === 1 ? ' promoción encontrada' : ' promociones encontradas');
     } else {
       estado.textContent = visibles.length + ' de ' + resultados.length + ' promociones';
     }
@@ -431,14 +446,26 @@ if (filtros) {
 document.addEventListener('click', evento => {
   const enlace = evento.target.closest('[data-filtro]');
   if (!enlace) return;
+  if (evento.metaKey || evento.ctrlKey || evento.shiftKey || evento.altKey || evento.button !== 0) return;
   const filtro = enlace.dataset.filtro;
   if (!categorias.some(categoria => categoria.id === filtro)) return;
+  evento.preventDefault();
   categoriaActiva = filtro;
   consulta = '';
   expandido = false;
   if (buscador) buscador.value = '';
-  pintarFiltros();
-  pintarCatalogo();
+  renderDestacados();
+  renderCatalogo();
+  const catalogo = document.getElementById('catalogo');
+  const tituloCatalogo = document.getElementById('catalogo-titulo');
+  const reducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (catalogo) catalogo.scrollIntoView({ behavior: reducido ? 'auto' : 'smooth', block: 'start' });
+  if (tituloCatalogo) tituloCatalogo.focus({ preventScroll: true });
+  try {
+    history.pushState(null, '', '#catalogo');
+  } catch {
+    location.hash = '#catalogo';
+  }
 });
 
 /* Mapa con carga diferida: el iframe se crea solo cuando la persona lo abre. */
@@ -488,8 +515,54 @@ if (formulario) {
 }
 
 /* ---------- Arranque ---------- */
-pintarFiltros();
-pintarDestacados();
-pintarCatalogo();
 conectarGaleria(destacadosGrid);
 conectarGaleria(galeria);
+
+let destacadosListos = false;
+const renderDestacados = () => {
+  if (destacadosListos) return;
+  destacadosListos = true;
+  pintarDestacados();
+};
+
+const renderCatalogo = () => {
+  pintarFiltros();
+  pintarCatalogo();
+};
+
+// Las secciones pesadas se pintan antes de entrar en pantalla, sin bloquear el primer pintado.
+const observarSeccion = (id, render) => {
+  const seccion = document.getElementById(id);
+  if (!seccion) return;
+  if (!('IntersectionObserver' in window)) {
+    render();
+    return;
+  }
+  const observador = new IntersectionObserver(entradas => {
+    if (entradas.some(entrada => entrada.isIntersecting)) {
+      render();
+      observador.disconnect();
+    }
+  }, { rootMargin: '1200px 0px' });
+  observador.observe(seccion);
+};
+
+observarSeccion('promociones', renderDestacados);
+observarSeccion('catalogo', renderCatalogo);
+
+// Si el nav lleva a Promociones, pinta la vitrina antes del salto.
+document.addEventListener('click', evento => {
+  if (evento.target.closest('a[href="#promociones"]')) renderDestacados();
+});
+
+// Antes de saltar a una sección que está después de las secciones diferidas,
+// se pintan para que el destino no se mueva durante el desplazamiento.
+const anclasConSeccionesTardias = new Set(['#catalogo', '#foraneos', '#formatos', '#contacto', '#ubicacion']);
+document.addEventListener('click', evento => {
+  const enlace = evento.target.closest('a[href^="#"]');
+  if (!enlace) return;
+  if (evento.metaKey || evento.ctrlKey || evento.shiftKey || evento.altKey || evento.button !== 0) return;
+  if (!anclasConSeccionesTardias.has(enlace.getAttribute('href'))) return;
+  renderDestacados();
+  if (!document.querySelector('#galeria .promo-card')) renderCatalogo();
+});

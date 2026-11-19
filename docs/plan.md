@@ -89,25 +89,61 @@ Una fase a la vez. Al terminar cada fase: build, verificación, commit en `borra
 | 2026-11-19 | Select del formulario alineado a las 6 macrocategorías + “Otro”; el mensaje de WhatsApp usa el nombre visible. | DeepSeek V4.1 Flash Free (OpenCode) |
 | 2026-11-19 | Build y `npm run verificar` en verde; 24 comprobaciones estructurales de Fase 2; viewports 320, 360, 390, 430, 768, 844, 1024 y 1280 sin scroll horizontal; consola sin errores. | DeepSeek V4.1 Flash Free (OpenCode) |
 | 2026-11-19 | Lighthouse móvil sobre el build local: Performance 87, Accesibilidad 100, Buenas prácticas 100, SEO 100. LCP 2.9 s, CLS 0, TBT 340 ms, primera carga 303 KiB. | DeepSeek V4.1 Flash Free (OpenCode) |
-| 2026-11-19 | Commit único de Fase 2 en `borrador`; sin merge a `main`. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Commit único de Fase 2 en `borrador`; reporte y pausa para aprobación. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Aprobación del asesor y autorización de publicación en `main`. | Asesor de Domingo |
+| 2026-11-19 | Merge `borrador` → `main` (commit `1a84847`) y despliegue de GitHub Actions en verde (run `44471747493`). | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Verificación en vivo de Fase 2: orden de secciones, hero, 6 servicios, select, anclas, mapa diferido, cierre, footer, 4 destacadas, 9 + “Ver todas” = 19, 7 filtros, buscador, visor, formulario, imágenes y consola sin errores. | DeepSeek V4.1 Flash Free (OpenCode) |
 
-**Pendiente de aprobación:** el dueño/asesor debe revisar el reporte de Fase 2 antes de publicar. No se hace merge a `main` en esta fase.
+**Estado:** Fase 2 aprobada, publicada en `main` y verificada en vivo.
+
+### Publicación de Fase 2
+
+- **Rama publicada:** `main`.
+- **Commit de merge:** `1a84847`.
+- **Run de Actions:** `44471747493`, completado con éxito el 2026-11-19 (06:22 UTC).
+- **URL verificada:** `https://impenta-tepa.github.io/imprentatepatitlan/?v=[timestamp]`.
+- **Resultado:** orden nuevo de las secciones, hero con el headline y los dos CTA, 6 tarjetas de servicio con los nombres exactos, “Ver más” que filtra y baja al catálogo, select con las 6 macrocategorías + “Otro”, mensaje de WhatsApp con el nombre visible, anclas que aterrizan debajo del header, mapa que no se descarga hasta pulsar el botón y luego carga, franja de cierre, footer completo, 4 destacadas, 9 iniciales + “Ver todas” = 19, 7 filtros, buscador, visor, formulario, 19 imágenes de promoción cargadas, consola sin errores y sin scroll horizontal a 360 ni 320 px.
+- **Nota para Fase 3:** mover el foco al encabezado del catálogo al usar “Ver más” queda como mejora de Fase 3; en la verificación de Fase 2 se comprobó el filtro y el scroll, no el foco.
 
 ---
 
 ## Fase 3 — Móvil, rendimiento, accesibilidad y SEO
 
-- [ ] Mobile-first; cero scroll horizontal incluso a 320 px.
-- [ ] Safe areas en header, botones flotantes y contenido (`env(safe-area-inset-*)`).
-- [ ] Objetivos táctiles de 44–48 px; texto base mínimo de 16 px.
-- [ ] Menú hamburguesa accesible: `aria-expanded`, cierre con Esc y con toque fuera.
-- [ ] Imágenes WebP < 150 KB; `width`/`height` para evitar CLS; `loading="lazy"` salvo el hero; preload del hero.
-- [ ] Mapa en iframe con carga diferida al entrar en viewport o al interactuar.
-- [ ] Teléfonos, WhatsApp y correo como enlaces `tel:`, `wa.me` y `mailto:`.
-- [ ] Contraste AA, un solo `h1`, jerarquía `h2`/`h3`, alt descriptivos, foco visible, visor con Esc y `prefers-reduced-motion`.
-- [ ] SEO local: title y meta description con “imprenta en Tepatitlán”; JSON-LD LocalBusiness con datos reales.
-- [ ] Probar 320, 360x800, 390x844, 430x932, 768, 1024, 1280 y horizontal; consola sin errores.
-- [ ] Reporte de Fase 3 y pausa para aprobación.
+- [x] Mobile-first; cero scroll horizontal incluso a 320 px.
+- [x] Safe areas en header, botones flotantes, nav móvil y contenido (`env(safe-area-inset-*)`).
+- [x] Objetivos táctiles de 44 px; formulario con texto de 16 px.
+- [x] Menú hamburguesa accesible: `aria-expanded`, cierre con Esc, cierre con toque fuera y `inert` cuando está cerrado.
+- [x] Imágenes con `width`/`height` o `aspect-ratio`; hero 21:9, servicios 16:10 y promociones 4:5; logos optimizados.
+- [x] Mapa en iframe con carga diferida al pulsar el botón.
+- [x] Teléfonos, WhatsApp y correo como enlaces `tel:`, `wa.me` y `mailto:`.
+- [x] Contraste AA, un solo `h1`, jerarquía `h2`/`h3`, alt descriptivos, foco visible, visor con Esc y `prefers-reduced-motion`.
+- [x] SEO local: title y meta description con “imprenta en Tepatitlán”; JSON-LD LocalBusiness con datos reales.
+- [x] Probar 320, 360x800, 390x844, 430x932, 768, 844, 1024, 1280 y horizontal; consola sin errores.
+- [x] Reporte de Fase 3 y pausa para aprobación.
+
+**Estado:** Fase 3 implementada, construida y verificada en `borrador`. **No publicada en `main`**; espera aprobación.
+
+### Registro de Fase 3
+
+| Fecha | Intervención | Firma |
+|---|---|---|
+| 2026-11-19 | Logos de header y footer optimizados a 200 px y 240 px en WebP y PNG, con `width`/`height` y preload del logo del header. Queda pendiente el SVG definitivo de Domingo. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Build con minificación de CSS, fuentes, JS y datos mediante esbuild; los fuentes permanecen legibles. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Destacadas y catálogo se pintan antes de entrar en pantalla con `IntersectionObserver`; el catálogo ya no bloquea el primer pintado. Los enlaces internos pintan las secciones diferidas antes de saltar para que el destino no se mueva. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Auditoría de safe areas con insets de iPhone portrait, iPhone landscape y Android; nav móvil con padding seguro y `scroll-margin-top` en secciones. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Objetivos táctiles de 44 px en filtros, visor, footer, contacto, zoom de promos, enlaces de servicio, mapa y botón flotante; formulario a 16 px. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | “Ver más” de servicios filtra, hace scroll, enfoca el encabezado del catálogo y actualiza la URL; el estado muestra la categoría activa y “Todas” queda visible con `position: sticky`. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Menú móvil con `inert` al cerrar; recorrido solo con teclado por menú, filtros, visor, formulario y mapa. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Hero con proporción 21:9 reservada, servicios 16:10 y promociones 4:5; placeholders con la proporción final. La imagen del hero queda con `loading="lazy"` para no competir con el logo LCP. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Verificación final: 13 comprobaciones de Fase 3, build con 87 derivados, minificación 73 KB → 52 KB, viewports sin scroll horizontal, teclado y safe areas aprobados, consola sin errores. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Lighthouse móvil local de Fase 3: Performance 97, Accesibilidad 100, Buenas prácticas 100, SEO 100. LCP 2.5 s, CLS 0, TBT 50 ms, primera carga 250 KiB. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Commit de Fase 3 en `borrador`; sin merge a `main`. | DeepSeek V4.1 Flash Free (OpenCode) |
+
+**Notas de la Fase 3:**
+- El objetivo obligatorio de LCP ≤ 2.5 s se cumple; el ideal ≤ 2.0 s no se alcanzó. El elemento LCP sigue siendo el logo del header y el CSS de la página sigue siendo render-blocking. El SVG en línea que entregará Domingo es la siguiente mejora natural.
+- La medición local de Lighthouse es variable: la corrida de referencia dio 97 de Performance y 50 ms de TBT; corridas posteriores en el mismo equipo, sin cambios funcionales, dieron 64–73 y TBT de 1.2–2.4 s. La verificación definitiva debe hacerse en vivo después de publicar.
+- No hubo dispositivo Android físico ni iPhone/Safari conectados. Las pruebas móviles se hicieron con emulación de Chrome y CDP (viewport, safe areas y user agent); queda pendiente la prueba en dispositivo real.
+- El registro de publicación de Fase 2 (`2af0bd7`) está en `borrador` y se publicará junto con la Fase 3 cuando se apruebe, para no generar un despliegue extra.
 
 ---
 

@@ -1,6 +1,6 @@
 # Quad Print Tepatitlán — página web
 
-**Versión 1.0 publicada; Fase 2 en `borrador`** · 19 de noviembre de 2026
+**Fase 2 publicada; Fase 3 en `borrador`** · 19 de noviembre de 2026
 
 Sitio estático de Quad Print Tepatitlán, publicado en:
 
@@ -50,9 +50,9 @@ No se usaron la dirección de Go, los horarios de Figma ni sus textos de «Impre
 
 ```bash
 npm install
-npm run build      # genera _site y derivados 800/1600 WebP + JPG
+npm run build      # genera _site, derivados de imagen y minifica CSS/JS/fuentes
 npm start          # http://localhost:4173
-npm run verificar  # revisa manifiesto, rutas, SEO y derivados
+npm run verificar  # revisa fichas, rutas, SEO, derivados y estructura
 ```
 
 Si no existe `node_modules`, ejecutar `npm install`. En GitHub Actions se ejecuta `npm ci`.
@@ -60,7 +60,7 @@ Si no existe `node_modules`, ejecutar `npm install`. En GitHub Actions se ejecut
 ## Publicación
 
 - Versión publicada: 1.0 (etiqueta de Git `v1.0`).
-- Fase 1 publicada: merge `8523497` (sitio) y registro `819fbe9` (documentación).
+- Fase 2 publicada: merge `1a84847` (sitio) y run `44471747493`.
 - URL: https://impenta-tepa.github.io/imprentatepatitlan/
 - Repositorio: https://github.com/impenta-tepa/imprentatepatitlan
 - Rama de publicación: `main`.
@@ -68,7 +68,7 @@ Si no existe `node_modules`, ejecutar `npm install`. En GitHub Actions se ejecut
 - Respaldo del sitio anterior: rama `respaldo-antes-quad-print-2026-11-16`.
 - Para actualizar: agrupar los cambios, ejecutar `npm run build` y `npm run verificar` en local, hacer un solo commit y push a `main`.
 - No se sube `_site` ni `node_modules`; GitHub Actions los genera en cada publicación.
-- **Fase 2:** implementada y verificada en `borrador`; **no publicada en `main`** hasta que el dueño/asesor la apruebe.
+- **Fase 3:** implementada y verificada en `borrador`; **no publicada en `main`** hasta que el dueño/asesor la apruebe. Incluye logo optimizado, minificación, lazy render y mejoras de accesibilidad.
 
 ## Límites de GitHub Pages (plan gratuito)
 
@@ -104,4 +104,5 @@ No editar `_site/` ni los derivados: se generan en cada build.
 - Entregar 6 fotos de servicio (una por categoría) y una foto real para el hero.
 - Entregar 3 testimonios reales con nombre y negocio, y fotos propias para la galería.
 - Decidir si se mantiene el catálogo solo con promociones reales o se agrega un catálogo de productos con fotografías definitivas.
-- Fase 3: pulir rendimiento (minificación, CSS crítico, fuentes), accesibilidad y SEO.
+- Entregar el SVG del logo para sustituir el WebP/PNG interino.
+- Probar en un Android de gama media y, si hay, en iPhone/Safari real; el agente solo tiene emulación.
