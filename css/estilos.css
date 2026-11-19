@@ -36,7 +36,12 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 92px;
+}
+
+section[id],
+div[id],
+main[id] {
+  scroll-margin-top: calc(var(--header-h) + 16px + env(safe-area-inset-top, 0px));
 }
 
 body {
@@ -245,9 +250,18 @@ p { margin: 0; }
   height: 20px;
 }
 
+.brand {
+  display: block;
+}
+
 .brand img {
   width: 92px;
   height: auto;
+}
+
+.brand picture,
+.footer__brand picture {
+  display: block;
 }
 
 .nav {
@@ -493,7 +507,14 @@ p { margin: 0; }
 
 .hero__media img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero__media picture {
+  display: block;
+  aspect-ratio: 21 / 9;
+  overflow: hidden;
 }
 
 .hero__caption {
@@ -698,7 +719,10 @@ p { margin: 0; }
 }
 
 .promo-zoom {
+  display: inline-flex;
+  align-items: center;
   align-self: flex-start;
+  min-height: 44px;
   border: 0;
   background: none;
   padding: 2px 0;
@@ -867,6 +891,7 @@ p { margin: 0; }
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  min-height: 44px;
   margin-top: auto;
   padding-top: 12px;
   border-top: 1px solid var(--line);
@@ -935,8 +960,8 @@ p { margin: 0; }
 }
 
 .filter {
-  min-height: 38px;
-  padding: 8px 13px;
+  min-height: 44px;
+  padding: 10px 14px;
   border: 1px solid var(--line);
   background: var(--white);
   color: var(--gray-2);
@@ -1129,6 +1154,12 @@ p { margin: 0; }
   line-height: 1.6;
 }
 
+.contact__item a {
+  display: inline-block;
+  min-height: 44px;
+  padding: 4px 0;
+}
+
 .contact__item a:hover { text-decoration: underline; text-underline-offset: 4px; }
 
 .contact__tag {
@@ -1225,7 +1256,10 @@ p { margin: 0; }
 }
 
 .map-card__foot a {
+  display: inline-flex;
+  align-items: center;
   flex: 0 0 auto;
+  min-height: 44px;
   color: var(--ink);
   font-weight: 700;
   text-decoration: underline;
@@ -1274,7 +1308,7 @@ p { margin: 0; }
   background: var(--white);
   color: var(--ink);
   padding: 12px 13px;
-  font-size: 13px;
+  font-size: 16px;
   line-height: 1.4;
 }
 
@@ -1345,6 +1379,9 @@ p { margin: 0; }
 }
 
 .closing__phone {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   color: #d7d7d7;
   font-size: 13px;
   font-weight: 700;
@@ -1395,9 +1432,10 @@ p { margin: 0; }
 
 .footer__col a {
   display: block;
-  margin-bottom: 11px;
+  min-height: 44px;
+  padding: 12px 0;
   color: #d7d7d7;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.5;
 }
 
@@ -1443,6 +1481,7 @@ p { margin: 0; }
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  min-height: 44px;
   padding: 10px 15px 10px 10px;
   background: var(--green);
   color: var(--green-ink);
@@ -1492,7 +1531,7 @@ dialog::backdrop { background: rgba(0, 0, 0, .82); }
 
 .viewer__bar button {
   flex-shrink: 0;
-  min-height: 40px;
+  min-height: 44px;
   padding: 8px 14px;
   border: 1px solid var(--line);
   background: var(--paper);
@@ -1524,7 +1563,7 @@ dialog::backdrop { background: rgba(0, 0, 0, .82); }
   border-top: 1px solid var(--line);
 }
 
-.viewer__actions .btn { min-height: 42px; font-size: 12px; }
+.viewer__actions .btn { min-height: 44px; font-size: 12px; }
 
 /* ---------- Animación ---------- */
 
@@ -1576,7 +1615,10 @@ dialog::backdrop { background: rgba(0, 0, 0, .82); }
     gap: 0;
     max-height: 0;
     overflow: hidden;
-    padding: 0 var(--pad);
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: max(var(--pad), env(safe-area-inset-left, 0px));
+    padding-right: max(var(--pad), env(safe-area-inset-right, 0px));
     background: var(--white);
     border-bottom: 1px solid var(--line);
     transition: max-height .28s ease, padding .28s ease;
@@ -1584,7 +1626,8 @@ dialog::backdrop { background: rgba(0, 0, 0, .82); }
 
   .nav.is-open {
     max-height: 430px;
-    padding: 10px var(--pad) 22px;
+    padding-top: 10px;
+    padding-bottom: 22px;
   }
 
   .nav a {
@@ -1680,6 +1723,13 @@ dialog::backdrop { background: rgba(0, 0, 0, .82); }
     white-space: nowrap;
   }
 
+  .filter[data-category="todas"] {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    box-shadow: 8px 0 8px -8px rgba(17, 17, 17, .2);
+  }
+
   .foraneos-band__inner { gap: 18px; }
 
   .formats-strip__note { max-width: none; }
@@ -1708,8 +1758,6 @@ dialog::backdrop { background: rgba(0, 0, 0, .82); }
 
 @media (max-width: 540px) {
   :root { --pad: 16px; --header-h: 68px; }
-
-  html { scroll-padding-top: 80px; }
 
   .brand img { width: 80px; }
 

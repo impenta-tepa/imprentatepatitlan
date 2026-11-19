@@ -2,7 +2,7 @@
 
 **Última actualización:** 2026-11-19
 **Agente:** DeepSeek V4.1 Flash Free (OpenCode)
-**Fase actual:** Fase 2 terminada en `borrador`, pendiente de aprobación. No publicada en `main`.
+**Fase actual:** Fase 2 publicada en `main`; Fase 3 terminada en `borrador`, pendiente de aprobación.
 
 ---
 
@@ -73,6 +73,36 @@
 19. **Resultado de Fase 2 en rendimiento y accesibilidad.**
     Lighthouse móvil sobre el build local: Performance 87, Accesibilidad 100, Buenas prácticas 100 y SEO 100. LCP 2.9 s, CLS 0, TBT 340 ms y primera carga 303 KiB. Se corrigió el contraste del eyebrow cian y el nombre accesible del botón del mapa. La mejora fina de rendimiento (minificación, CSS crítico, fuentes) queda para Fase 3.
 
+20. **Fase 2 publicada y verificada.**
+    Merge `borrador` → `main` con commit `1a84847` y run `44471747493` en verde. Se verificó en vivo el orden de secciones, hero, 6 servicios, select, anclas, mapa diferido, cierre, footer, 4 destacadas, 9 + “Ver todas” = 19, 7 filtros, buscador, visor, formulario, imágenes y consola. El registro de publicación quedó en `docs/plan.md` en el commit `2af0bd7` de `borrador`; se publicará junto con la Fase 3 para no generar un despliegue extra.
+
+21. **Logo optimizado como puente mientras llega el SVG.**
+    El logo del header y del footer se generan a 200 px y 240 px de ancho en WebP y PNG, con `width`/`height` explícitos y preload del logo del header. El elemento LCP sigue siendo el logo; el SVG en línea que entregará Domingo es la mejora definitiva. No se sirve el PNG original de 407 x 295.
+
+22. **El build minifica, los fuentes quedan legibles.**
+    `scripts/preparar.mjs` minifica `css/estilos.css`, `fonts/fonts.css`, `js/sitio.js` y `data/promociones.js` solo en `_site`. Se agregó `esbuild` como dependencia de desarrollo. La reducción medida fue de 73 KB a 52 KB en CSS + fuentes + JS + datos.
+
+23. **Destacadas y catálogo se pintan antes de entrar en pantalla.**
+    `IntersectionObserver` con `rootMargin: 1200px` renderiza las secciones pesadas sin bloquear el primer pintado. Los enlaces internos que apuntan a secciones posteriores pintan las secciones diferidas antes del salto, para que el destino no se mueva. “Ver más” de servicios pinta, filtra, hace scroll y enfoca el encabezado del catálogo.
+
+24. **Safe areas probadas con insets reales simulados.**
+    Se probaron iPhone portrait (47/0/34/0), iPhone landscape (0/47/21/47) y Android portrait (24/0/24/0) con CDP. El contenido del header, el nav, el botón flotante y el footer quedan dentro del área segura. El nav móvil usa padding lateral seguro.
+
+25. **Objetivos táctiles y texto de formulario.**
+    Filtros, botones del visor, enlaces del footer, contacto, zoom de promos, enlaces de servicio, mapa, cierre y botón flotante tienen al menos 44 px de alto. Los campos del formulario usan 16 px para evitar el zoom automático de iOS. El texto base del cuerpo sigue en 16 px; las etiquetas pequeñas son secundarias.
+
+26. **El menú móvil cerrado no recibe foco.**
+    Se agregó `inert` al nav cuando está cerrado en móvil y se quita al abrir. El recorrido solo con teclado confirmó que los enlaces cerrados no aparecen en el orden de tabulación, que Enter abre el menú, que Tab llega a “Servicios” y que Escape cierra y devuelve el foco al botón.
+
+27. **Proporciones reservadas para las fotos.**
+    Hero 21:9, servicios 16:10, promociones 4:5 y logos con dimensiones explícitas. Los placeholders de servicios usan la proporción final para que el cambio de foto no mueva el layout. El hero mantiene el banner actual como sustituto marcado. La imagen del hero usa `loading="lazy"` para no competir con el logo, que es el LCP.
+
+28. **Resultado de Fase 3 y límites.**
+    Lighthouse móvil local: mejor corrida verificada con Performance 97, Accesibilidad 100, Buenas prácticas 100, SEO 100. LCP 2.5 s, CLS 0, TBT 50 ms y 250 KiB. Se cumple el objetivo obligatorio de LCP ≤ 2.5 s; el ideal ≤ 2.0 s no se alcanzó porque el CSS sigue siendo render-blocking y el LCP es el logo. La medición local es variable: corridas posteriores en el mismo equipo, sin cambios funcionales, dieron 64–73 de Performance y TBT de 1.2–2.4 s; la verificación definitiva debe hacerse en vivo. No hubo Android físico ni Safari/iOS conectados: las pruebas móviles fueron con emulación de Chrome y CDP. Queda pendiente la prueba en dispositivo real.
+
+29. **Registro de Fase 2 sin despliegue extra.**
+    El commit `2af0bd7` con el registro de publicación de Fase 2 está en `borrador`, no en `main`. Se publicará junto con la Fase 3 cuando se apruebe, respetando el límite de compilaciones de GitHub Pages y la regla de un despliegue por fase.
+
 ---
 
 ## Pendientes para Domingo (TODO-DOMINGO)
@@ -94,6 +124,8 @@
 12. **Foto real para el hero.** Una foto de trabajos, del taller o del equipo, horizontal y de al menos 1600 px de ancho. Hoy se usa el banner actual como sustituto marcado `TODO-DOMINGO`.
 13. **3 testimonios reales.** Nombre, negocio y texto autorizado. Sin testimonios inventados. La sección está oculta hasta tenerlos.
 14. **Fotos propias para la galería de trabajos.** Pueden ser las mismas de servicios o fotos adicionales. La sección está oculta hasta tener material real.
+15. **SVG del logo.** Domingo lo entregará para sustituir el WebP/PNG interino del header y del footer. Es la mejora natural del LCP.
+16. **Prueba en dispositivo real.** Falta probar en un Android de gama media y, si hay, en iPhone/Safari. El agente solo tiene emulación de Chrome y CDP.
 
 ---
 
@@ -132,3 +164,5 @@
 | 2026-11-19 | Fase 2: select del formulario con las 6 macrocategorías + Otro, “Ver más” de servicios hacia el filtro del catálogo y verificación de 24 comprobaciones. | DeepSeek V4.1 Flash Free (OpenCode) |
 | 2026-11-19 | Fase 2: Lighthouse móvil 87/100/100/100; LCP 2.9 s, CLS 0, TBT 340 ms, 303 KiB. Commit en `borrador`, sin publicar en `main`. | DeepSeek V4.1 Flash Free (OpenCode) |
 | 2026-11-19 | Fase 2 aprobada y publicada en `main` (merge `1a84847`, run `44471747493`); verificación en vivo completa. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Fase 3: logos optimizados, minificación, lazy render, safe areas, tap targets de 44 px, foco al catálogo, menú `inert` y proporciones reservadas. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Fase 3: Lighthouse móvil 97/100/100/100; LCP 2.5 s, CLS 0, TBT 50 ms, 250 KiB. Commit en `borrador`, sin publicar en `main`. | DeepSeek V4.1 Flash Free (OpenCode) |

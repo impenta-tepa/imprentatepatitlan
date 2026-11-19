@@ -109,17 +109,41 @@ Una fase a la vez. Al terminar cada fase: build, verificación, commit en `borra
 
 ## Fase 3 — Móvil, rendimiento, accesibilidad y SEO
 
-- [ ] Mobile-first; cero scroll horizontal incluso a 320 px.
-- [ ] Safe areas en header, botones flotantes y contenido (`env(safe-area-inset-*)`).
-- [ ] Objetivos táctiles de 44–48 px; texto base mínimo de 16 px.
-- [ ] Menú hamburguesa accesible: `aria-expanded`, cierre con Esc y con toque fuera.
-- [ ] Imágenes WebP < 150 KB; `width`/`height` para evitar CLS; `loading="lazy"` salvo el hero; preload del hero.
-- [ ] Mapa en iframe con carga diferida al entrar en viewport o al interactuar.
-- [ ] Teléfonos, WhatsApp y correo como enlaces `tel:`, `wa.me` y `mailto:`.
-- [ ] Contraste AA, un solo `h1`, jerarquía `h2`/`h3`, alt descriptivos, foco visible, visor con Esc y `prefers-reduced-motion`.
-- [ ] SEO local: title y meta description con “imprenta en Tepatitlán”; JSON-LD LocalBusiness con datos reales.
-- [ ] Probar 320, 360x800, 390x844, 430x932, 768, 1024, 1280 y horizontal; consola sin errores.
-- [ ] Reporte de Fase 3 y pausa para aprobación.
+- [x] Mobile-first; cero scroll horizontal incluso a 320 px.
+- [x] Safe areas en header, botones flotantes, nav móvil y contenido (`env(safe-area-inset-*)`).
+- [x] Objetivos táctiles de 44 px; formulario con texto de 16 px.
+- [x] Menú hamburguesa accesible: `aria-expanded`, cierre con Esc, cierre con toque fuera y `inert` cuando está cerrado.
+- [x] Imágenes con `width`/`height` o `aspect-ratio`; hero 21:9, servicios 16:10 y promociones 4:5; logos optimizados.
+- [x] Mapa en iframe con carga diferida al pulsar el botón.
+- [x] Teléfonos, WhatsApp y correo como enlaces `tel:`, `wa.me` y `mailto:`.
+- [x] Contraste AA, un solo `h1`, jerarquía `h2`/`h3`, alt descriptivos, foco visible, visor con Esc y `prefers-reduced-motion`.
+- [x] SEO local: title y meta description con “imprenta en Tepatitlán”; JSON-LD LocalBusiness con datos reales.
+- [x] Probar 320, 360x800, 390x844, 430x932, 768, 844, 1024, 1280 y horizontal; consola sin errores.
+- [x] Reporte de Fase 3 y pausa para aprobación.
+
+**Estado:** Fase 3 implementada, construida y verificada en `borrador`. **No publicada en `main`**; espera aprobación.
+
+### Registro de Fase 3
+
+| Fecha | Intervención | Firma |
+|---|---|---|
+| 2026-11-19 | Logos de header y footer optimizados a 200 px y 240 px en WebP y PNG, con `width`/`height` y preload del logo del header. Queda pendiente el SVG definitivo de Domingo. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Build con minificación de CSS, fuentes, JS y datos mediante esbuild; los fuentes permanecen legibles. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Destacadas y catálogo se pintan antes de entrar en pantalla con `IntersectionObserver`; el catálogo ya no bloquea el primer pintado. Los enlaces internos pintan las secciones diferidas antes de saltar para que el destino no se mueva. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Auditoría de safe areas con insets de iPhone portrait, iPhone landscape y Android; nav móvil con padding seguro y `scroll-margin-top` en secciones. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Objetivos táctiles de 44 px en filtros, visor, footer, contacto, zoom de promos, enlaces de servicio, mapa y botón flotante; formulario a 16 px. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | “Ver más” de servicios filtra, hace scroll, enfoca el encabezado del catálogo y actualiza la URL; el estado muestra la categoría activa y “Todas” queda visible con `position: sticky`. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Menú móvil con `inert` al cerrar; recorrido solo con teclado por menú, filtros, visor, formulario y mapa. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Hero con proporción 21:9 reservada, servicios 16:10 y promociones 4:5; placeholders con la proporción final. La imagen del hero queda con `loading="lazy"` para no competir con el logo LCP. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Verificación final: 13 comprobaciones de Fase 3, build con 87 derivados, minificación 73 KB → 52 KB, viewports sin scroll horizontal, teclado y safe areas aprobados, consola sin errores. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Lighthouse móvil local de Fase 3: Performance 97, Accesibilidad 100, Buenas prácticas 100, SEO 100. LCP 2.5 s, CLS 0, TBT 50 ms, primera carga 250 KiB. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Commit de Fase 3 en `borrador`; sin merge a `main`. | DeepSeek V4.1 Flash Free (OpenCode) |
+
+**Notas de la Fase 3:**
+- El objetivo obligatorio de LCP ≤ 2.5 s se cumple; el ideal ≤ 2.0 s no se alcanzó. El elemento LCP sigue siendo el logo del header y el CSS de la página sigue siendo render-blocking. El SVG en línea que entregará Domingo es la siguiente mejora natural.
+- La medición local de Lighthouse es variable: la corrida de referencia dio 97 de Performance y 50 ms de TBT; corridas posteriores en el mismo equipo, sin cambios funcionales, dieron 64–73 y TBT de 1.2–2.4 s. La verificación definitiva debe hacerse en vivo después de publicar.
+- No hubo dispositivo Android físico ni iPhone/Safari conectados. Las pruebas móviles se hicieron con emulación de Chrome y CDP (viewport, safe areas y user agent); queda pendiente la prueba en dispositivo real.
+- El registro de publicación de Fase 2 (`2af0bd7`) está en `borrador` y se publicará junto con la Fase 3 cuando se apruebe, para no generar un despliegue extra.
 
 ---
 

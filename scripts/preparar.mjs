@@ -1,5 +1,6 @@
 import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { transform } from 'esbuild';
 import { root, readPromociones } from './promociones.mjs';
 import { generarDerivados } from './imagenes.mjs';
 const { promociones } = await readPromociones();
@@ -11,6 +12,19 @@ await mkdir(output);
 for (const item of ['index.html', '404.html', 'robots.txt', 'sitemap.xml', '.nojekyll', 'css', 'js', 'data', 'fonts', 'LOGOS', 'promociones', 'ubicacion.png', 'WhatsApp_icon.png', 'Facebook_Logo_(2019).png']) {
   await cp(path.join(root, item), path.join(output, item), { recursive: true });
 }
+
+// Los fuentes quedan legibles; la copia publicada se minifica.
+async function minificar(relativa, loader) {
+  const ruta = path.join(output, relativa);
+  const codigo = await readFile(ruta, 'utf8');
+  const resultado = await transform(codigo, { loader, minify: true, target: 'es2020', legalComments: 'none' });
+  await writeFile(ruta, resultado.code);
+}
+await minificar('css/estilos.css', 'css');
+await minificar('js/sitio.js', 'js');
+await minificar('data/promociones.js', 'js');
+await minificar('fonts/fonts.css', 'css');
+
 const derivados = await generarDerivados({ sourceRoot: root, baseDir: output });
 // El sitemap siempre lleva la fecha del día en que se genera la publicación.
 const sitemapPath = path.join(output, 'sitemap.xml');

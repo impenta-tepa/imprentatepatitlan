@@ -13,6 +13,13 @@ export const ANCHOS_BANNER = [1600, 800];
 export const ANCHO_FOTO = 960;
 export const NOMBRE_FOTO = 'foto real del local.jpg';
 export const NOMBRE_BANNER = 'banner.jpg';
+// Logos optimizados al tamaño real de visualización x2.
+export const ANCHO_LOGO_HEADER = 200;
+export const ANCHO_LOGO_FOOTER = 240;
+export const LOGOS = [
+  { base: 'logo-header', origen: 'LOGOS/logo negro.png', ancho: ANCHO_LOGO_HEADER },
+  { base: 'logo-footer', origen: 'LOGOS/logo blanco.png', ancho: ANCHO_LOGO_FOOTER }
+];
 // Vista previa para Facebook y WhatsApp (Open Graph usa 1200 x 630).
 export const OG = { ancho: 1200, alto: 630, calidad: 86, nombre: 'og-image.jpg', fondo: '#f6f5f2' };
 
@@ -30,6 +37,16 @@ async function generarArchivo(origen, destino, { ancho, formato, calidadWebp = C
   imagen = formato === 'webp'
     ? imagen.webp({ quality: calidadWebp, effort: 5 })
     : imagen.jpeg({ quality: calidadJpg, mozjpeg: true, progressive: true });
+  await imagen.toFile(destino);
+}
+
+export const rutaLogo = (base, formato) => `derivados/${base}.${formato}`;
+
+async function generarLogo(origen, destino, { ancho, formato }) {
+  let imagen = sharp(origen, { failOn: 'none' }).resize({ width: ancho, withoutEnlargement: true });
+  imagen = formato === 'webp'
+    ? imagen.webp({ quality: 90, effort: 6 })
+    : imagen.png({ compressionLevel: 9, palette: true, quality: 90, effort: 10 });
   await imagen.toFile(destino);
 }
 
@@ -78,6 +95,15 @@ export async function generarDerivados({ sourceRoot, baseDir }) {
     const destino = path.join(baseDir, relativa);
     await generarArchivo(path.join(sourceRoot, NOMBRE_FOTO), destino, { ancho: ANCHO_FOTO, formato });
     resultados.push({ tipo: 'foto', origen: NOMBRE_FOTO, derivado: relativa.replace(/\\/g, '/'), bytes: (await stat(destino)).size, formato, ancho: ANCHO_FOTO });
+  }
+
+  for (const logo of LOGOS) {
+    for (const formato of ['webp', 'png']) {
+      const relativa = rutaLogo(logo.base, formato);
+      const destino = path.join(baseDir, relativa);
+      await generarLogo(path.join(sourceRoot, logo.origen), destino, { ancho: logo.ancho, formato });
+      resultados.push({ tipo: 'logo', origen: logo.origen, derivado: relativa, bytes: (await stat(destino)).size, formato, ancho: logo.ancho });
+    }
   }
 
   const destinoOg = path.join(baseDir, rutaOg());
@@ -131,6 +157,12 @@ function analizarDerivado(urlPath, sourceRoot) {
   if (match && Number(match[1]) === ANCHO_FOTO) {
     return { relativa, origen: path.join(sourceRoot, NOMBRE_FOTO), ancho: ANCHO_FOTO, formato: match[2] };
   }
+  match = relativa.match(/^derivados\/(logo-header|logo-footer)\.(webp|png)$/);
+  if (match) {
+    const logo = LOGOS.find(item => item.base === match[1]);
+    if (!logo) return null;
+    return { relativa, origen: path.join(sourceRoot, logo.origen), ancho: logo.ancho, formato: match[2], logo: true };
+  }
   return null;
 }
 
@@ -147,6 +179,7 @@ export async function asegurarDerivado({ sourceRoot, baseDir, urlPath }) {
   const tarea = (async () => {
     await mkdir(path.dirname(destino), { recursive: true });
     if (spec.og) await generarOg(sourceRoot, destino);
+    else if (spec.logo) await generarLogo(spec.origen, destino, spec);
     else await generarArchivo(spec.origen, destino, spec);
     return destino;
   })();
