@@ -1,6 +1,6 @@
 # Quad Print Tepatitlán — página web
 
-**Fase 2 publicada; Fase 3 en `borrador`** · 19 de noviembre de 2026
+**Fase 3 publicada y verificada en vivo** · 19 de noviembre de 2026
 
 Sitio estático de Quad Print Tepatitlán, publicado en:
 
@@ -60,6 +60,7 @@ Si no existe `node_modules`, ejecutar `npm install`. En GitHub Actions se ejecut
 ## Publicación
 
 - Versión publicada: 1.0 (etiqueta de Git `v1.0`).
+- Fase 3 publicada: merge `767f87b` (sitio y documentación) y run `44553795932`.
 - Fase 2 publicada: merge `1a84847` (sitio) y run `44471747493`.
 - URL: https://impenta-tepa.github.io/imprentatepatitlan/
 - Repositorio: https://github.com/impenta-tepa/imprentatepatitlan
@@ -68,7 +69,7 @@ Si no existe `node_modules`, ejecutar `npm install`. En GitHub Actions se ejecut
 - Respaldo del sitio anterior: rama `respaldo-antes-quad-print-2026-11-16`.
 - Para actualizar: agrupar los cambios, ejecutar `npm run build` y `npm run verificar` en local, hacer un solo commit y push a `main`.
 - No se sube `_site` ni `node_modules`; GitHub Actions los genera en cada publicación.
-- **Fase 3:** implementada y verificada en `borrador`; **no publicada en `main`** hasta que el dueño/asesor la apruebe. Incluye logo optimizado, minificación, lazy render y mejoras de accesibilidad.
+- **Fase 3:** publicada y verificada en vivo. Incluye logo optimizado, minificación, lazy render, safe areas, tap targets, foco al catálogo y menú `inert`. PSI móvil 98/100/100/100 y escritorio 100/100/100/100.
 
 ## Límites de GitHub Pages (plan gratuito)
 

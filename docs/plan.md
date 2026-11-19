@@ -121,7 +121,7 @@ Una fase a la vez. Al terminar cada fase: build, verificación, commit en `borra
 - [x] Probar 320, 360x800, 390x844, 430x932, 768, 844, 1024, 1280 y horizontal; consola sin errores.
 - [x] Reporte de Fase 3 y pausa para aprobación.
 
-**Estado:** Fase 3 implementada, construida y verificada en `borrador`. **No publicada en `main`**; espera aprobación.
+**Estado:** Fase 3 aprobada, publicada en `main` y verificada en vivo el 2026-11-19. Puerta de rendimiento aprobada; no se abre Fase 3.1.
 
 ### Registro de Fase 3
 
@@ -143,7 +143,19 @@ Una fase a la vez. Al terminar cada fase: build, verificación, commit en `borra
 - El objetivo obligatorio de LCP ≤ 2.5 s se cumple; el ideal ≤ 2.0 s no se alcanzó. El elemento LCP sigue siendo el logo del header y el CSS de la página sigue siendo render-blocking. El SVG en línea que entregará Domingo es la siguiente mejora natural.
 - La medición local de Lighthouse es variable: la corrida de referencia dio 97 de Performance y 50 ms de TBT; corridas posteriores en el mismo equipo, sin cambios funcionales, dieron 64–73 y TBT de 1.2–2.4 s. La verificación definitiva debe hacerse en vivo después de publicar.
 - No hubo dispositivo Android físico ni iPhone/Safari conectados. Las pruebas móviles se hicieron con emulación de Chrome y CDP (viewport, safe areas y user agent); queda pendiente la prueba en dispositivo real.
-- El registro de publicación de Fase 2 (`2af0bd7`) está en `borrador` y se publicará junto con la Fase 3 cuando se apruebe, para no generar un despliegue extra.
+- El registro de publicación de Fase 2 (`2af0bd7`) quedó incluido en el merge de Fase 3; no se generó un despliegue extra.
+
+### Publicación de Fase 3
+
+- **Rama publicada:** `main`.
+- **Commit de merge:** `767f87b`.
+- **Run de Actions:** `44553795932`, completado con éxito el 2026-11-19 (15:21 UTC).
+- **URL verificada:** `https://impenta-tepa.github.io/imprentatepatitlan/?v=[timestamp]`.
+- **Verificación en vivo:** 320 y 360 px sin scroll horizontal; 4 destacadas; 9 iniciales + “Ver todas” = 19; 7 filtros; “Ver más” aplica “Papelería comercial y empresarial”, actualiza a `#catalogo` y enfoca `#catalogo-titulo`; mapa con 0 iframes antes del clic y 1 después; visor abre y cierra con Escape; formulario arma `wa.me/5213781097423` con servicio, cantidad y detalles; consola sin errores.
+- **PSI móvil:** 3 corridas; mediana 98 / 100 / 100 / 100; LCP 1.4 s, TBT 0 ms, CLS 0. Elemento LCP: logo del header (`logo-header.webp`, 200 x 145 px).
+- **PSI escritorio:** 3 corridas; mediana 100 / 100 / 100 / 100; LCP 0.3 s, TBT 0 ms, CLS 0. Elemento LCP: banner del hero.
+- **Puerta de decisión:** aprobada. Fase 3 cerrada; no se abre Fase 3.1.
+- **Prueba en dispositivo real:** pendiente, con checklist y tabla en `docs/pruebas-dispositivo.md`.
 
 ---
 

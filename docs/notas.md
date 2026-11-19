@@ -2,7 +2,7 @@
 
 **Última actualización:** 2026-11-19
 **Agente:** DeepSeek V4.1 Flash Free (OpenCode)
-**Fase actual:** Fase 2 publicada en `main`; Fase 3 terminada en `borrador`, pendiente de aprobación.
+**Fase actual:** Fase 3 publicada en `main` y verificada en vivo; puerta de rendimiento aprobada. Sin Fase 3.1.
 
 ---
 
@@ -100,8 +100,20 @@
 28. **Resultado de Fase 3 y límites.**
     Lighthouse móvil local: mejor corrida verificada con Performance 97, Accesibilidad 100, Buenas prácticas 100, SEO 100. LCP 2.5 s, CLS 0, TBT 50 ms y 250 KiB. Se cumple el objetivo obligatorio de LCP ≤ 2.5 s; el ideal ≤ 2.0 s no se alcanzó porque el CSS sigue siendo render-blocking y el LCP es el logo. La medición local es variable: corridas posteriores en el mismo equipo, sin cambios funcionales, dieron 64–73 de Performance y TBT de 1.2–2.4 s; la verificación definitiva debe hacerse en vivo. No hubo Android físico ni Safari/iOS conectados: las pruebas móviles fueron con emulación de Chrome y CDP. Queda pendiente la prueba en dispositivo real.
 
-29. **Registro de Fase 2 sin despliegue extra.**
-    El commit `2af0bd7` con el registro de publicación de Fase 2 está en `borrador`, no en `main`. Se publicará junto con la Fase 3 cuando se apruebe, respetando el límite de compilaciones de GitHub Pages y la regla de un despliegue por fase.
+29. **Registro de Fase 2 publicado con la Fase 3.**
+    El commit `2af0bd7` con el registro de publicación de Fase 2 quedó incluido en el merge `767f87b`. No se generó un despliegue extra ni se duplicó el registro.
+
+30. **Medición definitiva en PageSpeed Insights, no en Lighthouse local.**
+    PSI móvil (3 corridas, Moto G Power emulado, 4G lenta): 98 / 100 / 100 / 100; mediana LCP 1.4 s, TBT 0 ms, CLS 0. PSI escritorio (3 corridas): 100 / 100 / 100 / 100; mediana LCP 0.3 s, TBT 0 ms, CLS 0. El TBT variable de Lighthouse local era ruido del entorno: en vivo no aparece.
+
+31. **Elemento LCP en vivo.**
+    Móvil: logo del header (`derivados/logo-header.webp`, 200 x 145 px, `fetchpriority="high"`). Escritorio: banner del hero (`derivados/banner-1600.webp`), que conserva `loading="lazy"`; PSI lo señala en “Descubrimiento de solicitudes de LCP”, pero su LCP es 0.3 s, por debajo del umbral. No se cambia para no sacrificar el LCP móvil. El SVG del logo sigue siendo la mejora natural cuando llegue.
+
+32. **Puerta de decisión aprobada.**
+    Móvil: Performance 98 ≥ 90, LCP 1.4 s ≤ 2.5 s, TBT 0 ms ≤ 200 ms, CLS 0. Escritorio: 100, LCP 0.3 s, TBT 0 ms, CLS 0. Accesibilidad, Buenas prácticas y SEO en 100. Fase 3 cerrada; no hay Fase 3.1.
+
+33. **Prueba en dispositivo real pendiente y documentada.**
+    Se creó `docs/pruebas-dispositivo.md` con el checklist de 2 minutos y la tabla de resultados. Domingo lo ejecutará en Android y en iPhone/Safari prestado; los resultados se registrarán ahí.
 
 ---
 
@@ -125,7 +137,7 @@
 13. **3 testimonios reales.** Nombre, negocio y texto autorizado. Sin testimonios inventados. La sección está oculta hasta tenerlos.
 14. **Fotos propias para la galería de trabajos.** Pueden ser las mismas de servicios o fotos adicionales. La sección está oculta hasta tener material real.
 15. **SVG del logo.** Domingo lo entregará para sustituir el WebP/PNG interino del header y del footer. Es la mejora natural del LCP.
-16. **Prueba en dispositivo real.** Falta probar en un Android de gama media y, si hay, en iPhone/Safari. El agente solo tiene emulación de Chrome y CDP.
+16. **Prueba en dispositivo real.** Checklist y tabla en `docs/pruebas-dispositivo.md`; Domingo lo ejecutará en Android y en iPhone/Safari prestado. El agente solo tiene emulación de Chrome y CDP.
 
 ---
 
@@ -166,3 +178,5 @@
 | 2026-11-19 | Fase 2 aprobada y publicada en `main` (merge `1a84847`, run `44471747493`); verificación en vivo completa. | DeepSeek V4.1 Flash Free (OpenCode) |
 | 2026-11-19 | Fase 3: logos optimizados, minificación, lazy render, safe areas, tap targets de 44 px, foco al catálogo, menú `inert` y proporciones reservadas. | DeepSeek V4.1 Flash Free (OpenCode) |
 | 2026-11-19 | Fase 3: Lighthouse móvil 97/100/100/100; LCP 2.5 s, CLS 0, TBT 50 ms, 250 KiB. Commit en `borrador`, sin publicar en `main`. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Fase 3 aprobada y publicada en `main` (merge `767f87b`, run `44553795932`); verificación en vivo a 320/360 px, foco del catálogo, mapa 0→1 iframe, formulario y consola sin errores. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | PSI móvil 98/100/100/100 (LCP 1.4 s, TBT 0 ms, CLS 0) y escritorio 100/100/100/100 (LCP 0.3 s, TBT 0 ms, CLS 0); puerta aprobada, sin Fase 3.1. | DeepSeek V4.1 Flash Free (OpenCode) |

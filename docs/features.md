@@ -2,7 +2,7 @@
 
 **Última actualización:** 2026-11-19
 **Agente:** DeepSeek V4.1 Flash Free (OpenCode)
-**Fase:** Fase 2 publicada en `main`; Fase 3 terminada en `borrador`, pendiente de aprobación.
+**Fase:** Fase 3 publicada en `main` y verificada en vivo.
 
 La home es HTML estático con CSS y JavaScript nativo. No hay frameworks de interfaz. El build (`npm run build`) copia archivos, genera derivados de imagen, minifica la copia publicada y arma `_site/`.
 
@@ -188,12 +188,12 @@ La home es HTML estático con CSS y JavaScript nativo. No hay frameworks de inte
 
 ## 17. Resultado de Fase 3
 
-- Lighthouse móvil sobre el build local: mejor corrida verificada con Performance 97, Accesibilidad 100, Buenas prácticas 100 y SEO 100.
-- LCP 2.5 s, CLS 0, TBT 50 ms y primera carga 250 KiB.
-- La medición local es variable: corridas posteriores en el mismo equipo, sin cambios funcionales, dieron 64–73 de Performance y TBT de 1.2–2.4 s. La verificación definitiva debe hacerse en vivo.
-- El objetivo obligatorio de LCP ≤ 2.5 s se cumple; el ideal ≤ 2.0 s no se alcanzó. El CSS sigue siendo render-blocking y el LCP es el logo del header.
-- Sin scroll horizontal en 320, 360, 390, 430, 768, 844, 1024 y 1280 px.
+- PSI móvil en vivo (3 corridas): Performance 98, Accesibilidad 100, Buenas prácticas 100 y SEO 100; mediana LCP 1.4 s, TBT 0 ms, CLS 0.
+- PSI escritorio en vivo (3 corridas): 100 / 100 / 100 / 100; mediana LCP 0.3 s, TBT 0 ms, CLS 0.
+- Elemento LCP móvil: logo del header (`logo-header.webp`, 200 x 145 px, `fetchpriority="high"`). En escritorio: banner del hero, con `loading="lazy"`; su LCP de 0.3 s está muy por debajo del umbral, así que no se cambia.
+- La medición local de Lighthouse era variable; PSI en vivo confirmó que el TBT alto era ruido del entorno.
+- Sin scroll horizontal en vivo a 320 y 360 px; también probado en 390, 430, 768, 844, 1024 y 1280 px.
 - Safe areas probadas con iPhone portrait, iPhone landscape y Android portrait.
 - Recorrido solo con teclado: menú, filtros, visor, formulario y mapa.
 - Consola sin errores.
-- Pendiente: SVG del logo y prueba en dispositivo Android/Safari real.
+- Pendiente: SVG del logo y prueba en dispositivo Android/Safari real (checklist en `docs/pruebas-dispositivo.md`).
