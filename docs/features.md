@@ -70,7 +70,7 @@ La home es HTML estático con CSS y JavaScript nativo. No hay frameworks de inte
   6. Diseño gráfico.
 - **Cada tarjeta:** placeholder de foto, nombre, 3–4 ejemplos y enlace “Ver más”.
 - **“Ver más”:** aplica el filtro correspondiente del catálogo (`data-filtro`), hace scroll al catálogo, mueve el foco al encabezado del catálogo y actualiza la URL a `#catalogo`. Queda preparado para cambiar el enlace a una subpágina futura.
-- **Fotos:** las seis faltan. Los placeholders están marcados `TODO-DOMINGO` y muestran “Foto próximamente”; no se usaron fotos ajenas. La proporción reservada es 16:10 (ideal 1600 x 1000 px).
+- **Fotos:** las seis están integradas como mockups/ilustraciones entregadas por Domingo (originales de 1376 x 768 px). El build las recorta a 16:10 y publica 800 y 1200 px en WebP y JPG en `derivados/servicios/`. No son fotos reales de trabajos: quedan como provisionales hasta que Domingo confirme o entregue fotos reales.
 - **Rejilla:** 3 columnas en escritorio, 2 en tablet y 1 en móvil.
 - **Para cambiar textos:** editar `index.html`.
 

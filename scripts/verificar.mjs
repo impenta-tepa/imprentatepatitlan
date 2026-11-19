@@ -3,6 +3,7 @@
 import { readFile, readdir, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { root, readPromociones, readTestimonios } from './promociones.mjs';
+import { SERVICIOS, ANCHOS_SERVICIO } from './imagenes.mjs';
 
 const sitio = path.join(root, '_site');
 const BASE = 'https://impenta-tepa.github.io/imprentatepatitlan/';
@@ -156,7 +157,7 @@ const confianzaOk = [
 
 const estructura = [
   ['6 tarjetas de servicio', (html.match(/class="service-card"/g) || []).length === 6],
-  ['6 placeholders de servicio', (html.match(/service-card__placeholder/g) || []).length === 6],
+  ['6 tarjetas de servicio', (html.match(/class="service-card"/g) || []).length === 6],
   ['nombres exactos de las 6 categorías en Servicios', serviciosOk],
   ['4 datos en la franja de confianza', (html.match(/class="trust-strip__item"/g) || []).length === 4 && confianzaOk],
   ['nav en orden Servicios, Promociones, Ubicación, Contacto', navOk],
@@ -178,7 +179,7 @@ const estructura = [
   ['detección de miniaturas cuadradas', jsFuente.includes('is-square') && jsFuente.includes('naturalWidth')],
   ['filtro desde las tarjetas de servicio', jsFuente.includes("closest('[data-filtro]')")],
   ['mapa lazy en JavaScript', jsFuente.includes("iframe.loading = 'lazy'")],
-  ['placeholders TODO-DOMINGO listados', (html.match(/TODO-DOMINGO/g) || []).length >= 8]
+  ['pendientes TODO-DOMINGO documentados', (html.match(/TODO-DOMINGO/g) || []).length >= 2]
 ];
 for (const [nombre, cumple] of estructura) {
   if (!cumple) fallos.push('Fase 2: ' + nombre);
@@ -237,13 +238,34 @@ for (const [indice, trabajo] of trabajosActivos.entries()) {
   if (trabajo.imagen && !(await existe(path.join(sitio, trabajo.imagen)))) fallos.push(`trabajo ${etiqueta}: no existe ${trabajo.imagen}`);
 }
 
+let derivadosServicio = 0;
+for (const servicio of SERVICIOS) {
+  for (const ancho of ANCHOS_SERVICIO) {
+    for (const formato of ['webp', 'jpg']) {
+      const relativa = `derivados/servicios/${servicio.base}-${ancho}.${formato}`;
+      if (await existe(path.join(sitio, relativa))) derivadosServicio++;
+      else fallos.push('falta ' + relativa);
+    }
+  }
+}
+if (derivadosServicio === SERVICIOS.length * ANCHOS_SERVICIO.length * 2) {
+  ok.push(`${derivadosServicio} derivados de servicio presentes (800 y 1200 px, WebP y JPG)`);
+}
+
+const serviciosEnHtml = SERVICIOS.every(servicio => html.includes(`derivados/servicios/${servicio.base}-1200.jpg`));
+const altsServicios = SERVICIOS.every(servicio =>
+  new RegExp(`derivados/servicios/${servicio.base}-1200\\.jpg[^>]*alt="[^"]+"`).test(html)
+);
+
 const fase4 = [
   ['fuente de testimonios publicada', await existe(path.join(sitio, 'data/testimonios.js'))],
   ['script de testimonios antes de sitio.js', html.includes('src="data/testimonios.js"') && html.indexOf('data/testimonios.js') < html.indexOf('js/sitio.js')],
   ['sección oculta sin los mínimos', minimosTestimonios || /<section[^>]*id="testimonios"[^>]*hidden/.test(html)],
   ['render de testimonios desde datos', jsFuente.includes("getElementById('testimonios-grid')") && jsFuente.includes("getElementById('galeria-trabajos')")],
   ['mínimos de activación 3 + 4', jsFuente.includes('testimonios.length < 3') && jsFuente.includes('trabajos.length < 4')],
-  ['carpeta de galería publicada', await existe(path.join(sitio, 'galeria/LEEME.txt'))]
+  ['carpeta de galería publicada', await existe(path.join(sitio, 'galeria/LEEME.txt'))],
+  ['6 fotos de servicio en el HTML', serviciosEnHtml],
+  ['alt en las 6 fotos de servicio', altsServicios]
 ];
 for (const [nombre, cumple] of fase4) {
   if (!cumple) fallos.push('Fase 4: ' + nombre);

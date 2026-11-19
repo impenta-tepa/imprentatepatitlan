@@ -174,7 +174,8 @@ Una fase a la vez. Al terminar cada fase: build, verificación, commit en `borra
 - [x] Verificación: 6 comprobaciones nuevas de Fase 4.
 - [x] Prueba de activación en `_site` con datos ficticios no commiteados: 3 testimonios + 4 fotos muestran la sección; con arreglos vacíos sigue oculta; sin scroll horizontal a 320 px.
 - [ ] Lote 4A: precios de las 4 destacadas y su arte 4:5.
-- [ ] Lote 4B: 6 fotos de servicios, foto real del hero y SVG del logo.
+- [x] Fotos de servicio recibidas e integradas como provisionales: 6 mockups de 1376 x 768, recorte 16:10 y derivados de 800 y 1200 px en WebP/JPG.
+- [ ] Lote 4B completo: foto real del hero, SVG del logo y medición eager/lazy.
 - [ ] Lote 4C: precios de las 15 restantes, testimonios, galería y correcciones confirmadas.
 
 **Regla del hero:** al integrar la foto real se mide una vez en PSI móvil y escritorio con `eager` + `fetchpriority="high"`. Si el LCP móvil sigue ≤ 2.5 s, se deja eager; si empeora, se regresa a `lazy`. Se reportan ambos números.

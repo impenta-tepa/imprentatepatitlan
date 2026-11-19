@@ -26,17 +26,19 @@ Nota: estos nombres sustituyen a los archivos actuales de `promociones/`. En el 
 
 ## 2. Fotos de servicios
 
-Formato: WebP, 1600 x 1000 px (16:10), mínimo 1200 px de ancho.
-Peso máximo: 200 KB por archivo.
+Formato de entrega: JPG o WebP de alta calidad. El build recorta a 16:10 y publica 800 y 1200 px en WebP y JPG.
+Peso máximo publicado: 200 KB por archivo.
+
+**Estado:** las 6 fotos se recibieron el 2026-11-19. Son mockups/ilustraciones de 1376 x 768 px (no fotos reales de trabajos). Se recortaron a 16:10 y ya están integradas como imágenes provisionales en `borrador`. Falta que Domingo confirme si se quedan o entrega fotos reales.
 
 | # | Archivo exacto | Servicio | Alt sugerido |
 |---|---|---|---|
-| 1 | `servicios/01-papeleria.webp` | Papelería comercial y empresarial | Tarjetas, volantes y papelería impresa para negocios. |
-| 2 | `servicios/02-gran-formato.webp` | Gran formato | Lona de gran formato impresa para anuncios y eventos. |
-| 3 | `servicios/03-textiles.webp` | Textiles y promocionales | Playeras y promocionales textiles personalizados. |
-| 4 | `servicios/04-laser.webp` | Corte y grabado láser | Piezas de corte y grabado láser personalizadas. |
-| 5 | `servicios/05-toldos.webp` | Toldos y anuncios | Toldo o anuncio instalado en un negocio local. |
-| 6 | `servicios/06-diseno.webp` | Diseño gráfico | Diseño gráfico preparado para impresión. |
+| 1 | `servicios/01-papeleria.jpg` | Papelería comercial y empresarial | Papelería corporativa con el logo de Quad Print: tarjetas, hojas y folders. |
+| 2 | `servicios/02-gran-formato.jpg` | Gran formato | Banner de gran formato con el logo de Quad Print junto a muestras de color. |
+| 3 | `servicios/03-textiles.jpg` | Textiles y promocionales | Playera, gorra, taza y termo personalizados con el logo de Quad Print. |
+| 4 | `servicios/04-laser.jpg` | Corte y grabado láser | Grabado láser del logo de Quad Print sobre madera. |
+| 5 | `servicios/05-toldos.jpg` | Toldos y anuncios | Anuncio luminoso personalizado con el logo de Quad Print. |
+| 6 | `servicios/06-diseno.jpg` | Diseño gráfico | Estación de diseño gráfico con el logo de Quad Print en pantalla. |
 
 ---
 

@@ -2,7 +2,7 @@
 
 **Última actualización:** 2026-11-19
 **Agente:** DeepSeek V4.1 Flash Free (OpenCode)
-**Fase actual:** Fase 3 publicada y verificada; Fase 4 (datos y contenido) en preparación en `borrador`, sin publicar.
+**Fase actual:** Fase 3 publicada y verificada; Fase 4 en preparación en `borrador`, con 6 fotos de servicio provisionales integradas.
 
 ---
 
@@ -127,6 +127,12 @@
 37. **Regla de medición del hero en Fase 4.**
     Al integrar la foto real se probará una vez en PSI móvil y escritorio con `eager` + `fetchpriority="high"`. Si el LCP móvil sigue ≤ 2.5 s, se deja eager; si empeora, se regresa a `lazy`. Se reportan ambos números antes de decidir.
 
+38. **Fotos de servicio recibidas: mockups, no fotos reales.**
+    El 2026-11-19 llegaron 6 archivos de 1376 x 768 px (16:9) en `imagenes faltantes/`. Se copiaron a `servicios/` con nombres exactos, se recortaron a 16:10 y el build genera 24 derivados (800 y 1200 px, WebP y JPG). Son mockups/ilustraciones, no fotos de trabajos reales; se usan como provisionales en `borrador`. Falta que Domingo confirme si se quedan o entrega fotos reales. No llegaron hero, SVG, artes 4:5, galería ni testimonios.
+
+39. **Originales fuera del repositorio.**
+    `imagenes faltantes/` se agregó a `.gitignore` para no duplicar los archivos pesados; las fuentes normalizadas y optimizables viven en `servicios/`.
+
 ---
 
 ## Pendientes para Domingo (TODO-DOMINGO)
@@ -194,3 +200,4 @@
 | 2026-11-19 | PSI móvil 98/100/100/100 (LCP 1.4 s, TBT 0 ms, CLS 0) y escritorio 100/100/100/100 (LCP 0.3 s, TBT 0 ms, CLS 0); puerta aprobada, sin Fase 3.1. | DeepSeek V4.1 Flash Free (OpenCode) |
 | 2026-11-19 | Fase 4: entregables de Domingo, fuente única de testimonios, render automático con umbral 3 + 4 y logo SVG preparado. Commit en `borrador`, sin publicar. | DeepSeek V4.1 Flash Free (OpenCode) |
 | 2026-11-19 | Fase 4: prueba de activación en `_site` con datos ficticios no commiteados; 3 testimonios + 4 fotos visibles, arreglos vacíos ocultos, sin scroll horizontal a 320 px; build y verificar en verde. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Fase 4: recibidas 6 fotos de servicio (mockups de 1376 x 768); integradas con recorte 16:10 y 24 derivados de 800/1200 px en WebP/JPG. Pendientes hero, SVG, galería y testimonios. | DeepSeek V4.1 Flash Free (OpenCode) |
