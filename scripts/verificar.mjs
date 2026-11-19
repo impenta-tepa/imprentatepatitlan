@@ -325,6 +325,17 @@ for (const archivo of ['robots.txt', 'sitemap.xml', '404.html', 'og-image.jpg'])
   else fallos.push('falta ' + archivo);
 }
 
+// 6b. Favicon optimizado y referenciado
+const favicon = path.join(sitio, 'LOGOS/quad-print-favicon.png');
+const faviconBytes = (await stat(favicon).catch(() => ({ size: 0 }))).size;
+const faviconHtml = await readFile(path.join(sitio, '404.html'), 'utf8').catch(() => '');
+const faviconReferenciado = html.includes('LOGOS/quad-print-favicon.png') && faviconHtml.includes('LOGOS/quad-print-favicon.png');
+if (faviconReferenciado && faviconBytes > 0 && faviconBytes < 5 * 1024) {
+  ok.push(`favicon optimizado: ${faviconBytes} bytes (< 5 KB)`);
+} else {
+  fallos.push(`favicon ausente, sin referencia o mayor a 5 KB: ${faviconBytes} bytes`);
+}
+
 // 7. Data estructurada válida y rutas absolutas
 const ld = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
 if (!ld) fallos.push('no hay JSON-LD');
