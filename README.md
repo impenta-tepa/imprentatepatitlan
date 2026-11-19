@@ -38,7 +38,8 @@ No se usaron la dirección de Go, los horarios de Figma ni sus textos de «Impre
 - `index.html`: página completa.
 - `css/estilos.css`: diseño nuevo, sin Bootstrap.
 - `js/sitio.js`: menú móvil, catálogo, búsqueda, visor y cotización.
-- `datos/catalogo.js`: títulos, categorías y descripciones de las 19 promociones.
+- `data/promociones.js`: fuente única de las 19 promociones y las 6 macrocategorías.
+- `docs/`: plan, funcionamiento, formato de promociones y notas.
 - `promociones/`: imágenes originales.
 - `scripts/`: build, derivados, servidor local y verificación.
 - `fonts/`: Manrope y DM Sans locales.
@@ -70,20 +71,22 @@ Si no existe `node_modules`, ejecutar `npm install`. En GitHub Actions se ejecut
 
 ## Promociones
 
-El flujo se conserva: se agrega, reemplaza o elimina una imagen en `promociones/`, se ejecuta el build y la galería se regenera. El buscador lee el nombre del archivo, además del título y la descripción de `datos/catalogo.js`.
+La fuente única es `data/promociones.js`. Ahí viven el título, la categoría, las etiquetas, la descripción, el precio, la unidad, el IVA, la vigencia, la imagen, el texto alternativo, si es destacada y si está activa. El catálogo, las destacadas y el visor se generan desde ese archivo; no hay que tocar HTML, CSS ni JS.
 
 Para una promoción nueva:
 
-1. Guardar la imagen cuadrada en `promociones/` con un nombre descriptivo y sin acentos raros.
-2. Agregar su entrada en `datos/catalogo.js` con título, categoría, descripción y orden.
-3. Ejecutar `npm run build`.
+1. Guardar la imagen en `promociones/` (ideal: 1080 x 1350 px, proporción 4:5, WebP menor a 150 KB, solo producto sobre fondo limpio, sin texto ni precio dentro de la imagen).
+2. Agregar su objeto en `data/promociones.js` con un `id` nuevo.
+3. Ejecutar `npm run build` y `npm run verificar`.
 
-No editar `datos/promociones.js`: se genera automáticamente.
+Para cambiar precio, vigencia, destacada o activa, editar solo ese objeto. El detalle está en `docs/promociones-format.md`.
+
+No editar `_site/` ni los derivados: se generan en cada build.
 
 ## Pendientes
 
-- Validar precios y vigencias de las promociones; están dentro de las imágenes y cambian con el tiempo.
+- Llenar precios, unidades, IVA y vigencia en `data/promociones.js`; hoy están en `null` y marcados como TODO-DOMINGO.
+- Re-exportar las 19 imágenes a 1080 x 1350 px, 4:5, WebP menor a 150 KB, sin texto ni precio.
+- Confirmar con el dueño cuál número es el WhatsApp principal de todos los botones.
+- Confirmar el headline actual y los textos comerciales antes de publicar.
 - Decidir si se mantiene el catálogo solo con promociones reales o se agrega un catálogo de productos con fotografías definitivas.
-- Confirmar servicios y textos comerciales con el dueño.
-- Confirmar que la página de Facebook es la fuente correcta de datos o sustituir la tabla si «página flash» era otro sitio.
-- Aplicar los ajustes visuales o de contenido que pida el dueño después de la publicación.

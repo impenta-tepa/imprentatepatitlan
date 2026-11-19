@@ -205,7 +205,7 @@
             <p class="eyebrow eyebrow--m">Promociones y trabajos</p>
             <h2>Catálogo <span class="mark">a todo color.</span></h2>
           </div>
-          <p class="section__lead">Busca por nombre o filtra por tipo. Los precios y vigencias están dentro de cada imagen; confirma disponibilidad por WhatsApp.</p>
+          <p class="section__lead">Busca por nombre o filtra por categoría. El precio y la vigencia de cada promoción se confirman por WhatsApp.</p>
         </div>
 
         <div class="catalog__tools">
@@ -220,10 +220,10 @@
         <p class="catalog__status" id="estado" role="status" aria-live="polite"></p>
         <div class="catalog__grid" id="galeria"></div>
         <div class="catalog__more">
-          <button class="btn btn--line" id="ver-mas" type="button" aria-controls="galeria" aria-expanded="false" hidden>Ver todas las promociones</button>
+          <button class="btn btn--line" id="ver-mas" type="button" aria-controls="galeria" aria-expanded="false" hidden>Ver todas</button>
         </div>
 
-        <p class="catalog__note">Las imágenes muestran precios y opciones de temporada. Para confirmar existencias, medidas o vigencia, escríbenos por WhatsApp.</p>
+        <p class="catalog__note">Las imágenes son de referencia. Para confirmar precio, existencias, medidas o vigencia, escríbenos por WhatsApp.</p>
 
         <noscript>
           <p class="catalog__note">Activa JavaScript para ver el catálogo completo, o <a href="https://wa.me/5213781097423">consulta las promociones por WhatsApp</a>.</p>
@@ -386,7 +386,7 @@
   <dialog id="visor" aria-labelledby="visor-titulo">
     <div class="viewer__bar">
       <h2 id="visor-titulo">Promoción</h2>
-      <button id="cerrar-visor" type="button" aria-label="Cerrar imagen">Cerrar ×</button>
+      <button id="cerrar-visor" type="button" aria-label="Cerrar imagen" autofocus>Cerrar ×</button>
     </div>
     <div class="viewer__image">
       <picture>
@@ -400,8 +400,7 @@
     </div>
   </dialog>
 
-  <script src="datos/promociones.js"></script>
-  <script src="datos/catalogo.js"></script>
+  <script src="data/promociones.js"></script>
   <script src="js/sitio.js"></script>
 </body>
 </html>

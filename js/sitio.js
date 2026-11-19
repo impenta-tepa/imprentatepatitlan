@@ -8,6 +8,7 @@
 const WA_NUMBER = '5213781097423';
 const WA_DEFAULT = 'Hola, quiero cotizar un proyecto con Quad Print.';
 const waLink = mensaje => 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(mensaje);
+const mensajePromo = titulo => 'Hola, vi la promo ' + titulo + ' en su página y quiero pedirla. ¿Sigue vigente?';
 
 /* Año del pie */
 const year = document.getElementById('year');
@@ -127,9 +128,10 @@ const filtros = document.getElementById('filtros');
 const estado = document.getElementById('estado');
 const verMas = document.getElementById('ver-mas');
 
-const promociones = (window.PROMOCIONES || []).filter(promocion => promocion.activa !== false);
-const metadatos = window.CATALOGO || {};
-const categorias = window.CATEGORIAS || [{ id: 'todas', nombre: 'Todas' }];
+const promociones = (window.PROMOCIONES || [])
+  .filter(promocion => promocion && promocion.activo !== false && promocion.imagen);
+const categoriasBase = Array.isArray(window.CATEGORIAS) ? window.CATEGORIAS : [];
+const categorias = [{ id: 'todas', nombre: 'Todas' }, ...categoriasBase];
 
 const normalizar = valor => String(valor)
   .normalize('NFD')
@@ -148,14 +150,8 @@ const variantes = palabra => {
   return formas;
 };
 
-const tituloDesdeArchivo = archivo => archivo
-  .replace(/\.[^.]+$/, '')
-  .replace(/[_-]+/g, ' ')
-  .replace(/\s+/g, ' ')
-  .trim();
-
 const nombreCategoria = id => {
-  const encontrada = categorias.find(categoria => categoria.id === id);
+  const encontrada = categoriasBase.find(categoria => categoria.id === id);
   return encontrada ? encontrada.nombre : 'Promociones';
 };
 
@@ -167,20 +163,28 @@ const escapar = valor => String(valor).replace(/[&<>"']/g, caracter => ({
   "'": '&#39;'
 }[caracter]));
 
-const productos = promociones.map((promocion, indice) => {
-  const meta = metadatos[promocion.archivo] || {};
-  const titulo = meta.titulo || tituloDesdeArchivo(promocion.archivo);
-  const categoria = meta.categoria || 'otros';
-  return {
-    ...promocion,
-    titulo,
-    categoria,
-    categoriaNombre: nombreCategoria(categoria),
-    descripcion: meta.descripcion || '',
-    destacado: Boolean(meta.destacado),
-    orden: Number.isFinite(meta.orden) ? meta.orden : 1000 + indice
-  };
-}).sort((a, b) => a.orden - b.orden || a.titulo.localeCompare(b.titulo, 'es'));
+const formatoMoneda = new Intl.NumberFormat('es-MX', {
+  style: 'currency',
+  currency: 'MXN',
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 2
+});
+
+const formatoFecha = new Intl.DateTimeFormat('es-MX', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric'
+});
+
+const archivoDe = imagen => String(imagen).split('/').pop();
+
+const productos = promociones.map((promocion, indice) => ({
+  ...promocion,
+  archivo: archivoDe(promocion.imagen),
+  categoriaNombre: nombreCategoria(promocion.categoria),
+  etiquetas: Array.isArray(promocion.etiquetas) ? promocion.etiquetas : [],
+  orden: indice
+}));
 
 let categoriaActiva = 'todas';
 let consulta = '';
@@ -196,34 +200,68 @@ const coincidencias = () => {
       producto.titulo,
       producto.descripcion,
       producto.categoriaNombre,
+      producto.etiquetas.join(' '),
       producto.archivo
     ].join(' '));
     return terminos.every(termino => variantes(termino).some(forma => texto.includes(forma)));
   });
 };
 
+const precioHTML = producto => {
+  const numero = Number(producto.precio);
+  if (producto.precio === null || producto.precio === undefined || producto.precio === '' || !Number.isFinite(numero)) {
+    return '<p class="promo-price promo-price--pending">Precio: confirmar por WhatsApp</p>';
+  }
+  const prefijo = producto.prefijoPrecio
+    ? '<span class="promo-price__prefix">' + escapar(producto.prefijoPrecio) + '</span>'
+    : '';
+  const unidad = producto.unidad
+    ? '<span class="promo-price__unit">' + escapar(producto.unidad) + '</span>'
+    : '';
+  const iva = producto.iva === 'incluido'
+    ? '<span class="promo-price__iva">IVA incluido</span>'
+    : producto.iva === '+ IVA'
+      ? '<span class="promo-price__iva">+ IVA</span>'
+      : '';
+  return '<p class="promo-price">' + prefijo
+    + '<span class="promo-price__amount">' + escapar(formatoMoneda.format(numero)) + '</span>'
+    + unidad + iva + '</p>';
+};
+
+const vigenciaHTML = producto => {
+  if (!producto.vigencia) return '';
+  const fecha = new Date(producto.vigencia + 'T12:00:00');
+  if (Number.isNaN(fecha.getTime())) return '';
+  return '<p class="promo-validity">Válido hasta el ' + escapar(formatoFecha.format(fecha)) + '</p>';
+};
+
 const tarjeta = producto => {
   const archivo = encodeURIComponent(producto.archivo);
   const miniaturaWebp = 'derivados/promociones/' + archivo + '-800.webp';
   const miniaturaJpg = 'derivados/promociones/' + archivo + '-800.jpg';
-  const mensaje = waLink('Hola, me interesa esta promoción: ' + producto.titulo + '. ¿Me comparten información?');
+  const mensaje = waLink(mensajePromo(producto.titulo));
   const titulo = escapar(producto.titulo);
-  const descripcion = escapar(producto.descripcion);
+  const alt = escapar(producto.alt || producto.titulo);
+  const descripcion = producto.descripcion
+    ? '<p class="promo-desc">' + escapar(producto.descripcion) + '</p>'
+    : '';
   return `
-    <article class="promo-card" data-file="${escapar(producto.archivo)}">
-      <button class="promo-open" type="button" aria-label="Ampliar promoción: ${titulo}">
+    <article class="promo-card" data-file="${escapar(producto.archivo)}" data-id="${escapar(producto.id)}">
+      <button class="promo-open" type="button" aria-label="Ampliar imagen: ${titulo}">
         <picture>
           <source type="image/webp" srcset="${miniaturaWebp}">
-          <img src="${miniaturaJpg}" alt="${titulo}" loading="lazy" decoding="async">
+          <img src="${miniaturaJpg}" alt="${alt}" loading="lazy" decoding="async">
         </picture>
       </button>
       <div class="promo-body">
         <span class="promo-kicker">${escapar(producto.categoriaNombre)}</span>
         <h3 class="promo-title">${titulo}</h3>
-        <p class="promo-desc">${descripcion}</p>
+        ${descripcion}
+        ${precioHTML(producto)}
+        ${vigenciaHTML(producto)}
         <div class="promo-actions">
           <button class="promo-zoom" type="button" aria-label="Ver en grande: ${titulo}">Ver en grande</button>
-          <a href="${escapar(mensaje)}" target="_blank" rel="noopener noreferrer">Consultar ↗</a>
+          <a class="promo-cta" href="${escapar(mensaje)}" target="_blank" rel="noopener noreferrer">Pedir por WhatsApp <span aria-hidden="true">↗</span></a>
         </div>
       </div>
     </article>`;
@@ -232,10 +270,8 @@ const tarjeta = producto => {
 const pintarDestacados = () => {
   if (!destacadosGrid) return;
   const seleccion = productos.filter(producto => producto.destacado).slice(0, 4);
-  if (!seleccion.length) {
-    document.getElementById('promociones')?.setAttribute('hidden', '');
-    return;
-  }
+  const seccion = document.getElementById('promociones');
+  if (seccion) seccion.hidden = !seleccion.length;
   destacadosGrid.innerHTML = seleccion.map(tarjeta).join('');
 };
 
@@ -258,7 +294,9 @@ const pintarCatalogo = () => {
 
   if (estado) {
     if (!resultados.length) {
-      estado.textContent = 'No encontramos promociones con ese nombre. Prueba otra palabra o escríbenos por WhatsApp.';
+      estado.textContent = normalizar(consulta)
+        ? 'No encontramos promociones con ese nombre. Prueba otra palabra o escríbenos por WhatsApp.'
+        : 'Aún no hay promociones en esta categoría. Escríbenos por WhatsApp y te cotizamos.';
     } else if (mostrandoFiltro) {
       estado.textContent = resultados.length + (resultados.length === 1 ? ' promoción encontrada' : ' promociones encontradas');
     } else {
@@ -270,7 +308,7 @@ const pintarCatalogo = () => {
     const puedeAlternar = !mostrandoFiltro && resultados.length > VISIBLES_INICIALES;
     verMas.hidden = !puedeAlternar;
     verMas.setAttribute('aria-expanded', String(expandido && puedeAlternar));
-    verMas.textContent = expandido ? 'Ver menos promociones' : 'Ver todas las promociones';
+    verMas.textContent = expandido ? 'Ver menos' : 'Ver todas';
   }
 };
 
@@ -281,6 +319,7 @@ const abrirVisor = (archivo, disparador) => {
   const fuenteWebp = document.getElementById('visor-webp');
   const original = document.getElementById('abrir-original');
   const consultar = document.getElementById('consultar-promocion');
+  const cerrar = document.getElementById('cerrar-visor');
   const producto = productos.find(item => item.archivo === archivo);
   if (!visor || !imagen || !producto) return;
 
@@ -290,15 +329,15 @@ const abrirVisor = (archivo, disparador) => {
   if (tituloVisor) tituloVisor.textContent = titulo;
   if (fuenteWebp) fuenteWebp.srcset = 'derivados/promociones/' + codificado + '-1600.webp';
   imagen.src = 'derivados/promociones/' + codificado + '-1600.jpg';
-  imagen.alt = 'Promoción ampliada: ' + titulo;
-  if (original) original.href = 'promociones/' + codificado;
-  if (consultar) consultar.href = waLink('Hola, me interesa esta promoción: ' + titulo + '. ¿Me comparten información?');
+  imagen.alt = producto.alt || 'Promoción ampliada: ' + titulo;
+  if (original) original.href = encodeURI(producto.imagen);
+  if (consultar) consultar.href = waLink(mensajePromo(titulo));
 
-  visor.dataset.trigger = '';
-  if (disparador) {
-    visor._disparador = disparador;
+  visor._disparador = disparador || null;
+  if (!visor.open) {
+    visor.showModal();
+    if (cerrar) cerrar.focus();
   }
-  if (!visor.open) visor.showModal();
 };
 
 const conectarGaleria = contenedor => {
@@ -313,17 +352,34 @@ const conectarGaleria = contenedor => {
 
 /* Visor */
 const visor = document.getElementById('visor');
-const cerrarVisor = document.getElementById('cerrar-visor');
 if (visor) {
-  cerrarVisor?.addEventListener('click', () => visor.close());
+  const botonCerrarVisor = document.getElementById('cerrar-visor');
+
+  const cerrarVisorDialogo = () => {
+    const disparador = visor._disparador;
+    visor._disparador = null;
+    visor.close();
+    if (disparador && typeof disparador.focus === 'function') {
+      disparador.focus();
+      setTimeout(() => disparador.focus(), 0);
+    }
+  };
+
+  botonCerrarVisor?.addEventListener('click', cerrarVisorDialogo);
   visor.addEventListener('click', evento => {
-    if (evento.target === visor) visor.close();
+    if (evento.target === visor) cerrarVisorDialogo();
+  });
+  visor.addEventListener('keydown', evento => {
+    if (evento.key !== 'Escape') return;
+    evento.preventDefault();
+    cerrarVisorDialogo();
   });
   visor.addEventListener('close', () => {
-    if (visor._disparador && typeof visor._disparador.focus === 'function') {
-      visor._disparador.focus();
-    }
+    const disparador = visor._disparador;
     visor._disparador = null;
+    if (disparador && typeof disparador.focus === 'function') {
+      setTimeout(() => disparador.focus(), 0);
+    }
   });
 }
 
