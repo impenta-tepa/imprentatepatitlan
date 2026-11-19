@@ -159,6 +159,30 @@ Una fase a la vez. Al terminar cada fase: build, verificación, commit en `borra
 
 ---
 
+## Fase 4 — Datos y contenido
+
+**Estado:** preparación completada en `borrador`; no publicada en `main`. Los lotes 4A, 4B y 4C esperan los copies del asesor y los archivos de Domingo.
+
+### Preparación (2026-11-19)
+
+- [x] `docs/entregables-domingo.md`: rutas y nombres exactos, formatos, pesos máximos y `alt` sugerido por archivo.
+- [x] `data/testimonios.js`: fuente única de testimonios y trabajos de galería, con arreglos vacíos hasta tener datos reales.
+- [x] `docs/testimonios-format.md`: esquema, umbrales de activación y reglas.
+- [x] Render automático desde datos: la sección se muestra solo con 3 testimonios y 4 trabajos activos; no se edita el HTML.
+- [x] Logo SVG preparado: puntos de sustitución comentados en header y footer, reglas CSS para SVG en línea y WebP interino conservado.
+- [x] Build: minifica `data/testimonios.js` y copia `galeria/`.
+- [x] Verificación: 6 comprobaciones nuevas de Fase 4.
+- [x] Prueba de activación en `_site` con datos ficticios no commiteados: 3 testimonios + 4 fotos muestran la sección; con arreglos vacíos sigue oculta; sin scroll horizontal a 320 px.
+- [ ] Lote 4A: precios de las 4 destacadas y su arte 4:5.
+- [ ] Lote 4B: 6 fotos de servicios, foto real del hero y SVG del logo.
+- [ ] Lote 4C: precios de las 15 restantes, testimonios, galería y correcciones confirmadas.
+
+**Regla del hero:** al integrar la foto real se mide una vez en PSI móvil y escritorio con `eager` + `fetchpriority="high"`. Si el LCP móvil sigue ≤ 2.5 s, se deja eager; si empeora, se regresa a `lazy`. Se reportan ambos números.
+
+**Datos:** se aplican verbatim desde los copies del asesor. No se transcriben precios de imágenes ni se inventan testimonios. Categorías y WhatsApp solo cambian con confirmación explícita.
+
+---
+
 ## Historial previo a la Fase 1
 
 | Fecha | Intervención | Firma |

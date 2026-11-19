@@ -1,6 +1,6 @@
 # Quad Print Tepatitlán — página web
 
-**Fase 3 publicada y verificada en vivo** · 19 de noviembre de 2026
+**Fase 3 publicada y verificada; Fase 4 en preparación (`borrador`)** · 19 de noviembre de 2026
 
 Sitio estático de Quad Print Tepatitlán, publicado en:
 
@@ -39,8 +39,10 @@ No se usaron la dirección de Go, los horarios de Figma ni sus textos de «Impre
 - `css/estilos.css`: diseño nuevo, sin Bootstrap.
 - `js/sitio.js`: menú móvil, catálogo, búsqueda, visor y cotización.
 - `data/promociones.js`: fuente única de las 19 promociones y las 6 macrocategorías.
-- `docs/`: plan, funcionamiento, formato de promociones y notas.
+- `data/testimonios.js`: fuente única de testimonios y fotos de la galería; la sección se activa sola con 3 testimonios y 4 fotos.
+- `docs/`: plan, funcionamiento, formato de promociones, formato de testimonios y entregables de Domingo.
 - `promociones/`: imágenes originales.
+- `servicios/`, `hero/`, `galeria/`: carpetas para las fotos de Fase 4.
 - `scripts/`: build, derivados, servidor local y verificación.
 - `fonts/`: Manrope y DM Sans locales.
 - `LOGOS/`: logotipos y favicon.
@@ -70,6 +72,7 @@ Si no existe `node_modules`, ejecutar `npm install`. En GitHub Actions se ejecut
 - Para actualizar: agrupar los cambios, ejecutar `npm run build` y `npm run verificar` en local, hacer un solo commit y push a `main`.
 - No se sube `_site` ni `node_modules`; GitHub Actions los genera en cada publicación.
 - **Fase 3:** publicada y verificada en vivo. Incluye logo optimizado, minificación, lazy render, safe areas, tap targets, foco al catálogo y menú `inert`. PSI móvil 98/100/100/100 y escritorio 100/100/100/100.
+- **Fase 4:** preparación en `borrador`; no publicada en `main`. Incluye `docs/entregables-domingo.md`, `data/testimonios.js`, render automático de testimonios y galería, y el reemplazo de logo SVG preparado. Los lotes de datos esperan los copies del asesor.
 
 ## Límites de GitHub Pages (plan gratuito)
 

@@ -514,6 +514,49 @@ if (formulario) {
   });
 }
 
+/* ---------- Testimonios y galería (Fase 4) ---------- */
+const testimoniosFuente = Array.isArray(window.TESTIMONIOS) ? window.TESTIMONIOS : [];
+const trabajosFuente = Array.isArray(window.TRABAJOS) ? window.TRABAJOS : [];
+const activos = lista => lista.filter(item => item && item.activo !== false);
+const testimonios = activos(testimoniosFuente).filter(item =>
+  String(item.nombre || '').trim() && String(item.negocio || '').trim() && String(item.texto || '').trim()
+);
+const trabajos = activos(trabajosFuente).filter(item =>
+  String(item.imagen || '').trim() && String(item.alt || '').trim()
+);
+
+const testimonioHTML = testimonio => {
+  const foto = testimonio.foto
+    ? '<img class="testimonial__photo" src="' + escapar(testimonio.foto) + '" alt="" width="48" height="48" loading="lazy" decoding="async">'
+    : '';
+  return '<figure class="testimonial">'
+    + '<blockquote><p>' + escapar(testimonio.texto) + '</p></blockquote>'
+    + '<figcaption class="testimonial__person">' + foto
+    + '<span class="testimonial__data"><strong class="testimonial__name">' + escapar(testimonio.nombre) + '</strong>'
+    + '<span class="testimonial__business">' + escapar(testimonio.negocio) + '</span></span>'
+    + '</figcaption></figure>';
+};
+
+const trabajoHTML = trabajo => '<figure class="work">'
+  + '<img src="' + escapar(trabajo.imagen) + '" alt="' + escapar(trabajo.alt) + '" width="800" height="600" loading="lazy" decoding="async">'
+  + (trabajo.pie ? '<figcaption>' + escapar(trabajo.pie) + '</figcaption>' : '')
+  + '</figure>';
+
+const prepararTestimonios = () => {
+  const seccion = document.getElementById('testimonios');
+  const gridTestimonios = document.getElementById('testimonios-grid');
+  const gridTrabajos = document.getElementById('galeria-trabajos');
+  if (!seccion || !gridTestimonios || !gridTrabajos) return;
+  if (testimonios.length < 3 || trabajos.length < 4) {
+    seccion.hidden = true;
+    return;
+  }
+  gridTestimonios.innerHTML = testimonios.slice(0, 3).map(testimonioHTML).join('');
+  gridTrabajos.innerHTML = trabajos.map(trabajoHTML).join('');
+  seccion.hidden = false;
+};
+prepararTestimonios();
+
 /* ---------- Arranque ---------- */
 conectarGaleria(destacadosGrid);
 conectarGaleria(galeria);

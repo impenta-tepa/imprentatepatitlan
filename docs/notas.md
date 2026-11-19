@@ -2,7 +2,7 @@
 
 **Última actualización:** 2026-11-19
 **Agente:** DeepSeek V4.1 Flash Free (OpenCode)
-**Fase actual:** Fase 3 publicada en `main` y verificada en vivo; puerta de rendimiento aprobada. Sin Fase 3.1.
+**Fase actual:** Fase 3 publicada y verificada; Fase 4 (datos y contenido) en preparación en `borrador`, sin publicar.
 
 ---
 
@@ -115,6 +115,18 @@
 33. **Prueba en dispositivo real pendiente y documentada.**
     Se creó `docs/pruebas-dispositivo.md` con el checklist de 2 minutos y la tabla de resultados. Domingo lo ejecutará en Android y en iPhone/Safari prestado; los resultados se registrarán ahí.
 
+34. **Fase 4 arranca sin datos reales.**
+    Se preparó `docs/entregables-domingo.md` con rutas y nombres exactos, formatos, pesos máximos y `alt` sugerido para las 4 artes destacadas, 6 fotos de servicios, hero, 2 SVG y galería. También incluye las tablas de precios, testimonios y confirmaciones. Nada se inventa ni se transcribe de imágenes.
+
+35. **Testimonios y galería desde una fuente única.**
+    `data/testimonios.js` contiene `window.TESTIMONIOS` y `window.TRABAJOS`. `js/sitio.js` los renderiza; la sección solo se muestra con al menos 3 testimonios activos y 4 trabajos activos. Los arreglos están vacíos hasta recibir datos reales. El esquema está en `docs/testimonios-format.md`.
+
+36. **Logo SVG preparado, no sustituido.**
+    El header y el footer conservan el WebP/PNG interino. Se dejaron comentarios de sustitución y reglas CSS para el SVG en línea; cuando Domingo entregue `LOGOS/quad-print-claro.svg` y `quad-print-oscuro.svg`, el cambio será directo y sin tocar el diseño.
+
+37. **Regla de medición del hero en Fase 4.**
+    Al integrar la foto real se probará una vez en PSI móvil y escritorio con `eager` + `fetchpriority="high"`. Si el LCP móvil sigue ≤ 2.5 s, se deja eager; si empeora, se regresa a `lazy`. Se reportan ambos números antes de decidir.
+
 ---
 
 ## Pendientes para Domingo (TODO-DOMINGO)
@@ -180,3 +192,5 @@
 | 2026-11-19 | Fase 3: Lighthouse móvil 97/100/100/100; LCP 2.5 s, CLS 0, TBT 50 ms, 250 KiB. Commit en `borrador`, sin publicar en `main`. | DeepSeek V4.1 Flash Free (OpenCode) |
 | 2026-11-19 | Fase 3 aprobada y publicada en `main` (merge `767f87b`, run `44553795932`); verificación en vivo a 320/360 px, foco del catálogo, mapa 0→1 iframe, formulario y consola sin errores. | DeepSeek V4.1 Flash Free (OpenCode) |
 | 2026-11-19 | PSI móvil 98/100/100/100 (LCP 1.4 s, TBT 0 ms, CLS 0) y escritorio 100/100/100/100 (LCP 0.3 s, TBT 0 ms, CLS 0); puerta aprobada, sin Fase 3.1. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Fase 4: entregables de Domingo, fuente única de testimonios, render automático con umbral 3 + 4 y logo SVG preparado. Commit en `borrador`, sin publicar. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Fase 4: prueba de activación en `_site` con datos ficticios no commiteados; 3 testimonios + 4 fotos visibles, arreglos vacíos ocultos, sin scroll horizontal a 320 px; build y verificar en verde. | DeepSeek V4.1 Flash Free (OpenCode) |

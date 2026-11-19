@@ -9,7 +9,7 @@ const output = path.join(root, '_site');
 await rm(output, { recursive: true, force: true });
 await mkdir(output);
 // Los originales de banner y foto se quedan en la raíz: la página solo usa sus derivados.
-for (const item of ['index.html', '404.html', 'robots.txt', 'sitemap.xml', '.nojekyll', 'css', 'js', 'data', 'fonts', 'LOGOS', 'promociones', 'ubicacion.png', 'WhatsApp_icon.png', 'Facebook_Logo_(2019).png']) {
+for (const item of ['index.html', '404.html', 'robots.txt', 'sitemap.xml', '.nojekyll', 'css', 'js', 'data', 'fonts', 'LOGOS', 'promociones', 'galeria', 'ubicacion.png', 'WhatsApp_icon.png', 'Facebook_Logo_(2019).png']) {
   await cp(path.join(root, item), path.join(output, item), { recursive: true });
 }
 
@@ -23,6 +23,7 @@ async function minificar(relativa, loader) {
 await minificar('css/estilos.css', 'css');
 await minificar('js/sitio.js', 'js');
 await minificar('data/promociones.js', 'js');
+await minificar('data/testimonios.js', 'js');
 await minificar('fonts/fonts.css', 'css');
 
 const derivados = await generarDerivados({ sourceRoot: root, baseDir: output });

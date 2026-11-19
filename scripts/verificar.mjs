@@ -2,7 +2,7 @@
 // Uso: npm run verificar  (ejecuta antes npm run build)
 import { readFile, readdir, stat } from 'node:fs/promises';
 import path from 'node:path';
-import { root, readPromociones } from './promociones.mjs';
+import { root, readPromociones, readTestimonios } from './promociones.mjs';
 
 const sitio = path.join(root, '_site');
 const BASE = 'https://impenta-tepa.github.io/imprentatepatitlan/';
@@ -215,14 +215,52 @@ for (const [nombre, cumple] of fase3) {
 }
 if (!fase3.some(([, cumple]) => !cumple)) ok.push('estructura de Fase 3 completa: ' + fase3.length + ' comprobaciones');
 
+// 5d. Preparación de la Fase 4: testimonios y galería desde datos
+const { testimonios, trabajos } = await readTestimonios(root);
+const testimoniosActivos = testimonios.filter(item => item && item.activo !== false);
+const trabajosActivos = trabajos.filter(item => item && item.activo !== false);
+const minimosTestimonios = testimoniosActivos.length >= 3 && trabajosActivos.length >= 4;
+
+for (const [indice, testimonio] of testimoniosActivos.entries()) {
+  const etiqueta = testimonio.nombre || `#${indice + 1}`;
+  for (const campo of ['nombre', 'negocio', 'texto']) {
+    if (typeof testimonio[campo] !== 'string' || !testimonio[campo].trim()) fallos.push(`testimonio ${etiqueta}: falta ${campo}`);
+  }
+  if (testimonio.foto && !(await existe(path.join(sitio, testimonio.foto)))) fallos.push(`testimonio ${etiqueta}: no existe ${testimonio.foto}`);
+}
+
+for (const [indice, trabajo] of trabajosActivos.entries()) {
+  const etiqueta = trabajo.imagen || `#${indice + 1}`;
+  for (const campo of ['imagen', 'alt']) {
+    if (typeof trabajo[campo] !== 'string' || !trabajo[campo].trim()) fallos.push(`trabajo ${etiqueta}: falta ${campo}`);
+  }
+  if (trabajo.imagen && !(await existe(path.join(sitio, trabajo.imagen)))) fallos.push(`trabajo ${etiqueta}: no existe ${trabajo.imagen}`);
+}
+
+const fase4 = [
+  ['fuente de testimonios publicada', await existe(path.join(sitio, 'data/testimonios.js'))],
+  ['script de testimonios antes de sitio.js', html.includes('src="data/testimonios.js"') && html.indexOf('data/testimonios.js') < html.indexOf('js/sitio.js')],
+  ['sección oculta sin los mínimos', minimosTestimonios || /<section[^>]*id="testimonios"[^>]*hidden/.test(html)],
+  ['render de testimonios desde datos', jsFuente.includes("getElementById('testimonios-grid')") && jsFuente.includes("getElementById('galeria-trabajos')")],
+  ['mínimos de activación 3 + 4', jsFuente.includes('testimonios.length < 3') && jsFuente.includes('trabajos.length < 4')],
+  ['carpeta de galería publicada', await existe(path.join(sitio, 'galeria/LEEME.txt'))]
+];
+for (const [nombre, cumple] of fase4) {
+  if (!cumple) fallos.push('Fase 4: ' + nombre);
+}
+if (!fase4.some(([, cumple]) => !cumple)) ok.push('preparación de Fase 4 completa: ' + fase4.length + ' comprobaciones');
+if (minimosTestimonios) ok.push(`testimonios y galería listos para activarse (${testimoniosActivos.length} testimonios, ${trabajosActivos.length} trabajos)`);
+
 const bytesFuente = (await stat(path.join(root, 'css/estilos.css'))).size
   + (await stat(path.join(root, 'fonts/fonts.css'))).size
   + (await stat(path.join(root, 'js/sitio.js'))).size
-  + (await stat(path.join(root, 'data/promociones.js'))).size;
+  + (await stat(path.join(root, 'data/promociones.js'))).size
+  + (await stat(path.join(root, 'data/testimonios.js'))).size;
 const bytesPublicado = (await stat(path.join(sitio, 'css/estilos.css'))).size
   + (await stat(path.join(sitio, 'fonts/fonts.css'))).size
   + (await stat(path.join(sitio, 'js/sitio.js'))).size
-  + (await stat(path.join(sitio, 'data/promociones.js'))).size;
+  + (await stat(path.join(sitio, 'data/promociones.js'))).size
+  + (await stat(path.join(sitio, 'data/testimonios.js'))).size;
 if (bytesPublicado < bytesFuente) ok.push(`minificación: ${kb(bytesFuente)} → ${kb(bytesPublicado)} (CSS + fuentes + JS + datos)`);
 else fallos.push('la minificación no redujo CSS + fuentes + JS + datos');
 

@@ -101,12 +101,16 @@ La home es HTML estático con CSS y JavaScript nativo. No hay frameworks de inte
   - Las 19 imágenes actuales son cuadradas; el JS les agrega `is-square` y se muestran completas con `object-fit: contain` para no recortar texto ni precios.
 - **Para agregar o editar:** ver `docs/promociones-format.md`.
 
-## 7. Testimonios y galería (ocultos)
+## 7. Testimonios y galería
 
 - **HTML:** `index.html` (`#testimonios`, con `hidden`).
-- **Estado:** ocultos. No hay testimonios ni fotos de trabajos reales todavía.
-- **Qué falta:** 3 testimonios con nombre y negocio, y fotos propias para la galería. Cuando existan, se quita `hidden` y se llena `#testimonios-grid` y `#galeria-trabajos`.
-- **Regla:** no inventar testimonios.
+- **Datos:** `data/testimonios.js` (`window.TESTIMONIOS` y `window.TRABAJOS`).
+- **Render:** `js/sitio.js` (`prepararTestimonios`). No se toca el HTML para editar contenido.
+- **Activación automática:** la sección se muestra solo cuando hay al menos 3 testimonios activos y 4 trabajos activos; hasta entonces sigue oculta.
+- **Testimonios:** nombre, negocio, texto autorizado y foto opcional. Se muestran como máximo 3.
+- **Galería:** imagen, `alt` y pie opcional. Se muestra a 4:3.
+- **Fotos:** `galeria/`; trabajos 1600 x 1200 WebP y retratos 400 x 400 WebP.
+- **Regla:** no inventar testimonios ni usar fotos ajenas. Ver `docs/testimonios-format.md` y `docs/entregables-domingo.md`.
 
 ## 8. Banda de foráneos
 
@@ -172,10 +176,11 @@ La home es HTML estático con CSS y JavaScript nativo. No hay frameworks de inte
 ## 15. Build y datos
 
 - `data/promociones.js`: fuente única de promociones y categorías. **No se sobrescribe.**
-- `scripts/promociones.mjs`: lee la fuente única y lista las imágenes.
-- `scripts/preparar.mjs`: copia `data/`, minifica la copia publicada con esbuild y arma `_site/`.
+- `data/testimonios.js`: fuente única de testimonios y galería. **No se sobrescribe.**
+- `scripts/promociones.mjs`: lee las fuentes únicas y lista las imágenes.
+- `scripts/preparar.mjs`: copia `data/` y `galeria/`, minifica la copia publicada con esbuild y arma `_site/`.
 - `scripts/imagenes.mjs`: genera 800 px y 1600 px en WebP y JPG, además de los logos optimizados de header y footer.
-- `scripts/verificar.mjs`: revisa fichas, imágenes, derivados, SEO, peso, 24 comprobaciones de Fase 2 y 13 de Fase 3.
+- `scripts/verificar.mjs`: revisa fichas, imágenes, derivados, SEO, peso, 24 comprobaciones de Fase 2, 13 de Fase 3 y 6 de preparación de Fase 4.
 - `scripts/servir.mjs`: servidor local en `http://localhost:4173`.
 - **Fuentes:** el CSS de fuentes se redujo a los subconjuntos latin y latin-ext; los archivos woff2 se mantienen.
 - **Minificación:** CSS, fuentes, JS y datos se minifican solo en `_site`; los fuentes del repositorio siguen legibles.

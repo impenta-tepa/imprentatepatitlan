@@ -28,3 +28,17 @@ export async function readPromociones(base = root) {
     promociones: contexto.window.PROMOCIONES || []
   };
 }
+
+/* Lee la fuente de testimonios y galería de la Fase 4.
+   Igual que promociones: el archivo es JavaScript de navegador. */
+export async function readTestimonios(base = root) {
+  const archivo = path.join(base, 'data/testimonios.js');
+  const texto = await readFile(archivo, 'utf8');
+  const contexto = { window: {} };
+  vm.createContext(contexto);
+  vm.runInContext(texto, contexto, { filename: 'data/testimonios.js' });
+  return {
+    testimonios: contexto.window.TESTIMONIOS || [],
+    trabajos: contexto.window.TRABAJOS || []
+  };
+}

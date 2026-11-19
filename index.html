@@ -78,6 +78,7 @@
   <header class="site-header">
     <div class="container header__inner">
       <a class="brand" href="#inicio" aria-label="Quad Print, inicio">
+        <!-- FASE 4: al recibir LOGOS/quad-print-claro.svg, sustituir este bloque por el SVG en línea; conservar el enlace y el aria-label. -->
         <picture>
           <source type="image/webp" srcset="derivados/logo-header.webp">
           <img src="derivados/logo-header.png" width="200" height="145" alt="Quad Print Tepatitlán" fetchpriority="high" decoding="async">
@@ -324,8 +325,8 @@
     </section>
 
     <!-- TODO-DOMINGO: testimonios y galería de trabajos.
-         La sección queda oculta hasta tener 3 testimonios reales con nombre y negocio,
-         y fotos propias de trabajos. No se inventa contenido. -->
+         Se activan solos desde data/testimonios.js cuando hay al menos
+         3 testimonios reales y 4 fotos propias. No se inventa contenido. -->
     <section class="section testimonials" id="testimonios" hidden>
       <div class="container">
         <div class="section__head">
@@ -333,7 +334,7 @@
             <p class="eyebrow eyebrow--m">Lo que dicen de nosotros</p>
             <h2>Clientes <span class="mark">reales.</span></h2>
           </div>
-          <p class="section__lead">Tres testimonios con nombre y negocio, más una galería de trabajos. Se activa cuando Domingo entregue los datos reales.</p>
+          <p class="section__lead">Negocios y clientes de Tepatitlán que ya confiaron su impresión a Quad Print.</p>
         </div>
         <div class="testimonials__grid" id="testimonios-grid"></div>
         <div class="work-gallery" id="galeria-trabajos"></div>
@@ -483,6 +484,7 @@
   <footer class="footer">
     <div class="container footer__grid">
       <div class="footer__brand">
+        <!-- FASE 4: al recibir LOGOS/quad-print-oscuro.svg, sustituir este bloque por el SVG en línea con role="img" y aria-label. -->
         <picture>
           <source type="image/webp" srcset="derivados/logo-footer.webp">
           <img src="derivados/logo-footer.png" width="240" height="174" alt="Quad Print Tepatitlán" loading="lazy" decoding="async">
@@ -542,6 +544,7 @@
   </dialog>
 
   <script src="data/promociones.js"></script>
+  <script src="data/testimonios.js"></script>
   <script src="js/sitio.js"></script>
 </body>
 </html>
