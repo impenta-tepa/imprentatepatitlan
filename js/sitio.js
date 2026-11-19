@@ -53,7 +53,7 @@ function actualizarEstado() {
   estadoNegocio.classList.toggle('is-closed', !tramoAbierto);
 
   if (tramoAbierto) {
-    estadoTexto.textContent = 'Abierto ahora · cierra ' + aHora(tramoAbierto[1]);
+    estadoTexto.textContent = 'Abierto ahora · cerramos ' + aHora(tramoAbierto[1]);
     return;
   }
 
@@ -62,7 +62,7 @@ function actualizarEstado() {
     const tramo = (HORARIO[dia] || []).find(([inicio]) => salto > 0 || inicio > ahora);
     if (!tramo) continue;
     const cuando = salto === 0 ? 'hoy' : salto === 1 ? 'mañana' : 'el ' + NOMBRE_DIA[dia];
-    estadoTexto.textContent = 'Cerrado · abre ' + cuando + ' ' + aHora(tramo[0]);
+    estadoTexto.textContent = 'Fuera de horario · abrimos ' + cuando + ' ' + aHora(tramo[0]);
     return;
   }
 }
