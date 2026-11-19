@@ -304,6 +304,21 @@ if (!fase4.some(([, cumple]) => !cumple)) ok.push('preparación de Fase 4 comple
 if (minimosTestimonios) ok.push(`testimonios listos para activarse (${testimoniosActivos.length} testimonios)`);
 if (galeriaLista) ok.push(`galería lista para mostrarse (${trabajosActivos.length} trabajos)`);
 
+// 5e. Micro-lote 4.0.2: estados vacíos con salida real a WhatsApp
+const micro402 = [
+  ['estado vacío con CTA de WhatsApp', jsFuente.includes('pintarEstadoVacio') && jsFuente.includes('catalog__empty-cta')],
+  ['mensaje de categoría precargado', jsFuente.includes('No vi promociones en su página')],
+  ['mensaje de búsqueda precargado', jsFuente.includes('y no lo encontré en su catálogo')],
+  ['enlaces de servicio decididos por conteo', jsFuente.includes('promocionesPorCategoria') && jsFuente.includes("querySelectorAll('.service-card__link[data-filtro]')")],
+  ['botón de estado vacío de 44 px', /\.catalog__empty-cta\s*\{[^}]*min-height:\s*44px/.test(css)],
+  ['foco visible global', css.includes(':focus-visible')],
+  ['foco visible en el CTA', /\.catalog__empty-cta:focus-visible\s*\{[^}]*outline:\s*3px/.test(css)]
+];
+for (const [nombre, cumple] of micro402) {
+  if (!cumple) fallos.push('Micro-lote 4.0.2: ' + nombre);
+}
+if (!micro402.some(([, cumple]) => !cumple)) ok.push('micro-lote 4.0.2 completo: ' + micro402.length + ' comprobaciones');
+
 const bytesFuente = (await stat(path.join(root, 'css/estilos.css'))).size
   + (await stat(path.join(root, 'fonts/fonts.css'))).size
   + (await stat(path.join(root, 'js/sitio.js'))).size
