@@ -89,9 +89,21 @@ Una fase a la vez. Al terminar cada fase: build, verificación, commit en `borra
 | 2026-11-19 | Select del formulario alineado a las 6 macrocategorías + “Otro”; el mensaje de WhatsApp usa el nombre visible. | DeepSeek V4.1 Flash Free (OpenCode) |
 | 2026-11-19 | Build y `npm run verificar` en verde; 24 comprobaciones estructurales de Fase 2; viewports 320, 360, 390, 430, 768, 844, 1024 y 1280 sin scroll horizontal; consola sin errores. | DeepSeek V4.1 Flash Free (OpenCode) |
 | 2026-11-19 | Lighthouse móvil sobre el build local: Performance 87, Accesibilidad 100, Buenas prácticas 100, SEO 100. LCP 2.9 s, CLS 0, TBT 340 ms, primera carga 303 KiB. | DeepSeek V4.1 Flash Free (OpenCode) |
-| 2026-11-19 | Commit único de Fase 2 en `borrador`; sin merge a `main`. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Commit único de Fase 2 en `borrador`; reporte y pausa para aprobación. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Aprobación del asesor y autorización de publicación en `main`. | Asesor de Domingo |
+| 2026-11-19 | Merge `borrador` → `main` (commit `1a84847`) y despliegue de GitHub Actions en verde (run `44471747493`). | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Verificación en vivo de Fase 2: orden de secciones, hero, 6 servicios, select, anclas, mapa diferido, cierre, footer, 4 destacadas, 9 + “Ver todas” = 19, 7 filtros, buscador, visor, formulario, imágenes y consola sin errores. | DeepSeek V4.1 Flash Free (OpenCode) |
 
-**Pendiente de aprobación:** el dueño/asesor debe revisar el reporte de Fase 2 antes de publicar. No se hace merge a `main` en esta fase.
+**Estado:** Fase 2 aprobada, publicada en `main` y verificada en vivo.
+
+### Publicación de Fase 2
+
+- **Rama publicada:** `main`.
+- **Commit de merge:** `1a84847`.
+- **Run de Actions:** `44471747493`, completado con éxito el 2026-11-19 (06:22 UTC).
+- **URL verificada:** `https://impenta-tepa.github.io/imprentatepatitlan/?v=[timestamp]`.
+- **Resultado:** orden nuevo de las secciones, hero con el headline y los dos CTA, 6 tarjetas de servicio con los nombres exactos, “Ver más” que filtra y baja al catálogo, select con las 6 macrocategorías + “Otro”, mensaje de WhatsApp con el nombre visible, anclas que aterrizan debajo del header, mapa que no se descarga hasta pulsar el botón y luego carga, franja de cierre, footer completo, 4 destacadas, 9 iniciales + “Ver todas” = 19, 7 filtros, buscador, visor, formulario, 19 imágenes de promoción cargadas, consola sin errores y sin scroll horizontal a 360 ni 320 px.
+- **Nota para Fase 3:** mover el foco al encabezado del catálogo al usar “Ver más” queda como mejora de Fase 3; en la verificación de Fase 2 se comprobó el filtro y el scroll, no el foco.
 
 ---
 

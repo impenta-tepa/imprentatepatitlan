@@ -131,3 +131,4 @@
 | 2026-11-19 | Fase 2: nuevo orden de la home, nav y CTA, franja de confianza, 6 servicios claros, placeholders TODO-DOMINGO, promos 4:5, banda de foráneos, franja de formatos, contacto claro con mapa diferido, cierre negro y footer. | DeepSeek V4.1 Flash Free (OpenCode) |
 | 2026-11-19 | Fase 2: select del formulario con las 6 macrocategorías + Otro, “Ver más” de servicios hacia el filtro del catálogo y verificación de 24 comprobaciones. | DeepSeek V4.1 Flash Free (OpenCode) |
 | 2026-11-19 | Fase 2: Lighthouse móvil 87/100/100/100; LCP 2.9 s, CLS 0, TBT 340 ms, 303 KiB. Commit en `borrador`, sin publicar en `main`. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Fase 2 aprobada y publicada en `main` (merge `1a84847`, run `44471747493`); verificación en vivo completa. | DeepSeek V4.1 Flash Free (OpenCode) |
