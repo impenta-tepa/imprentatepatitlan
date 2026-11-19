@@ -1,8 +1,8 @@
 # Notas, decisiones y pendientes
 
-**Última actualización:** 2026-11-19
+**Última actualización:** 2026-11-20
 **Agente:** DeepSeek V4.1 Flash Free (OpenCode)
-**Fase actual:** Fase 3 publicada en `main` y verificada en vivo; puerta de rendimiento aprobada. Sin Fase 3.1.
+**Fase actual:** Fase 3 publicada y verificada; Fase 4.0 (correcciones confirmadas) aplicada en `borrador`, pendiente de aprobación para publicar con el Lote 4A.
 
 ---
 
@@ -115,27 +115,77 @@
 33. **Prueba en dispositivo real pendiente y documentada.**
     Se creó `docs/pruebas-dispositivo.md` con el checklist de 2 minutos y la tabla de resultados. Domingo lo ejecutará en Android y en iPhone/Safari prestado; los resultados se registrarán ahí.
 
+34. **Fase 4 arranca sin datos reales.**
+    Se preparó `docs/entregables-domingo.md` con rutas y nombres exactos, formatos, pesos máximos y `alt` sugerido para las 4 artes destacadas, 6 fotos de servicios, hero, 2 SVG y galería. También incluye las tablas de precios, testimonios y confirmaciones. Nada se inventa ni se transcribe de imágenes.
+
+35. **Testimonios y galería desde una fuente única.**
+    `data/testimonios.js` contiene `window.TESTIMONIOS` y `window.TRABAJOS`. `js/sitio.js` los renderiza. Ajuste del 2026-11-20: la sección se muestra con al menos 3 testimonios activos; la galería es opcional y aparece dentro de la sección cuando hay 4 trabajos activos. Si solo hay fotos y ningún testimonio, la sección sigue oculta. Los arreglos están vacíos hasta recibir datos reales. El esquema está en `docs/testimonios-format.md`.
+
+36. **Logo SVG preparado, no sustituido.**
+    El header y el footer conservan el WebP/PNG interino. Se dejaron comentarios de sustitución y reglas CSS para el SVG en línea; cuando Domingo entregue `LOGOS/quad-print-claro.svg` y `quad-print-oscuro.svg`, el cambio será directo y sin tocar el diseño.
+
+37. **Regla de medición del hero en Fase 4.**
+    Al integrar la foto real se probará una vez en PSI móvil y escritorio con `eager` + `fetchpriority="high"`. Si el LCP móvil sigue ≤ 2.5 s, se deja eager; si empeora, se regresa a `lazy`. Se reportan ambos números antes de decidir.
+
+38. **Fotos de servicio recibidas: mockups, no fotos reales.**
+    El 2026-11-19 llegaron 6 archivos de 1376 x 768 px (16:9) en `imagenes faltantes/`. Se copiaron a `servicios/` con nombres exactos, se recortaron a 16:10 y el build genera 24 derivados (800 y 1200 px, WebP y JPG). Son mockups/ilustraciones, no fotos de trabajos reales; se usan como provisionales en `borrador`. Falta que Domingo confirme si se quedan o entrega fotos reales. No llegaron hero, SVG, artes 4:5, galería ni testimonios.
+
+39. **Originales fuera del repositorio.**
+    `imagenes faltantes/` se agregó a `.gitignore` para no duplicar los archivos pesados; las fuentes normalizadas y optimizables viven en `servicios/`.
+
+40. **WhatsApp principal confirmado.**
+    El 2026-11-20 Domingo confirmó `5213781097423` (378 109 7423) como WhatsApp principal. No se cambió ningún enlace. El 378 101 1768 permanece como contacto secundario visible en Contacto y footer.
+
+41. **“Anuncio circular” pasa a Toldos y anuncios.**
+    Confirmado como letrero circular con luz por ambos lados, para cliente final. Se conservaron el id y la imagen; cambiaron categoría, título (“Anuncio circular con luz”), descripción, etiquetas y unidad (`c/u`). El precio sigue en `null`. Toldos y anuncios ya no está vacía; la prueba de categoría vacía usa Láser o Diseño.
+
+42. **“Sellos varios” y “Sellos varios · precios” son el mismo producto.**
+    Se conservó una sola ficha con la imagen limpia `promociones/sellos varios.jpg` y la descripción “Sellos personalizados en varios modelos y medidas.” El catálogo pasa a 18 fichas activas. El archivo `sellos varios PRECIOS.jpg` se conserva sin uso y el verificador lo permite explícitamente. Cuando llegue el precio, se usará el prefijo “Desde” con el precio más bajo.
+
+43. **Activación de prueba social desacoplada.**
+    La sección de testimonios se muestra con 3 testimonios activos, aunque no haya galería. La galería se agrega dentro de la sección cuando hay 4 trabajos activos. Si solo hay fotos y ningún testimonio, la sección sigue oculta porque el encabezado habla de clientes reales.
+
+44. **Logo SVG con caja reservada.**
+    Las medidas preparadas son de **ancho**: header 92 px (alto 66.7 px) en escritorio y 80 px (alto 58 px) en móvil; footer 120 px (alto 87 px). La caja fija evita que el SVG mueva el header, las anclas o las safe areas. Al recibir los SVG se debe conservar la proporción 200:145 y 240:174 y re-verificar header, anclas, safe areas y LCP.
+
+45. **Primera carga medida por transferencia real.**
+    Método: build local servido con Brotli, Chrome móvil 390 x 844, `PerformanceResourceTiming` y 3 s después del load. Total **255.4 KiB**: HTML 6.8, CSS 6.6, JS 5.5, datos 2.3, fuentes 85.8, imágenes 127.5 y favicon 21.0. Coincide con los ~250 KiB de PSI de la Fase 3. El estimado anterior de 679 KB era tamaño en disco sin comprimir y contaba 6 miniaturas del catálogo que no se cargan al inicio porque el catálogo es diferido. Lighthouse móvil del build actual: 98/100/100/100, LCP 2.4 s, TBT 0 ms, CLS 0. Guarda cumplida.
+
+46. **Etiqueta “Imagen ilustrativa” y origen de las fotos de servicio.**
+    Las 6 imágenes actuales son mockups con la marca Quad Print, entregados por Domingo el 2026-11-19 en `imagenes faltantes/`. No son fotos de trabajos reales ni imágenes de stock identificadas. Se usan con autorización del dueño para este sitio. El registro por archivo es:
+
+    | Archivo | Origen | Licencia | Estado |
+    |---|---|---|---|
+    | `servicios/01-papeleria.jpg` | Mockup con marca Quad Print, entregado por Domingo | Uso autorizado por el dueño para este sitio | Temporal, con etiqueta |
+    | `servicios/02-gran-formato.jpg` | Mockup con marca Quad Print, entregado por Domingo | Uso autorizado por el dueño para este sitio | Temporal, con etiqueta |
+    | `servicios/03-textiles.jpg` | Mockup con marca Quad Print, entregado por Domingo | Uso autorizado por el dueño para este sitio | Temporal, con etiqueta |
+    | `servicios/04-laser.jpg` | Mockup con marca Quad Print, entregado por Domingo | Uso autorizado por el dueño para este sitio | Temporal, con etiqueta |
+    | `servicios/05-toldos.jpg` | Mockup con marca Quad Print, entregado por Domingo | Uso autorizado por el dueño para este sitio | Temporal, con etiqueta |
+    | `servicios/06-diseno.jpg` | Mockup con marca Quad Print, entregado por Domingo | Uso autorizado por el dueño para este sitio | Temporal, con etiqueta |
+
+    La etiqueta visible “Imagen ilustrativa” y el prefijo del `alt` se generan desde `data/servicios.js`. Al recibir una foto real, se cambia `ilustrativa: false` y la etiqueta desaparece sin editar HTML. Si una imagen no se puede documentar, vuelve al placeholder digno hasta la foto real.
+
 ---
 
 ## Pendientes para Domingo (TODO-DOMINGO)
 
-1. **Precios de las 19 promociones.** La tabla exacta está en el reporte de Fase 1.
+1. **Precios de las 18 promociones activas.** La tabla exacta está en el reporte de Fase 1, menos las dos fichas consolidadas.
 2. **Unidades.** Confirmar `el millar`, `el ciento`, `c/u`, `caja 36 pzas`, `paquete 3 pzas`, etc.
 3. **IVA.** Decidir si cada precio es `incluido`, `+ IVA` o no aplica.
 4. **Vigencia.** Fecha `AAAA-MM-DD` o `null` para cada promoción.
 5. **Destacadas.** Confirmar las 4 actuales o elegir otras. Máximo 4.
-6. **WhatsApp principal.** Hoy todos los enlaces usan `5213781097423` (378 109 7423). Confirmar si ese es el principal o si debe ser 378 101 1768.
-7. **Imágenes nuevas.** Las 19 deben re-exportarse a 1080 x 1350 px, proporción 4:5, WebP menor a 150 KB, solo producto sobre fondo limpio, sin texto ni precio dentro de la imagen.
+6. **WhatsApp principal. Resuelto 2026-11-20:** confirmado `5213781097423` (378 109 7423). Los enlaces no cambian; el 378 101 1768 queda como contacto secundario visible.
+7. **Imágenes nuevas.** Las 18 activas deben re-exportarse a 1080 x 1350 px, proporción 4:5, WebP menor a 150 KB, solo producto sobre fondo limpio, sin texto ni precio dentro de la imagen.
 8. **Headline.** Resuelto: se regresó a “Tu idea merece una gran impresión.” y el botón primario dice “Cotiza tu pedido por WhatsApp”.
 9. **Categorías ambiguas.** Confirmar la asignación de:
-   - `anuncio-circular` → hoy en Papelería.
+   - `anuncio-circular` → **resuelto 2026-11-20:** pasa a Toldos y anuncios como “Anuncio circular con luz”.
    - `paquete-padrinos` → hoy en Papelería.
    - `panalero-2026` → hoy en Textiles y promocionales.
-10. **Descripción de “Sellos varios · precios”.** Hoy dice “precios y opciones en la imagen”. Cuando la imagen nueva ya no tenga precios, hay que cambiar la descripción.
-11. **6 fotos de servicio.** Una por macrocategoría: papelería, gran formato, textiles, láser, toldos y diseño. Ideal horizontal, al menos 1200 px de ancho. Hoy hay placeholders marcados `TODO-DOMINGO`.
+10. **“Sellos varios · precios”. Resuelto 2026-11-20:** es el mismo producto que “Sellos varios”. Se conserva una sola ficha; el archivo con precios queda sin uso.
+11. **6 fotos de servicio.** Recibidas el 2026-11-19 como mockups/ilustraciones provisionales; ver decisión 38. Si Domingo prefiere fotos reales, se reemplazan con los mismos nombres.
 12. **Foto real para el hero.** Una foto de trabajos, del taller o del equipo, horizontal y de al menos 1600 px de ancho. Hoy se usa el banner actual como sustituto marcado `TODO-DOMINGO`.
-13. **3 testimonios reales.** Nombre, negocio y texto autorizado. Sin testimonios inventados. La sección está oculta hasta tenerlos.
-14. **Fotos propias para la galería de trabajos.** Pueden ser las mismas de servicios o fotos adicionales. La sección está oculta hasta tener material real.
+13. **3 testimonios reales.** Nombre, negocio y texto autorizado. Sin testimonios inventados. La sección se activa con 3 testimonios, aunque todavía no haya galería.
+14. **Fotos propias para la galería de trabajos.** Mínimo 4, 1200 x 900 px, WebP. Se agregan dentro de la sección de testimonios cuando ya hay 3 testimonios reales.
 15. **SVG del logo.** Domingo lo entregará para sustituir el WebP/PNG interino del header y del footer. Es la mejora natural del LCP.
 16. **Prueba en dispositivo real.** Checklist y tabla en `docs/pruebas-dispositivo.md`; Domingo lo ejecutará en Android y en iPhone/Safari prestado. El agente solo tiene emulación de Chrome y CDP.
 
@@ -180,3 +230,8 @@
 | 2026-11-19 | Fase 3: Lighthouse móvil 97/100/100/100; LCP 2.5 s, CLS 0, TBT 50 ms, 250 KiB. Commit en `borrador`, sin publicar en `main`. | DeepSeek V4.1 Flash Free (OpenCode) |
 | 2026-11-19 | Fase 3 aprobada y publicada en `main` (merge `767f87b`, run `44553795932`); verificación en vivo a 320/360 px, foco del catálogo, mapa 0→1 iframe, formulario y consola sin errores. | DeepSeek V4.1 Flash Free (OpenCode) |
 | 2026-11-19 | PSI móvil 98/100/100/100 (LCP 1.4 s, TBT 0 ms, CLS 0) y escritorio 100/100/100/100 (LCP 0.3 s, TBT 0 ms, CLS 0); puerta aprobada, sin Fase 3.1. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Fase 4: entregables de Domingo, fuente única de testimonios, render automático con umbral 3 + 4 y logo SVG preparado. Commit en `borrador`, sin publicar. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Fase 4: prueba de activación en `_site` con datos ficticios no commiteados; 3 testimonios + 4 fotos visibles, arreglos vacíos ocultos, sin scroll horizontal a 320 px; build y verificar en verde. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Fase 4: recibidas 6 fotos de servicio (mockups de 1376 x 768); integradas con recorte 16:10 y 24 derivados de 800/1200 px en WebP/JPG. Pendientes hero, SVG, galería y testimonios. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-20 | Fase 4.0: WhatsApp confirmado; Anuncio circular pasa a Toldos; Sellos consolidado y catálogo en 18 fichas; activación de testimonios desacoplada; peso real 255.4 KiB y Lighthouse móvil 98/100/100/100. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-20 | Fase 4.0: etiqueta “Imagen ilustrativa” y origen/licencia de las 6 fotos de servicio registrados; fotos renderizadas desde data/servicios.js. | DeepSeek V4.1 Flash Free (OpenCode) |

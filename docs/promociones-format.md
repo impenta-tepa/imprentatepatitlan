@@ -93,7 +93,7 @@ Reglas:
 
 - La tarjeta reserva un marco fijo 4:5 con `aspect-ratio` y `width="800" height="1000"` para evitar saltos de diseño (CLS).
 - El arte nuevo de 1080 x 1350 px se muestra con `object-fit: cover`.
-- Las 19 imágenes actuales son cuadradas. `js/sitio.js` detecta su proporción y les aplica la clase `is-square`; entonces se muestran completas con `object-fit: contain` para no recortar texto ni precios.
+- Las 18 imágenes activas son cuadradas. `js/sitio.js` detecta su proporción y les aplica la clase `is-square`; entonces se muestran completas con `object-fit: contain` para no recortar texto ni precios. La imagen histórica `sellos varios PRECIOS.jpg` se conserva sin ficha y no se muestra.
 - Al reemplazar el arte por una imagen 4:5, la clase `is-square` desaparece sola. No hay que tocar HTML, CSS ni JS.
 - El visor de imagen no cambia: sigue usando el derivado de 1600 px y el `alt` de la ficha.
 

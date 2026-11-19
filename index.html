@@ -78,6 +78,7 @@
   <header class="site-header">
     <div class="container header__inner">
       <a class="brand" href="#inicio" aria-label="Quad Print, inicio">
+        <!-- FASE 4: al recibir LOGOS/quad-print-claro.svg, sustituir este bloque por el SVG en línea; conservar el enlace y el aria-label. -->
         <picture>
           <source type="image/webp" srcset="derivados/logo-header.webp">
           <img src="derivados/logo-header.png" width="200" height="145" alt="Quad Print Tepatitlán" fetchpriority="high" decoding="async">
@@ -151,13 +152,7 @@
 
         <div class="services__grid">
           <article class="service-card">
-            <div class="service-card__media">
-              <!-- TODO-DOMINGO: reemplazar por foto real de papelería comercial (16:10, mínimo 1200 px de ancho). -->
-              <div class="service-card__placeholder" role="img" aria-label="Foto de papelería comercial próximamente">
-                <span class="service-card__num" aria-hidden="true">01</span>
-                <span class="service-card__tag">Foto próximamente</span>
-              </div>
-            </div>
+            <div class="service-card__media" data-servicio="01-papeleria"></div>
             <div class="service-card__body">
               <span class="service-card__kicker">01 / Papelería</span>
               <h3>Papelería comercial y empresarial</h3>
@@ -172,13 +167,7 @@
           </article>
 
           <article class="service-card">
-            <div class="service-card__media">
-              <!-- TODO-DOMINGO: reemplazar por foto real de gran formato (16:10, mínimo 1200 px de ancho). -->
-              <div class="service-card__placeholder" role="img" aria-label="Foto de gran formato próximamente">
-                <span class="service-card__num" aria-hidden="true">02</span>
-                <span class="service-card__tag">Foto próximamente</span>
-              </div>
-            </div>
+            <div class="service-card__media" data-servicio="02-gran-formato"></div>
             <div class="service-card__body">
               <span class="service-card__kicker">02 / Gran formato</span>
               <h3>Gran formato</h3>
@@ -193,13 +182,7 @@
           </article>
 
           <article class="service-card">
-            <div class="service-card__media">
-              <!-- TODO-DOMINGO: reemplazar por foto real de textiles y promocionales (16:10, mínimo 1200 px de ancho). -->
-              <div class="service-card__placeholder" role="img" aria-label="Foto de textiles y promocionales próximamente">
-                <span class="service-card__num" aria-hidden="true">03</span>
-                <span class="service-card__tag">Foto próximamente</span>
-              </div>
-            </div>
+            <div class="service-card__media" data-servicio="03-textiles"></div>
             <div class="service-card__body">
               <span class="service-card__kicker">03 / Textiles</span>
               <h3>Textiles y promocionales</h3>
@@ -214,13 +197,7 @@
           </article>
 
           <article class="service-card">
-            <div class="service-card__media">
-              <!-- TODO-DOMINGO: reemplazar por foto real de corte y grabado láser (16:10, mínimo 1200 px de ancho). -->
-              <div class="service-card__placeholder" role="img" aria-label="Foto de corte y grabado láser próximamente">
-                <span class="service-card__num" aria-hidden="true">04</span>
-                <span class="service-card__tag">Foto próximamente</span>
-              </div>
-            </div>
+            <div class="service-card__media" data-servicio="04-laser"></div>
             <div class="service-card__body">
               <span class="service-card__kicker">04 / Láser</span>
               <h3>Corte y grabado láser</h3>
@@ -234,13 +211,7 @@
           </article>
 
           <article class="service-card">
-            <div class="service-card__media">
-              <!-- TODO-DOMINGO: reemplazar por foto real de toldos y anuncios (16:10, mínimo 1200 px de ancho). -->
-              <div class="service-card__placeholder" role="img" aria-label="Foto de toldos y anuncios próximamente">
-                <span class="service-card__num" aria-hidden="true">05</span>
-                <span class="service-card__tag">Foto próximamente</span>
-              </div>
-            </div>
+            <div class="service-card__media" data-servicio="05-toldos"></div>
             <div class="service-card__body">
               <span class="service-card__kicker">05 / Toldos</span>
               <h3>Toldos y anuncios</h3>
@@ -255,13 +226,7 @@
           </article>
 
           <article class="service-card">
-            <div class="service-card__media">
-              <!-- TODO-DOMINGO: reemplazar por foto real de diseño gráfico. -->
-              <div class="service-card__placeholder" role="img" aria-label="Foto de diseño gráfico próximamente">
-                <span class="service-card__num" aria-hidden="true">06</span>
-                <span class="service-card__tag">Foto próximamente</span>
-              </div>
-            </div>
+            <div class="service-card__media" data-servicio="06-diseno"></div>
             <div class="service-card__body">
               <span class="service-card__kicker">06 / Diseño</span>
               <h3>Diseño gráfico</h3>
@@ -324,8 +289,8 @@
     </section>
 
     <!-- TODO-DOMINGO: testimonios y galería de trabajos.
-         La sección queda oculta hasta tener 3 testimonios reales con nombre y negocio,
-         y fotos propias de trabajos. No se inventa contenido. -->
+         Se activan solos desde data/testimonios.js cuando hay al menos
+         3 testimonios reales y 4 fotos propias. No se inventa contenido. -->
     <section class="section testimonials" id="testimonios" hidden>
       <div class="container">
         <div class="section__head">
@@ -333,7 +298,7 @@
             <p class="eyebrow eyebrow--m">Lo que dicen de nosotros</p>
             <h2>Clientes <span class="mark">reales.</span></h2>
           </div>
-          <p class="section__lead">Tres testimonios con nombre y negocio, más una galería de trabajos. Se activa cuando Domingo entregue los datos reales.</p>
+          <p class="section__lead">Negocios y clientes de Tepatitlán que ya confiaron su impresión a Quad Print.</p>
         </div>
         <div class="testimonials__grid" id="testimonios-grid"></div>
         <div class="work-gallery" id="galeria-trabajos"></div>
@@ -483,6 +448,7 @@
   <footer class="footer">
     <div class="container footer__grid">
       <div class="footer__brand">
+        <!-- FASE 4: al recibir LOGOS/quad-print-oscuro.svg, sustituir este bloque por el SVG en línea con role="img" y aria-label. -->
         <picture>
           <source type="image/webp" srcset="derivados/logo-footer.webp">
           <img src="derivados/logo-footer.png" width="240" height="174" alt="Quad Print Tepatitlán" loading="lazy" decoding="async">
@@ -542,6 +508,8 @@
   </dialog>
 
   <script src="data/promociones.js"></script>
+  <script src="data/servicios.js"></script>
+  <script src="data/testimonios.js"></script>
   <script src="js/sitio.js"></script>
 </body>
 </html>

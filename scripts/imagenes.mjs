@@ -13,6 +13,16 @@ export const ANCHOS_BANNER = [1600, 800];
 export const ANCHO_FOTO = 960;
 export const NOMBRE_FOTO = 'foto real del local.jpg';
 export const NOMBRE_BANNER = 'banner.jpg';
+// Fotos de servicios: se recortan a 16:10 y se publican en dos anchos.
+export const ANCHOS_SERVICIO = [800, 1200];
+export const SERVICIOS = [
+  { base: '01-papeleria', origen: 'servicios/01-papeleria.jpg' },
+  { base: '02-gran-formato', origen: 'servicios/02-gran-formato.jpg' },
+  { base: '03-textiles', origen: 'servicios/03-textiles.jpg' },
+  { base: '04-laser', origen: 'servicios/04-laser.jpg' },
+  { base: '05-toldos', origen: 'servicios/05-toldos.jpg' },
+  { base: '06-diseno', origen: 'servicios/06-diseno.jpg' }
+];
 // Logos optimizados al tamaño real de visualización x2.
 export const ANCHO_LOGO_HEADER = 200;
 export const ANCHO_LOGO_FOOTER = 240;
@@ -30,10 +40,14 @@ export const rutaMiniatura = (archivo, formato) => `derivados/promociones/${arch
 export const rutaVisor = (archivo, formato) => `derivados/promociones/${archivo}-${ANCHO_VISOR}.${formato}`;
 export const rutaBanner = (ancho, formato) => `derivados/banner-${ancho}.${formato}`;
 export const rutaFoto = formato => `derivados/foto-local-${ANCHO_FOTO}.${formato}`;
+export const rutaServicio = (base, ancho, formato) => `derivados/servicios/${base}-${ancho}.${formato}`;
 export const rutaOg = () => OG.nombre;
 
-async function generarArchivo(origen, destino, { ancho, formato, calidadWebp = CALIDAD_WEBP, calidadJpg = CALIDAD_JPG }) {
-  let imagen = sharp(origen, { failOn: 'none' }).rotate().resize({ width: ancho, withoutEnlargement: true });
+async function generarArchivo(origen, destino, { ancho, alto, formato, calidadWebp = CALIDAD_WEBP, calidadJpg = CALIDAD_JPG }) {
+  let imagen = sharp(origen, { failOn: 'none' }).rotate();
+  imagen = alto
+    ? imagen.resize({ width: ancho, height: alto, fit: 'cover', position: 'centre' })
+    : imagen.resize({ width: ancho, withoutEnlargement: true });
   imagen = formato === 'webp'
     ? imagen.webp({ quality: calidadWebp, effort: 5 })
     : imagen.jpeg({ quality: calidadJpg, mozjpeg: true, progressive: true });
@@ -63,6 +77,8 @@ export async function generarDerivados({ sourceRoot, baseDir }) {
   const promociones = await listarPromociones(sourceRoot);
   const salidaPromociones = path.join(baseDir, 'derivados', 'promociones');
   await mkdir(salidaPromociones, { recursive: true });
+  const salidaServicios = path.join(baseDir, 'derivados', 'servicios');
+  await mkdir(salidaServicios, { recursive: true });
 
   for (const archivo of promociones) {
     const origen = path.join(sourceRoot, 'promociones', archivo);
@@ -78,6 +94,18 @@ export async function generarDerivados({ sourceRoot, baseDir }) {
       const destino = path.join(baseDir, relativa);
       await generarArchivo(origen, destino, { ancho: ANCHO_VISOR, formato, calidadWebp: CALIDAD_VISOR_WEBP, calidadJpg: CALIDAD_VISOR_JPG });
       resultados.push({ tipo: 'visor', origen: archivo, derivado: relativa.replace(/\\/g, '/'), bytes: (await stat(destino)).size, formato, ancho: ANCHO_VISOR });
+    }
+  }
+
+  for (const servicio of SERVICIOS) {
+    for (const ancho of ANCHOS_SERVICIO) {
+      const alto = Math.round(ancho * 10 / 16);
+      for (const formato of FORMATOS) {
+        const relativa = rutaServicio(servicio.base, ancho, formato);
+        const destino = path.join(baseDir, relativa);
+        await generarArchivo(path.join(sourceRoot, servicio.origen), destino, { ancho, alto, formato });
+        resultados.push({ tipo: 'servicio', origen: servicio.origen, derivado: relativa.replace(/\\/g, '/'), bytes: (await stat(destino)).size, formato, ancho, alto });
+      }
     }
   }
 
@@ -148,6 +176,13 @@ function analizarDerivado(urlPath, sourceRoot) {
       formato: match[3],
       ...(alta ? { calidadWebp: CALIDAD_VISOR_WEBP, calidadJpg: CALIDAD_VISOR_JPG } : {})
     };
+  }
+  match = relativa.match(/^derivados\/servicios\/([a-z0-9-]+)-(\d+)\.(webp|jpg)$/);
+  if (match && ANCHOS_SERVICIO.includes(Number(match[2]))) {
+    const servicio = SERVICIOS.find(item => item.base === match[1]);
+    if (!servicio) return null;
+    const ancho = Number(match[2]);
+    return { relativa, origen: path.join(sourceRoot, servicio.origen), ancho, alto: Math.round(ancho * 10 / 16), formato: match[3] };
   }
   match = relativa.match(/^derivados\/banner-(\d+)\.(webp|jpg)$/);
   if (match && ANCHOS_BANNER.includes(Number(match[1]))) {

@@ -1,8 +1,8 @@
 # Qué hace cada bloque de la home
 
-**Última actualización:** 2026-11-19
+**Última actualización:** 2026-11-20
 **Agente:** DeepSeek V4.1 Flash Free (OpenCode)
-**Fase:** Fase 3 publicada en `main` y verificada en vivo.
+**Fase:** Fase 3 publicada en `main`; Fase 4.0 en `borrador`.
 
 La home es HTML estático con CSS y JavaScript nativo. No hay frameworks de interfaz. El build (`npm run build`) copia archivos, genera derivados de imagen, minifica la copia publicada y arma `_site/`.
 
@@ -68,11 +68,11 @@ La home es HTML estático con CSS y JavaScript nativo. No hay frameworks de inte
   4. Corte y grabado láser.
   5. Toldos y anuncios.
   6. Diseño gráfico.
-- **Cada tarjeta:** placeholder de foto, nombre, 3–4 ejemplos y enlace “Ver más”.
+- **Cada tarjeta:** foto desde `data/servicios.js`, nombre, 3–4 ejemplos y enlace “Ver más”.
 - **“Ver más”:** aplica el filtro correspondiente del catálogo (`data-filtro`), hace scroll al catálogo, mueve el foco al encabezado del catálogo y actualiza la URL a `#catalogo`. Queda preparado para cambiar el enlace a una subpágina futura.
-- **Fotos:** las seis faltan. Los placeholders están marcados `TODO-DOMINGO` y muestran “Foto próximamente”; no se usaron fotos ajenas. La proporción reservada es 16:10 (ideal 1600 x 1000 px).
+- **Fotos:** `data/servicios.js` define `base`, `alt` e `ilustrativa`. Las seis actuales son mockups entregados por Domingo (1376 x 768 originales); el build las recorta a 16:10 y publica 800 y 1200 px en WebP y JPG en `derivados/servicios/`. Mientras `ilustrativa: true`, se muestra la etiqueta “Imagen ilustrativa” y el `alt` lleva el prefijo; al cambiar a `false`, ambos desaparecen sin tocar HTML.
 - **Rejilla:** 3 columnas en escritorio, 2 en tablet y 1 en móvil.
-- **Para cambiar textos:** editar `index.html`.
+- **Para cambiar textos:** editar `index.html`. **Para cambiar fotos o quitar la etiqueta:** editar `data/servicios.js`.
 
 ## 5. Promociones destacadas
 
@@ -89,7 +89,7 @@ La home es HTML estático con CSS y JavaScript nativo. No hay frameworks de inte
 - **Render:** `js/sitio.js` (`pintarFiltros`, `pintarCatalogo`, `coincidencias`, `tarjeta`, `marcarMiniaturas`).
 - **Qué hace:**
   - Se pinta con `IntersectionObserver` antes de entrar en pantalla, sin bloquear el primer pintado.
-  - Muestra 9 promociones y un botón “Ver todas” (19 en total).
+  - Muestra 9 promociones y un botón “Ver todas” (18 activas en total).
   - Busca por título, descripción, categoría, etiquetas y nombre de archivo.
   - Filtra por las 6 macrocategorías; el estado muestra el nombre de la categoría activa.
   - Si una categoría no tiene promociones, muestra un mensaje para cotizar por WhatsApp.
@@ -98,15 +98,19 @@ La home es HTML estático con CSS y JavaScript nativo. No hay frameworks de inte
 - **Foco:** al usar “Ver más” desde una tarjeta de servicio, el foco pasa al encabezado `#catalogo-titulo`; el encabezado tiene `tabindex="-1"` y `scroll-margin-top`.
 - **Marco de imagen:** proporción fija 4:5 con `aspect-ratio` y `width="800" height="1000"` para evitar CLS.
   - Las imágenes nuevas se muestran con `object-fit: cover`.
-  - Las 19 imágenes actuales son cuadradas; el JS les agrega `is-square` y se muestran completas con `object-fit: contain` para no recortar texto ni precios.
+  - Las 18 imágenes activas son cuadradas; el JS les agrega `is-square` y se muestran completas con `object-fit: contain` para no recortar texto ni precios. La imagen histórica “sellos varios PRECIOS.jpg” se conserva sin ficha y no se muestra.
 - **Para agregar o editar:** ver `docs/promociones-format.md`.
 
-## 7. Testimonios y galería (ocultos)
+## 7. Testimonios y galería
 
 - **HTML:** `index.html` (`#testimonios`, con `hidden`).
-- **Estado:** ocultos. No hay testimonios ni fotos de trabajos reales todavía.
-- **Qué falta:** 3 testimonios con nombre y negocio, y fotos propias para la galería. Cuando existan, se quita `hidden` y se llena `#testimonios-grid` y `#galeria-trabajos`.
-- **Regla:** no inventar testimonios.
+- **Datos:** `data/testimonios.js` (`window.TESTIMONIOS` y `window.TRABAJOS`).
+- **Render:** `js/sitio.js` (`prepararTestimonios`). No se toca el HTML para editar contenido.
+- **Activación automática:** la sección se muestra con al menos 3 testimonios activos. La galería es opcional y aparece dentro de la sección cuando hay 4 trabajos activos; si solo hay fotos y ningún testimonio, la sección sigue oculta.
+- **Testimonios:** nombre, negocio, texto autorizado y foto opcional. Se muestran como máximo 3.
+- **Galería:** imagen, `alt` y pie opcional. Se muestra a 4:3 cuando hay 4 o más trabajos.
+- **Fotos:** `galeria/`; trabajos 1200 x 900 WebP y retratos 600 x 600 WebP.
+- **Regla:** no inventar testimonios ni usar fotos ajenas. Ver `docs/testimonios-format.md` y `docs/entregables-domingo.md`.
 
 ## 8. Banda de foráneos
 
@@ -172,10 +176,11 @@ La home es HTML estático con CSS y JavaScript nativo. No hay frameworks de inte
 ## 15. Build y datos
 
 - `data/promociones.js`: fuente única de promociones y categorías. **No se sobrescribe.**
-- `scripts/promociones.mjs`: lee la fuente única y lista las imágenes.
-- `scripts/preparar.mjs`: copia `data/`, minifica la copia publicada con esbuild y arma `_site/`.
+- `data/testimonios.js`: fuente única de testimonios y galería. **No se sobrescribe.**
+- `scripts/promociones.mjs`: lee las fuentes únicas y lista las imágenes.
+- `scripts/preparar.mjs`: copia `data/` y `galeria/`, minifica la copia publicada con esbuild y arma `_site/`.
 - `scripts/imagenes.mjs`: genera 800 px y 1600 px en WebP y JPG, además de los logos optimizados de header y footer.
-- `scripts/verificar.mjs`: revisa fichas, imágenes, derivados, SEO, peso, 24 comprobaciones de Fase 2 y 13 de Fase 3.
+- `scripts/verificar.mjs`: revisa fichas, imágenes, derivados, SEO, peso, 24 comprobaciones de Fase 2, 13 de Fase 3 y 6 de preparación de Fase 4.
 - `scripts/servir.mjs`: servidor local en `http://localhost:4173`.
 - **Fuentes:** el CSS de fuentes se redujo a los subconjuntos latin y latin-ext; los archivos woff2 se mantienen.
 - **Minificación:** CSS, fuentes, JS y datos se minifican solo en `_site`; los fuentes del repositorio siguen legibles.
@@ -197,3 +202,4 @@ La home es HTML estático con CSS y JavaScript nativo. No hay frameworks de inte
 - Recorrido solo con teclado: menú, filtros, visor, formulario y mapa.
 - Consola sin errores.
 - Pendiente: SVG del logo y prueba en dispositivo Android/Safari real (checklist en `docs/pruebas-dispositivo.md`).
+- Fase 4.0: primera carga real móvil 255.4 KiB (transferencia con Brotli); Lighthouse móvil 98/100/100/100, LCP 2.4 s, TBT 0, CLS 0. El estimado de 679 KB era tamaño en disco sin comprimir y contaba 6 miniaturas del catálogo diferido.

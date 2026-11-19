@@ -2,7 +2,8 @@
 // Uso: npm run verificar  (ejecuta antes npm run build)
 import { readFile, readdir, stat } from 'node:fs/promises';
 import path from 'node:path';
-import { root, readPromociones } from './promociones.mjs';
+import { root, readPromociones, readTestimonios, readServicios } from './promociones.mjs';
+import { SERVICIOS, ANCHOS_SERVICIO } from './imagenes.mjs';
 
 const sitio = path.join(root, '_site');
 const BASE = 'https://impenta-tepa.github.io/imprentatepatitlan/';
@@ -30,13 +31,16 @@ const imagenes = (await readdir(path.join(root, 'promociones'), { withFileTypes:
   .sort((a, b) => a.localeCompare(b, 'es', { numeric: true }));
 
 const imagenesEnData = promociones.map(p => basename(p.imagen || ''));
-const sinFicha = imagenes.filter(archivo => !imagenesEnData.includes(archivo));
+// Archivo histórico: se conserva sin ficha porque Domingo confirmó que es el mismo
+// producto que "Sellos varios" con precios dentro del arte. No se publica en el catálogo.
+const IMAGENES_SIN_FICHA_PERMITIDAS = new Set(['sellos varios PRECIOS.jpg']);
+const sinFicha = imagenes.filter(archivo => !imagenesEnData.includes(archivo) && !IMAGENES_SIN_FICHA_PERMITIDAS.has(archivo));
 const sinImagen = imagenesEnData.filter(archivo => !imagenes.includes(archivo));
 
 if (sinFicha.length) fallos.push(`imágenes sin ficha en data/promociones.js: ${sinFicha.join(', ')}`);
 if (sinImagen.length) fallos.push(`fichas que apuntan a imágenes inexistentes: ${sinImagen.join(', ')}`);
 if (!sinFicha.length && !sinImagen.length) {
-  ok.push(`fuente única con ${promociones.length} promociones, igual a promociones/`);
+  ok.push(`fuente única con ${promociones.length} promociones activas; 1 imagen histórica sin ficha permitida`);
 }
 
 // 3. Esquema y reglas de la fuente única
@@ -84,8 +88,13 @@ for (const [indice, promo] of promociones.entries()) {
 }
 if (destacadas > 4) fallos.push(`hay ${destacadas} promociones destacadas; el máximo es 4`);
 if (destacadas === 0) avisos.push('no hay promociones marcadas como destacadas');
-if (promociones.length !== 19) avisos.push(`la fuente única tiene ${promociones.length} promociones; la Fase 1 migró 19`);
+if (promociones.length !== 18) avisos.push(`la fuente única tiene ${promociones.length} promociones; el catálogo activo debe ser 18`);
 if (!fallos.length) ok.push(`esquema validado: ${promociones.length} fichas, ${destacadas} destacadas`);
+
+const activasPorCategoria = new Map(categorias.map(c => [c.id, promociones.filter(p => p.categoria === c.id && p.activo !== false).length]));
+const categoriasVacias = categorias.filter(c => activasPorCategoria.get(c.id) === 0).map(c => c.nombre);
+if (categoriasVacias.length) ok.push('categorías sin promociones para probar el mensaje: ' + categoriasVacias.join(', '));
+else avisos.push('no hay categorías vacías para probar el mensaje de cotización');
 
 // 4. Cada promoción tiene miniatura y visor, en WebP y JPG
 let faltantes = 0;
@@ -156,7 +165,7 @@ const confianzaOk = [
 
 const estructura = [
   ['6 tarjetas de servicio', (html.match(/class="service-card"/g) || []).length === 6],
-  ['6 placeholders de servicio', (html.match(/service-card__placeholder/g) || []).length === 6],
+  ['6 tarjetas de servicio', (html.match(/class="service-card"/g) || []).length === 6],
   ['nombres exactos de las 6 categorías en Servicios', serviciosOk],
   ['4 datos en la franja de confianza', (html.match(/class="trust-strip__item"/g) || []).length === 4 && confianzaOk],
   ['nav en orden Servicios, Promociones, Ubicación, Contacto', navOk],
@@ -178,7 +187,7 @@ const estructura = [
   ['detección de miniaturas cuadradas', jsFuente.includes('is-square') && jsFuente.includes('naturalWidth')],
   ['filtro desde las tarjetas de servicio', jsFuente.includes("closest('[data-filtro]')")],
   ['mapa lazy en JavaScript', jsFuente.includes("iframe.loading = 'lazy'")],
-  ['placeholders TODO-DOMINGO listados', (html.match(/TODO-DOMINGO/g) || []).length >= 8]
+  ['pendientes TODO-DOMINGO documentados', (html.match(/TODO-DOMINGO/g) || []).length >= 2]
 ];
 for (const [nombre, cumple] of estructura) {
   if (!cumple) fallos.push('Fase 2: ' + nombre);
@@ -215,14 +224,98 @@ for (const [nombre, cumple] of fase3) {
 }
 if (!fase3.some(([, cumple]) => !cumple)) ok.push('estructura de Fase 3 completa: ' + fase3.length + ' comprobaciones');
 
+// 5d. Preparación de la Fase 4: testimonios y galería desde datos
+const { testimonios, trabajos } = await readTestimonios(root);
+const testimoniosActivos = testimonios.filter(item => item && item.activo !== false);
+const trabajosActivos = trabajos.filter(item => item && item.activo !== false);
+const minimosTestimonios = testimoniosActivos.length >= 3;
+const galeriaLista = trabajosActivos.length >= 4;
+
+for (const [indice, testimonio] of testimoniosActivos.entries()) {
+  const etiqueta = testimonio.nombre || `#${indice + 1}`;
+  for (const campo of ['nombre', 'negocio', 'texto']) {
+    if (typeof testimonio[campo] !== 'string' || !testimonio[campo].trim()) fallos.push(`testimonio ${etiqueta}: falta ${campo}`);
+  }
+  if (testimonio.foto && !(await existe(path.join(sitio, testimonio.foto)))) fallos.push(`testimonio ${etiqueta}: no existe ${testimonio.foto}`);
+}
+
+for (const [indice, trabajo] of trabajosActivos.entries()) {
+  const etiqueta = trabajo.imagen || `#${indice + 1}`;
+  for (const campo of ['imagen', 'alt']) {
+    if (typeof trabajo[campo] !== 'string' || !trabajo[campo].trim()) fallos.push(`trabajo ${etiqueta}: falta ${campo}`);
+  }
+  if (trabajo.imagen && !(await existe(path.join(sitio, trabajo.imagen)))) fallos.push(`trabajo ${etiqueta}: no existe ${trabajo.imagen}`);
+}
+
+let derivadosServicio = 0;
+for (const servicio of SERVICIOS) {
+  for (const ancho of ANCHOS_SERVICIO) {
+    for (const formato of ['webp', 'jpg']) {
+      const relativa = `derivados/servicios/${servicio.base}-${ancho}.${formato}`;
+      if (await existe(path.join(sitio, relativa))) derivadosServicio++;
+      else fallos.push('falta ' + relativa);
+    }
+  }
+}
+if (derivadosServicio === SERVICIOS.length * ANCHOS_SERVICIO.length * 2) {
+  ok.push(`${derivadosServicio} derivados de servicio presentes (800 y 1200 px, WebP y JPG)`);
+}
+
+const { servicios } = await readServicios(root);
+let serviciosDatosOk = servicios.length === 6;
+for (const [indice, servicio] of servicios.entries()) {
+  const etiqueta = servicio.base || `#${indice + 1}`;
+  if (!/^[a-z0-9-]+$/.test(String(servicio.base || ''))) {
+    fallos.push(`servicio ${etiqueta}: base inválida`);
+    serviciosDatosOk = false;
+  }
+  if (typeof servicio.alt !== 'string' || !servicio.alt.trim()) {
+    fallos.push(`servicio ${etiqueta}: falta alt`);
+    serviciosDatosOk = false;
+  }
+  if (typeof servicio.ilustrativa !== 'boolean') {
+    fallos.push(`servicio ${etiqueta}: ilustrativa debe ser booleano`);
+    serviciosDatosOk = false;
+  }
+}
+
+const serviciosEnHtml = servicios.every(servicio => html.includes(`data-servicio="${servicio.base}"`));
+const serviciosEnJs = jsFuente.includes('data-servicio') && jsFuente.includes('service-card__flag') && jsFuente.includes('Imagen ilustrativa: ');
+const etiquetaRequerida = servicios.some(servicio => servicio.ilustrativa === true);
+const etiquetaCss = css.includes('.service-card__flag');
+
+const fase4 = [
+  ['fuente de servicios publicada', await existe(path.join(sitio, 'data/servicios.js'))],
+  ['6 servicios con base, alt y flag', serviciosDatosOk],
+  ['contenedores de servicio en HTML', serviciosEnHtml],
+  ['render de servicios desde datos', serviciosEnJs],
+  ['etiqueta ilustrativa cuando aplica', !etiquetaRequerida || etiquetaCss],
+  ['fuente de testimonios publicada', await existe(path.join(sitio, 'data/testimonios.js'))],
+  ['script de testimonios antes de sitio.js', html.includes('src="data/testimonios.js"') && html.indexOf('data/testimonios.js') < html.indexOf('js/sitio.js')],
+  ['sección oculta sin 3 testimonios', minimosTestimonios || /<section[^>]*id="testimonios"[^>]*hidden/.test(html)],
+  ['render de testimonios desde datos', jsFuente.includes("getElementById('testimonios-grid')") && jsFuente.includes("getElementById('galeria-trabajos')")],
+  ['activación por 3 testimonios y galería opcional', jsFuente.includes('testimonios.length < 3') && jsFuente.includes('trabajos.length >= 4')],
+  ['carpeta de galería publicada', await existe(path.join(sitio, 'galeria/LEEME.txt'))]
+];
+for (const [nombre, cumple] of fase4) {
+  if (!cumple) fallos.push('Fase 4: ' + nombre);
+}
+if (!fase4.some(([, cumple]) => !cumple)) ok.push('preparación de Fase 4 completa: ' + fase4.length + ' comprobaciones');
+if (minimosTestimonios) ok.push(`testimonios listos para activarse (${testimoniosActivos.length} testimonios)`);
+if (galeriaLista) ok.push(`galería lista para mostrarse (${trabajosActivos.length} trabajos)`);
+
 const bytesFuente = (await stat(path.join(root, 'css/estilos.css'))).size
   + (await stat(path.join(root, 'fonts/fonts.css'))).size
   + (await stat(path.join(root, 'js/sitio.js'))).size
-  + (await stat(path.join(root, 'data/promociones.js'))).size;
+  + (await stat(path.join(root, 'data/promociones.js'))).size
+  + (await stat(path.join(root, 'data/servicios.js'))).size
+  + (await stat(path.join(root, 'data/testimonios.js'))).size;
 const bytesPublicado = (await stat(path.join(sitio, 'css/estilos.css'))).size
   + (await stat(path.join(sitio, 'fonts/fonts.css'))).size
   + (await stat(path.join(sitio, 'js/sitio.js'))).size
-  + (await stat(path.join(sitio, 'data/promociones.js'))).size;
+  + (await stat(path.join(sitio, 'data/promociones.js'))).size
+  + (await stat(path.join(sitio, 'data/servicios.js'))).size
+  + (await stat(path.join(sitio, 'data/testimonios.js'))).size;
 if (bytesPublicado < bytesFuente) ok.push(`minificación: ${kb(bytesFuente)} → ${kb(bytesPublicado)} (CSS + fuentes + JS + datos)`);
 else fallos.push('la minificación no redujo CSS + fuentes + JS + datos');
 
@@ -264,12 +357,11 @@ const peso = async rutas => {
   for (const rel of rutas) { try { total += (await stat(path.join(sitio, rel))).size; } catch {} }
   return total;
 };
-const miniaturas = promociones.slice(0, 6).map(p => `derivados/promociones/${basename(p.imagen)}-800.webp`);
-const primeraCarga = await peso(['index.html', 'css/estilos.css', 'fonts/fonts.css',
+const primeraCargaBase = await peso(['index.html', 'css/estilos.css', 'fonts/fonts.css',
   'fonts/rP2Hp2ywxg089UriCZOIHQ.woff2', 'fonts/xn7gYHE41ni1AdIRggexSg.woff2',
-  'js/sitio.js', 'data/promociones.js', 'derivados/banner-1600.webp',
-  'derivados/logo-header.webp', ...miniaturas]);
-ok.push('primera carga estimada (incluye fuentes y 6 miniaturas): ' + kb(primeraCarga));
+  'js/sitio.js', 'data/promociones.js', 'data/testimonios.js', 'derivados/banner-1600.webp',
+  'derivados/logo-header.webp']);
+ok.push('peso en disco de la primera carga base (sin catálogo diferido): ' + kb(primeraCargaBase));
 
 for (const linea of ok) console.log('  OK  ' + linea);
 for (const linea of avisos) console.log('  !   ' + linea);

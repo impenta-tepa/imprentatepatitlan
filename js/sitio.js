@@ -514,6 +514,78 @@ if (formulario) {
   });
 }
 
+/* ---------- Fotos de servicios (Fase 4) ---------- */
+const serviciosFuente = Array.isArray(window.SERVICIOS) ? window.SERVICIOS : [];
+
+const servicioHTML = servicio => {
+  const base = String(servicio.base || '').trim();
+  if (!base) return '';
+  const ilustrativa = servicio.ilustrativa !== false;
+  const alt = (ilustrativa ? 'Imagen ilustrativa: ' : '') + String(servicio.alt || 'Servicio de Quad Print.');
+  return '<picture>'
+    + '<source type="image/webp" srcset="derivados/servicios/' + escapar(base) + '-800.webp 800w, derivados/servicios/' + escapar(base) + '-1200.webp 1200w" sizes="(min-width: 961px) 33vw, 100vw">'
+    + '<img src="derivados/servicios/' + escapar(base) + '-1200.jpg" srcset="derivados/servicios/' + escapar(base) + '-800.jpg 800w, derivados/servicios/' + escapar(base) + '-1200.jpg 1200w" sizes="(min-width: 961px) 33vw, 100vw" width="1200" height="750" loading="lazy" decoding="async" alt="' + escapar(alt) + '">'
+    + '</picture>'
+    + (ilustrativa ? '<span class="service-card__flag">Imagen ilustrativa</span>' : '');
+};
+
+document.querySelectorAll('.service-card__media[data-servicio]').forEach(contenedor => {
+  const servicio = serviciosFuente.find(item => item.base === contenedor.dataset.servicio);
+  if (!servicio) return;
+  contenedor.innerHTML = servicioHTML(servicio);
+  contenedor.classList.add('has-photo');
+});
+
+/* ---------- Testimonios y galería (Fase 4) ---------- */
+const testimoniosFuente = Array.isArray(window.TESTIMONIOS) ? window.TESTIMONIOS : [];
+const trabajosFuente = Array.isArray(window.TRABAJOS) ? window.TRABAJOS : [];
+const activos = lista => lista.filter(item => item && item.activo !== false);
+const testimonios = activos(testimoniosFuente).filter(item =>
+  String(item.nombre || '').trim() && String(item.negocio || '').trim() && String(item.texto || '').trim()
+);
+const trabajos = activos(trabajosFuente).filter(item =>
+  String(item.imagen || '').trim() && String(item.alt || '').trim()
+);
+
+const testimonioHTML = testimonio => {
+  const foto = testimonio.foto
+    ? '<img class="testimonial__photo" src="' + escapar(testimonio.foto) + '" alt="" width="48" height="48" loading="lazy" decoding="async">'
+    : '';
+  return '<figure class="testimonial">'
+    + '<blockquote><p>' + escapar(testimonio.texto) + '</p></blockquote>'
+    + '<figcaption class="testimonial__person">' + foto
+    + '<span class="testimonial__data"><strong class="testimonial__name">' + escapar(testimonio.nombre) + '</strong>'
+    + '<span class="testimonial__business">' + escapar(testimonio.negocio) + '</span></span>'
+    + '</figcaption></figure>';
+};
+
+const trabajoHTML = trabajo => '<figure class="work">'
+  + '<img src="' + escapar(trabajo.imagen) + '" alt="' + escapar(trabajo.alt) + '" width="800" height="600" loading="lazy" decoding="async">'
+  + (trabajo.pie ? '<figcaption>' + escapar(trabajo.pie) + '</figcaption>' : '')
+  + '</figure>';
+
+const prepararTestimonios = () => {
+  const seccion = document.getElementById('testimonios');
+  const gridTestimonios = document.getElementById('testimonios-grid');
+  const gridTrabajos = document.getElementById('galeria-trabajos');
+  if (!seccion || !gridTestimonios || !gridTrabajos) return;
+  if (testimonios.length < 3) {
+    seccion.hidden = true;
+    gridTrabajos.hidden = true;
+    return;
+  }
+  gridTestimonios.innerHTML = testimonios.slice(0, 3).map(testimonioHTML).join('');
+  if (trabajos.length >= 4) {
+    gridTrabajos.innerHTML = trabajos.map(trabajoHTML).join('');
+    gridTrabajos.hidden = false;
+  } else {
+    gridTrabajos.innerHTML = '';
+    gridTrabajos.hidden = true;
+  }
+  seccion.hidden = false;
+};
+prepararTestimonios();
+
 /* ---------- Arranque ---------- */
 conectarGaleria(destacadosGrid);
 conectarGaleria(galeria);
