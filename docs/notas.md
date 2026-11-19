@@ -1,8 +1,8 @@
 # Notas, decisiones y pendientes
 
-**Última actualización:** 2026-11-18
+**Última actualización:** 2026-11-19
 **Agente:** DeepSeek V4.1 Flash Free (OpenCode)
-**Fase actual:** Fase 1 aprobada y publicada; Fase 2 en ejecución.
+**Fase actual:** Fase 2 terminada en `borrador`, pendiente de aprobación. No publicada en `main`.
 
 ---
 
@@ -46,6 +46,33 @@
 10. **Publicación de Fase 1 en `main` autorizada.**
     El asesor autorizó el merge `borrador` → `main` el 2026-11-19, con el ajuste previo del headline. La publicación se hace con el flujo existente: push a `main` → GitHub Actions ejecuta el build → publica `_site` con `/derivados` generado. El detalle de la verificación en vivo se registra en `docs/plan.md`.
 
+11. **La home de Fase 2 sigue el orden del brief.**
+    Hero → franja de confianza (4 datos) → servicios claros (6 tarjetas) → promociones destacadas → catálogo → testimonios/galería ocultos → banda de foráneos → franja de formatos → contacto claro → franja negra de cierre → footer. La franja negra grande quedó solo al cierre; el footer conserva su fondo oscuro.
+
+12. **Las tarjetas de servicio usan las 6 macrocategorías exactas.**
+    Papelería comercial y empresarial, Gran formato, Textiles y promocionales, Corte y grabado láser, Toldos y anuncios y Diseño gráfico. Cada tarjeta muestra 3–4 ejemplos y “Ver más” aplica el filtro del catálogo (`data-filtro`), dejando preparado el enlace para la futura subpágina.
+
+13. **Las fotos que faltan quedan como placeholders dignos y marcados.**
+    Hero, las 6 tarjetas de servicio y la estructura de testimonios tienen comentarios `TODO-DOMINGO`. Los servicios muestran un placeholder gráfico con número y “Foto próximamente”; no se usaron fotos ajenas ni se inventaron testimonios. La sección de testimonios/galería está oculta hasta tener 3 testimonios reales con nombre y negocio y fotos propias.
+
+14. **Las miniaturas de promoción usan un marco fijo 4:5.**
+    El marco tiene `aspect-ratio: 4 / 5` y las imágenes `width="800" height="1000"` para reservar espacio y evitar CLS. Las imágenes nuevas se verán con `object-fit: cover`. Las 19 imágenes actuales son cuadradas y se detectan por JavaScript; reciben la clase `is-square` y se muestran completas con `object-fit: contain` para no recortar texto ni precios. Al reemplazar el arte, la clase desaparece sola.
+
+15. **El mapa se carga solo cuando la persona lo pide.**
+    La fachada del local se muestra con una foto real y un botón “Ver mapa interactivo”. Al pulsarlo se crea un iframe de Google Maps con `loading="lazy"`. Así la primera carga no descarga el mapa ni scripts de terceros. Siempre queda el enlace “Abrir en Google Maps”.
+
+16. **El formulario usa las 6 macrocategorías visibles.**
+    El select de servicio tiene las 6 categorías exactas + “Otro”. El mensaje de WhatsApp se arma con el texto visible de la opción, sin códigos internos. No se cambió la lógica de envío: solo abre WhatsApp con el mensaje preparado.
+
+17. **“Ubicación” ancla al mapa.**
+    El nav del header quedó: Servicios, Promociones, Ubicación, Contacto + Cotizar. “Ubicación” lleva a `#ubicacion`, el bloque del mapa dentro de Contacto; “Contacto” lleva al inicio de la sección. En móvil se agregó un icono de WhatsApp siempre visible en el header.
+
+18. **Contacto es claro; el cierre es la única franja negra grande.**
+    El contacto pasó de fondo negro a fondo de papel con formulario blanco. La franja de cierre “Aquí empieza tu próxima impresión” es la única banda negra grande; el footer conserva su fondo oscuro habitual.
+
+19. **Resultado de Fase 2 en rendimiento y accesibilidad.**
+    Lighthouse móvil sobre el build local: Performance 87, Accesibilidad 100, Buenas prácticas 100 y SEO 100. LCP 2.9 s, CLS 0, TBT 340 ms y primera carga 303 KiB. Se corrigió el contraste del eyebrow cian y el nombre accesible del botón del mapa. La mejora fina de rendimiento (minificación, CSS crítico, fuentes) queda para Fase 3.
+
 ---
 
 ## Pendientes para Domingo (TODO-DOMINGO)
@@ -63,6 +90,10 @@
    - `paquete-padrinos` → hoy en Papelería.
    - `panalero-2026` → hoy en Textiles y promocionales.
 10. **Descripción de “Sellos varios · precios”.** Hoy dice “precios y opciones en la imagen”. Cuando la imagen nueva ya no tenga precios, hay que cambiar la descripción.
+11. **6 fotos de servicio.** Una por macrocategoría: papelería, gran formato, textiles, láser, toldos y diseño. Ideal horizontal, al menos 1200 px de ancho. Hoy hay placeholders marcados `TODO-DOMINGO`.
+12. **Foto real para el hero.** Una foto de trabajos, del taller o del equipo, horizontal y de al menos 1600 px de ancho. Hoy se usa el banner actual como sustituto marcado `TODO-DOMINGO`.
+13. **3 testimonios reales.** Nombre, negocio y texto autorizado. Sin testimonios inventados. La sección está oculta hasta tenerlos.
+14. **Fotos propias para la galería de trabajos.** Pueden ser las mismas de servicios o fotos adicionales. La sección está oculta hasta tener material real.
 
 ---
 
@@ -95,3 +126,6 @@
 | 2026-11-18 | Fase 1: fuente única, tarjeta unificada, filtros, precio pendiente, visor accesible, build y documentación. | DeepSeek V4.1 Flash Free (OpenCode) |
 | 2026-11-19 | Ajuste aprobado: headline del brief y CTA principal “Cotiza tu pedido por WhatsApp”. | DeepSeek V4.1 Flash Free (OpenCode) |
 | 2026-11-19 | Publicación de Fase 1 en `main` (merge `8523497`), Actions en verde y verificación en vivo. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Fase 2: nuevo orden de la home, nav y CTA, franja de confianza, 6 servicios claros, placeholders TODO-DOMINGO, promos 4:5, banda de foráneos, franja de formatos, contacto claro con mapa diferido, cierre negro y footer. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Fase 2: select del formulario con las 6 macrocategorías + Otro, “Ver más” de servicios hacia el filtro del catálogo y verificación de 24 comprobaciones. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Fase 2: Lighthouse móvil 87/100/100/100; LCP 2.9 s, CLS 0, TBT 340 ms, 303 KiB. Commit en `borrador`, sin publicar en `main`. | DeepSeek V4.1 Flash Free (OpenCode) |

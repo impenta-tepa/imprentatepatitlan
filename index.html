@@ -77,9 +77,12 @@
   <header class="site-header">
     <div class="container header__inner">
       <a class="brand" href="#inicio" aria-label="Quad Print, inicio">
-        <img src="LOGOS/logo%20negro.png" width="407" height="295" alt="Quad Print Tepatitlán">
+        <img src="LOGOS/logo%20negro.png" width="407" height="295" alt="Quad Print Tepatitlán" fetchpriority="high">
       </a>
       <div class="header__actions">
+        <a class="header__icon header__icon--wa" data-wa href="https://wa.me/5213781097423" data-message="Hola, quiero cotizar un proyecto con Quad Print." aria-label="Cotizar por WhatsApp">
+          <img src="WhatsApp_icon.png" width="22" height="22" alt="">
+        </a>
         <a class="header__icon" href="tel:+523781097423" aria-label="Llamar a Quad Print">
           <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.61 21 3 13.39 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2Z"/></svg>
         </a>
@@ -88,10 +91,9 @@
         </button>
       </div>
       <nav class="nav" id="menu" aria-label="Navegación principal">
-        <a href="#promociones">Promociones</a>
         <a href="#servicios">Servicios</a>
-        <a href="#catalogo">Catálogo</a>
-        <a href="#foraneos">Foráneos</a>
+        <a href="#promociones">Promociones</a>
+        <a href="#ubicacion">Ubicación</a>
         <a href="#contacto">Contacto</a>
         <a class="btn btn--dark nav__cta" data-wa href="https://wa.me/5213781097423" data-message="Hola, quiero cotizar un proyecto con Quad Print.">Cotizar <span aria-hidden="true">↗</span></a>
       </nav>
@@ -104,18 +106,14 @@
       <div class="hero__copy">
         <p class="eyebrow"><span class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i></span> Lonas urgentes · Impresión</p>
         <h1>Tu idea merece<br><span class="mark">una gran impresión.</span></h1>
-        <p class="hero__lead">Lonas urgentes, vinil, offset, serigrafía, grabado láser y sublimación. Diseño, impresión y personalización para tu negocio.</p>
+        <p class="hero__lead">Lonas urgentes, papelería, textiles, toldos, grabado láser y diseño. Todo lo que tu negocio necesita para verse bien, en un solo lugar.</p>
         <div class="hero__actions">
           <a class="btn btn--dark" data-wa href="https://wa.me/5213781097423" data-message="Hola, quiero cotizar un proyecto con Quad Print.">Cotiza tu pedido por WhatsApp <span aria-hidden="true">↗</span></a>
-          <a class="btn btn--line" href="#promociones">Ver promociones</a>
+          <a class="btn btn--line" href="#servicios">Ver servicios</a>
         </div>
-        <p class="hero__trust">
-          <span>Facturamos CFDI</span>
-          <span>Efectivo y SPEI</span>
-          <span>Domingos con cita</span>
-        </p>
       </div>
 
+      <!-- TODO-DOMINGO: sustituir este banner por una foto real de trabajos o del taller. -->
       <figure class="hero__media">
         <picture>
           <source type="image/webp" srcset="derivados/banner-800.webp 800w, derivados/banner-1600.webp 1600w" sizes="(min-width: 1500px) 1440px, calc(100vw - 40px)">
@@ -128,11 +126,152 @@
       </figure>
     </section>
 
-    <div class="promise-strip container">
-      <span><b>01</b> Atención personalizada</span>
-      <span><b>02</b> Lonas urgentes</span>
-      <span><b>03</b> Domingos con cita</span>
+    <div class="trust-strip">
+      <div class="container trust-strip__inner">
+        <span class="trust-strip__item"><b>01</b> Lonas urgentes</span>
+        <span class="trust-strip__item"><b>02</b> Facturación CFDI</span>
+        <span class="trust-strip__item"><b>03</b> Diseño incluido</span>
+        <span class="trust-strip__item"><b>04</b> Domingos con cita</span>
+      </div>
     </div>
+
+    <section class="section section--services" id="servicios">
+      <div class="container">
+        <div class="section__head">
+          <div>
+            <p class="eyebrow eyebrow--c">Lo imaginas. Lo imprimimos.</p>
+            <h2>Un lugar.<br>Muchas posibilidades.</h2>
+          </div>
+          <p class="section__lead">Seis categorías, un mismo taller. Elige la que necesitas y mira las promociones disponibles.</p>
+        </div>
+
+        <div class="services__grid">
+          <article class="service-card">
+            <div class="service-card__media">
+              <!-- TODO-DOMINGO: reemplazar por foto real de papelería comercial. -->
+              <div class="service-card__placeholder" role="img" aria-label="Foto de papelería comercial próximamente">
+                <span class="service-card__num" aria-hidden="true">01</span>
+                <span class="service-card__tag">Foto próximamente</span>
+              </div>
+            </div>
+            <div class="service-card__body">
+              <span class="service-card__kicker">01 / Papelería</span>
+              <h3>Papelería comercial y empresarial</h3>
+              <ul class="service-card__examples">
+                <li>Tarjetas de presentación</li>
+                <li>Volantes y folletos</li>
+                <li>Notas y papelería</li>
+                <li>Sellos y etiquetas</li>
+              </ul>
+              <a class="service-card__link" href="#catalogo" data-filtro="papeleria">Ver más <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+
+          <article class="service-card">
+            <div class="service-card__media">
+              <!-- TODO-DOMINGO: reemplazar por foto real de gran formato. -->
+              <div class="service-card__placeholder" role="img" aria-label="Foto de gran formato próximamente">
+                <span class="service-card__num" aria-hidden="true">02</span>
+                <span class="service-card__tag">Foto próximamente</span>
+              </div>
+            </div>
+            <div class="service-card__body">
+              <span class="service-card__kicker">02 / Gran formato</span>
+              <h3>Gran formato</h3>
+              <ul class="service-card__examples">
+                <li>Lonas y banners</li>
+                <li>Pasacalles</li>
+                <li>Vinil impreso</li>
+                <li>Lonas urgentes</li>
+              </ul>
+              <a class="service-card__link" href="#catalogo" data-filtro="gran-formato">Ver más <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+
+          <article class="service-card">
+            <div class="service-card__media">
+              <!-- TODO-DOMINGO: reemplazar por foto real de textiles y promocionales. -->
+              <div class="service-card__placeholder" role="img" aria-label="Foto de textiles y promocionales próximamente">
+                <span class="service-card__num" aria-hidden="true">03</span>
+                <span class="service-card__tag">Foto próximamente</span>
+              </div>
+            </div>
+            <div class="service-card__body">
+              <span class="service-card__kicker">03 / Textiles</span>
+              <h3>Textiles y promocionales</h3>
+              <ul class="service-card__examples">
+                <li>Playeras</li>
+                <li>Gorras</li>
+                <li>Tazas</li>
+                <li>Termos</li>
+              </ul>
+              <a class="service-card__link" href="#catalogo" data-filtro="textiles">Ver más <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+
+          <article class="service-card">
+            <div class="service-card__media">
+              <!-- TODO-DOMINGO: reemplazar por foto real de corte y grabado láser. -->
+              <div class="service-card__placeholder" role="img" aria-label="Foto de corte y grabado láser próximamente">
+                <span class="service-card__num" aria-hidden="true">04</span>
+                <span class="service-card__tag">Foto próximamente</span>
+              </div>
+            </div>
+            <div class="service-card__body">
+              <span class="service-card__kicker">04 / Láser</span>
+              <h3>Corte y grabado láser</h3>
+              <ul class="service-card__examples">
+                <li>Reconocimientos</li>
+                <li>Señalética</li>
+                <li>Piezas a medida</li>
+              </ul>
+              <a class="service-card__link" href="#catalogo" data-filtro="laser">Ver más <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+
+          <article class="service-card">
+            <div class="service-card__media">
+              <!-- TODO-DOMINGO: reemplazar por foto real de toldos y anuncios. -->
+              <div class="service-card__placeholder" role="img" aria-label="Foto de toldos y anuncios próximamente">
+                <span class="service-card__num" aria-hidden="true">05</span>
+                <span class="service-card__tag">Foto próximamente</span>
+              </div>
+            </div>
+            <div class="service-card__body">
+              <span class="service-card__kicker">05 / Toldos</span>
+              <h3>Toldos y anuncios</h3>
+              <ul class="service-card__examples">
+                <li>Toldos con y sin luz</li>
+                <li>Cajas de luz</li>
+                <li>Letras 3D</li>
+                <li>Rotulación</li>
+              </ul>
+              <a class="service-card__link" href="#catalogo" data-filtro="toldos">Ver más <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+
+          <article class="service-card">
+            <div class="service-card__media">
+              <!-- TODO-DOMINGO: reemplazar por foto real de diseño gráfico. -->
+              <div class="service-card__placeholder" role="img" aria-label="Foto de diseño gráfico próximamente">
+                <span class="service-card__num" aria-hidden="true">06</span>
+                <span class="service-card__tag">Foto próximamente</span>
+              </div>
+            </div>
+            <div class="service-card__body">
+              <span class="service-card__kicker">06 / Diseño</span>
+              <h3>Diseño gráfico</h3>
+              <ul class="service-card__examples">
+                <li>Concepto desde cero</li>
+                <li>Ajuste de archivos</li>
+                <li>Arte final para impresión</li>
+              </ul>
+              <a class="service-card__link" href="#catalogo" data-filtro="diseno">Ver más <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
 
     <section class="section section--best" id="promociones">
       <div class="container">
@@ -144,57 +283,6 @@
           <p class="section__lead">Una selección de trabajos y ofertas actuales. Toca una imagen para verla completa y consúltanos por WhatsApp.</p>
         </div>
         <div class="featured" id="destacados-grid" aria-label="Promociones destacadas"></div>
-      </div>
-    </section>
-
-    <section class="section section--dark" id="servicios">
-      <div class="container">
-        <div class="section__head section__head--dark">
-          <div>
-            <p class="eyebrow eyebrow--c">Lo imaginas. Lo imprimimos.</p>
-            <h2>Un lugar.<br>Muchas posibilidades.</h2>
-          </div>
-          <p class="section__lead">De la papelería de tu negocio a la lona que todos ven. Encontramos la solución para tu proyecto.</p>
-        </div>
-
-        <div class="services__grid">
-          <article class="service">
-            <span class="service__num">01 / Gran formato</span>
-            <h3>Hazte ver en grande.</h3>
-            <p>Lonas publicitarias, pasacalles y banners en alta definición. Consulta nuestro servicio de lonas urgentes.</p>
-            <a data-wa href="https://wa.me/5213781097423" data-message="Hola, quiero cotizar lonas y gran formato.">Cotizar gran formato <span aria-hidden="true">↗</span></a>
-          </article>
-          <article class="service">
-            <span class="service__num">02 / Vinil y publicidad</span>
-            <h3>Tu marca, en todas partes.</h3>
-            <p>Corte de vinil decorativo y publicitario, anuncios y rotulación para darle presencia a tu negocio.</p>
-            <a data-wa href="https://wa.me/5213781097423" data-message="Hola, quiero cotizar vinil y publicidad.">Cotizar vinil <span aria-hidden="true">↗</span></a>
-          </article>
-          <article class="service">
-            <span class="service__num">03 / Offset y digital</span>
-            <h3>Detalles que presentan.</h3>
-            <p>Tarjetas de presentación, volantes, notas, folletos y papelería corporativa para cada ocasión.</p>
-            <a data-wa href="https://wa.me/5213781097423" data-message="Hola, quiero cotizar impresión comercial.">Cotizar impresión <span aria-hidden="true">↗</span></a>
-          </article>
-          <article class="service">
-            <span class="service__num">04 / Serigrafía y sublimación</span>
-            <h3>Algo muy tuyo.</h3>
-            <p>Playeras, tazas y artículos promocionales. Personalización textil y de materiales para regalar o promocionar.</p>
-            <a data-wa href="https://wa.me/5213781097423" data-message="Hola, quiero cotizar serigrafía o sublimación.">Cotizar personalización <span aria-hidden="true">↗</span></a>
-          </article>
-          <article class="service">
-            <span class="service__num">05 / Corte y grabado láser</span>
-            <h3>Precisión con carácter.</h3>
-            <p>Reconocimientos, señalética, materiales calados y artículos a medida con un toque especial.</p>
-            <a data-wa href="https://wa.me/5213781097423" data-message="Hola, quiero cotizar corte o grabado láser.">Cotizar láser <span aria-hidden="true">↗</span></a>
-          </article>
-          <article class="service">
-            <span class="service__num">06 / Diseño gráfico</span>
-            <h3>Todo empieza con una idea.</h3>
-            <p>Ajustamos tu archivo o creamos el concepto gráfico desde cero. Te acompañamos hasta dejarlo listo para imprimir.</p>
-            <a data-wa href="https://wa.me/5213781097423" data-message="Hola, necesito apoyo con diseño gráfico.">Platicar mi idea <span aria-hidden="true">↗</span></a>
-          </article>
-        </div>
       </div>
     </section>
 
@@ -231,114 +319,159 @@
       </div>
     </section>
 
-    <section class="foraneos container" id="foraneos">
-      <div class="foraneos__visual">
-        <p class="eyebrow">Cerca, aunque vengas de lejos</p>
-        <p class="foraneos__big">Nos vemos<br>el domingo<span>.</span></p>
-        <p class="foraneos__note">Exclusivamente con cita previa</p>
+    <!-- TODO-DOMINGO: testimonios y galería de trabajos.
+         La sección queda oculta hasta tener 3 testimonios reales con nombre y negocio,
+         y fotos propias de trabajos. No se inventa contenido. -->
+    <section class="section testimonials" id="testimonios" hidden>
+      <div class="container">
+        <div class="section__head">
+          <div>
+            <p class="eyebrow eyebrow--m">Lo que dicen de nosotros</p>
+            <h2>Clientes <span class="mark">reales.</span></h2>
+          </div>
+          <p class="section__lead">Tres testimonios con nombre y negocio, más una galería de trabajos. Se activa cuando Domingo entregue los datos reales.</p>
+        </div>
+        <div class="testimonials__grid" id="testimonios-grid"></div>
+        <div class="work-gallery" id="galeria-trabajos"></div>
       </div>
-      <div class="foraneos__copy">
-        <h2>¿Vienes de fuera<br>de Tepatitlán?</h2>
-        <p>Sabemos que entre semana no siempre puedes viajar. Agenda tu atención o entrega en domingo y sigue adelante con tu proyecto.</p>
-        <p>Escríbenos antes de venir para acordar los detalles y confirmar tu cita.</p>
+    </section>
+
+    <section class="foraneos-band" id="foraneos">
+      <div class="container foraneos-band__inner">
+        <div class="foraneos-band__title">
+          <p class="eyebrow">Cerca, aunque vengas de lejos</p>
+          <h2>¿Vienes de fuera?<br><span>Domingos con cita.</span></h2>
+        </div>
+        <p class="foraneos-band__copy">Agenda tu atención o entrega en domingo. Escríbenos antes de venir para confirmar los detalles.</p>
         <a class="btn btn--dark" data-wa href="https://wa.me/5213781097423" data-message="Hola, soy cliente foráneo. Quisiera agendar una cita o entrega en domingo.">Agendar por WhatsApp <span aria-hidden="true">↗</span></a>
       </div>
     </section>
 
-    <section class="section formats container">
-      <div class="formats__copy">
-        <p class="eyebrow eyebrow--c">Del archivo al papel</p>
-        <h2>¿Ya tienes tu diseño?</h2>
-        <p>Recibimos tus archivos y revisamos que estén listos para impresión. Si necesitas ajustes o comenzar desde cero, también te ayudamos.</p>
-      </div>
-      <div class="formats__list">
-        <div class="formats__chips" aria-label="Formatos aceptados">
+    <section class="formats-strip" id="formatos">
+      <div class="container formats-strip__inner">
+        <div class="formats-strip__title">
+          <p class="eyebrow eyebrow--c">Del archivo al papel</p>
+          <h2>¿Ya tienes tu diseño?</h2>
+        </div>
+        <div class="formats-strip__chips" aria-label="Formatos aceptados">
           <span>CDR</span><span>AI</span><span>PSD</span><span>PDF</span><span>PNG</span><span>JPG / JPEG</span>
         </div>
-        <p>Envíanos las medidas, cantidad y fecha en que lo necesitas para preparar tu cotización.</p>
+        <p class="formats-strip__note">Revisamos medidas, colores y archivos antes de imprimir. Envíanos cantidad y fecha.</p>
       </div>
     </section>
 
     <section class="section section--contact" id="contacto">
-      <div class="container contact__grid">
-        <div class="contact__copy">
-          <p class="eyebrow eyebrow--c">Hablemos de tu próximo proyecto</p>
-          <h2>Aquí empieza<br>tu próxima impresión.</h2>
-          <p class="contact__lead">Cuéntanos qué necesitas y recibe atención personalizada por WhatsApp. También puedes visitarnos en el taller.</p>
-
-          <div class="contact__details">
-            <div class="contact__item">
-              <span class="contact__label">Taller</span>
-              <a href="https://www.google.com/maps/search/?api=1&amp;query=21+de+Marzo+603-B+Colonia+Del+Carmen+Tepatitlan+de+Morelos+Jalisco" target="_blank" rel="noopener noreferrer">21 de Marzo 603-B, Colonia Del Carmen<br>Tepatitlán de Morelos, Jalisco</a>
-            </div>
-            <div class="contact__item">
-              <span class="contact__label">Teléfono y WhatsApp</span>
-              <a href="tel:+523781097423">378 109 7423 <span class="contact__tag">· llamadas y WhatsApp</span></a>
-              <a href="https://wa.me/5213781011768" target="_blank" rel="noopener noreferrer">378 101 1768 <span class="contact__tag">· WhatsApp</span></a>
-            </div>
-            <div class="contact__item">
-              <span class="contact__label">Correo</span>
-              <a href="mailto:imprentatepa@gmail.com">imprentatepa@gmail.com</a>
-            </div>
-            <div class="contact__item">
-              <span class="contact__label">Horario</span>
-              <span class="contact__status" id="estado-negocio">
-                <i class="status-dot" aria-hidden="true"></i>
-                <span id="estado-texto">Consulta el horario</span>
-              </span>
-              <p>Lunes a viernes 10:00–14:00 / 16:00–20:00<br>Sábados 10:00–14:00<br>Domingos solo con cita previa</p>
-            </div>
-            <div class="contact__item">
-              <span class="contact__label">Pagos y facturación</span>
-              <p>Efectivo y transferencia electrónica (SPEI). Facturación disponible (CFDI).</p>
-            </div>
-            <div class="contact__item">
-              <span class="contact__label">Redes</span>
-              <a href="https://www.facebook.com/IMPRENTATEPA/" target="_blank" rel="noopener noreferrer">Síguenos en Facebook ↗</a>
-            </div>
+      <div class="container">
+        <div class="section__head">
+          <div>
+            <p class="eyebrow eyebrow--m">Hablemos de tu próximo proyecto</p>
+            <h2>Visítanos o<br><span class="mark">escríbenos.</span></h2>
           </div>
-
-          <figure class="contact__photo">
-            <picture>
-              <source type="image/webp" srcset="derivados/foto-local-960.webp">
-              <img src="derivados/foto-local-960.jpg" width="960" height="720" alt="Fachada del local de Quad Print Tepatitlán" loading="lazy" decoding="async">
-            </picture>
-            <figcaption>Nuestro taller en 21 de Marzo 603-B.</figcaption>
-          </figure>
+          <p class="section__lead">Cuéntanos qué necesitas y recibe atención personalizada por WhatsApp. También puedes visitarnos en el taller.</p>
         </div>
 
-        <form class="quote" id="quoteForm">
-          <span class="quote__label">QUIERO COTIZAR</span>
-          <label class="field">
-            <span>Servicio</span>
-            <select id="quoteService" required>
-              <option value="">Elige una opción</option>
-              <option>Gran formato / Lonas y banners</option>
-              <option>Vinil y publicidad</option>
-              <option>Offset y digital / Papelería</option>
-              <option>Serigrafía y sublimación</option>
-              <option>Corte y grabado láser</option>
-              <option>Diseño gráfico</option>
-              <option>Otro</option>
-            </select>
-          </label>
-          <div class="field-row">
-            <label class="field">
-              <span>Cantidad</span>
-              <input id="quoteQty" type="text" inputmode="numeric" placeholder="Ej. 100">
-            </label>
-            <label class="field">
-              <span>Fecha aproximada</span>
-              <input id="quoteDate" type="text" placeholder="Ej. esta semana">
-            </label>
+        <div class="contact__grid">
+          <div class="contact__copy">
+            <div class="contact__details">
+              <div class="contact__item">
+                <span class="contact__label">Taller</span>
+                <a href="https://www.google.com/maps/search/?api=1&amp;query=21+de+Marzo+603-B+Colonia+Del+Carmen+Tepatitlan+de+Morelos+Jalisco" target="_blank" rel="noopener noreferrer">21 de Marzo 603-B, Colonia Del Carmen<br>Tepatitlán de Morelos, Jalisco</a>
+              </div>
+              <div class="contact__item">
+                <span class="contact__label">Teléfono y WhatsApp</span>
+                <a href="tel:+523781097423">378 109 7423 <span class="contact__tag">· llamadas y WhatsApp</span></a>
+                <a href="https://wa.me/5213781011768" target="_blank" rel="noopener noreferrer">378 101 1768 <span class="contact__tag">· WhatsApp</span></a>
+              </div>
+              <div class="contact__item">
+                <span class="contact__label">Correo</span>
+                <a href="mailto:imprentatepa@gmail.com">imprentatepa@gmail.com</a>
+              </div>
+              <div class="contact__item">
+                <span class="contact__label">Horario</span>
+                <span class="contact__status" id="estado-negocio">
+                  <i class="status-dot" aria-hidden="true"></i>
+                  <span id="estado-texto">Consulta el horario</span>
+                </span>
+                <p>Lunes a viernes 10:00–14:00 / 16:00–20:00<br>Sábados 10:00–14:00<br>Domingos solo con cita previa</p>
+              </div>
+              <div class="contact__item">
+                <span class="contact__label">Pagos y facturación</span>
+                <p>Efectivo y transferencia electrónica (SPEI). Facturación disponible (CFDI).</p>
+              </div>
+              <div class="contact__item">
+                <span class="contact__label">Redes</span>
+                <a href="https://www.facebook.com/IMPRENTATEPA/" target="_blank" rel="noopener noreferrer">Síguenos en Facebook ↗</a>
+              </div>
+            </div>
           </div>
-          <label class="field">
-            <span>Detalles</span>
-            <textarea id="quoteDetails" rows="4" placeholder="Medidas, material, colores, idea o archivo que ya tienes…"></textarea>
-          </label>
-          <button class="btn btn--green" type="submit">Preparar cotización <span aria-hidden="true">↗</span></button>
-          <p class="quote__note">Abrimos WhatsApp con tu solicitud lista para enviar. No se envía nada automáticamente.</p>
-        </form>
+
+          <form class="quote" id="quoteForm">
+            <span class="quote__label">QUIERO COTIZAR</span>
+            <label class="field">
+              <span>Servicio</span>
+              <select id="quoteService" required>
+                <option value="">Elige una opción</option>
+                <option>Papelería comercial y empresarial</option>
+                <option>Gran formato</option>
+                <option>Textiles y promocionales</option>
+                <option>Corte y grabado láser</option>
+                <option>Toldos y anuncios</option>
+                <option>Diseño gráfico</option>
+                <option>Otro</option>
+              </select>
+            </label>
+            <div class="field-row">
+              <label class="field">
+                <span>Cantidad</span>
+                <input id="quoteQty" type="text" inputmode="numeric" placeholder="Ej. 100">
+              </label>
+              <label class="field">
+                <span>Fecha aproximada</span>
+                <input id="quoteDate" type="text" placeholder="Ej. esta semana">
+              </label>
+            </div>
+            <label class="field">
+              <span>Detalles</span>
+              <textarea id="quoteDetails" rows="4" placeholder="Medidas, material, colores, idea o archivo que ya tienes…"></textarea>
+            </label>
+            <button class="btn btn--green" type="submit">Preparar cotización <span aria-hidden="true">↗</span></button>
+            <p class="quote__note">Abrimos WhatsApp con tu solicitud lista para enviar. No se envía nada automáticamente.</p>
+          </form>
+        </div>
+
+        <div class="contact__map" id="ubicacion">
+          <div class="map-card">
+            <div class="map-card__frame" data-mapa-contenedor>
+              <picture class="map-card__photo">
+                <source type="image/webp" srcset="derivados/foto-local-960.webp">
+                <img src="derivados/foto-local-960.jpg" width="960" height="720" alt="Fachada del local de Quad Print Tepatitlán" loading="lazy" decoding="async">
+              </picture>
+              <div class="map-card__overlay">
+                <span class="map-card__label">Nuestro taller</span>
+                <p>21 de Marzo 603-B, Col. Del Carmen<br>Tepatitlán de Morelos, Jalisco</p>
+                <button class="btn btn--dark" type="button" data-mapa>Ver mapa interactivo <span aria-hidden="true">↗</span></button>
+              </div>
+            </div>
+            <div class="map-card__foot">
+              <span>Mapa con carga diferida: se descarga solo si lo abres.</span>
+              <a href="https://www.google.com/maps/search/?api=1&amp;query=21+de+Marzo+603-B+Colonia+Del+Carmen+Tepatitlan+de+Morelos+Jalisco" target="_blank" rel="noopener noreferrer">Abrir en Google Maps ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="closing" id="cierre">
+      <div class="container closing__inner">
+        <div class="closing__copy">
+          <p class="eyebrow">Cotiza hoy</p>
+          <h2>Aquí empieza<br>tu próxima impresión.</h2>
+        </div>
+        <div class="closing__actions">
+          <a class="btn btn--green" data-wa href="https://wa.me/5213781097423" data-message="Hola, quiero cotizar un proyecto con Quad Print.">Cotiza tu pedido por WhatsApp <span aria-hidden="true">↗</span></a>
+          <a class="closing__phone" href="tel:+523781097423">378 109 7423</a>
+          <span class="closing__note">Diseño incluido · Facturación CFDI</span>
+        </div>
       </div>
     </section>
   </main>
@@ -351,8 +484,8 @@
       </div>
       <div class="footer__col">
         <span class="footer__title">EXPLORA</span>
-        <a href="#promociones">Promociones</a>
         <a href="#servicios">Servicios</a>
+        <a href="#promociones">Promociones</a>
         <a href="#catalogo">Catálogo</a>
         <a href="#foraneos">Clientes foráneos</a>
         <a href="#contacto">Contacto</a>
@@ -374,6 +507,7 @@
     </div>
     <div class="container footer__bottom">
       <span>© <span id="year">2026</span> Quad Print Tepatitlán.</span>
+      <span>Efectivo y SPEI · Facturación CFDI</span>
       <span>Impresión · Diseño · Personalización</span>
     </div>
   </footer>
@@ -391,7 +525,7 @@
     <div class="viewer__image">
       <picture>
         <source id="visor-webp" type="image/webp" srcset="">
-        <img id="imagen-ampliada" alt="">
+        <img id="imagen-ampliada" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="">
       </picture>
     </div>
     <div class="viewer__actions">

@@ -117,6 +117,74 @@ for (const rel of locales) {
 }
 if (!rotas) ok.push(`${locales.length} rutas locales de index.html verificadas`);
 
+// 5b. Estructura y reglas de la Fase 2
+const css = await readFile(path.join(sitio, 'css/estilos.css'), 'utf8');
+const js = await readFile(path.join(sitio, 'js/sitio.js'), 'utf8');
+const nav = (html.match(/<nav class="nav"[\s\S]*?<\/nav>/) || [])[0] || '';
+const ordenNav = ['#servicios', '#promociones', '#ubicacion', '#contacto']
+  .map(ancla => nav.indexOf(`href="${ancla}"`));
+const navOk = ordenNav.every(indice => indice >= 0)
+  && ordenNav[0] < ordenNav[1] && ordenNav[1] < ordenNav[2] && ordenNav[2] < ordenNav[3];
+
+const selectHtml = (html.match(/<select id="quoteService"[\s\S]*?<\/select>/) || [])[0] || '';
+const opcionesServicio = [...selectHtml.matchAll(/<option[^>]*>([^<]+)<\/option>/g)].map(m => m[1].trim());
+const opcionesEsperadas = [
+  'Elige una opción',
+  'Papelería comercial y empresarial',
+  'Gran formato',
+  'Textiles y promocionales',
+  'Corte y grabado láser',
+  'Toldos y anuncios',
+  'Diseño gráfico',
+  'Otro'
+];
+const selectOk = opcionesServicio.length === opcionesEsperadas.length
+  && opcionesEsperadas.every(opcion => opcionesServicio.includes(opcion))
+  && !selectHtml.includes('Vinil y publicidad')
+  && !selectHtml.includes('Offset y digital / Papelería');
+
+const serviciosOk = ['Papelería comercial y empresarial', 'Gran formato', 'Textiles y promocionales',
+  'Corte y grabado láser', 'Toldos y anuncios', 'Diseño gráfico']
+  .every(nombre => html.includes(`<h3>${nombre}</h3>`));
+
+const confianzaOk = [
+  /<span class="trust-strip__item"><b>\d{2}<\/b> Lonas urgentes<\/span>/,
+  /<span class="trust-strip__item"><b>\d{2}<\/b> Facturación CFDI<\/span>/,
+  /<span class="trust-strip__item"><b>\d{2}<\/b> Diseño incluido<\/span>/,
+  /<span class="trust-strip__item"><b>\d{2}<\/b> Domingos con cita<\/span>/
+].every(patron => patron.test(html));
+
+const estructura = [
+  ['6 tarjetas de servicio', (html.match(/class="service-card"/g) || []).length === 6],
+  ['6 placeholders de servicio', (html.match(/service-card__placeholder/g) || []).length === 6],
+  ['nombres exactos de las 6 categorías en Servicios', serviciosOk],
+  ['4 datos en la franja de confianza', (html.match(/class="trust-strip__item"/g) || []).length === 4 && confianzaOk],
+  ['nav en orden Servicios, Promociones, Ubicación, Contacto', navOk],
+  ['botón Cotizar en el nav', /class="btn btn--dark nav__cta"[^>]*>Cotizar/.test(nav)],
+  ['CTA secundario Ver servicios', html.includes('href="#servicios">Ver servicios</a>')],
+  ['6 enlaces Ver más con filtro de catálogo', (html.match(/data-filtro="(papeleria|gran-formato|textiles|laser|toldos|diseno)"/g) || []).length === 6],
+  ['testimonios y galería ocultos', /<section[^>]+id="testimonios"[^>]*hidden/.test(html)],
+  ['mapa con ancla Ubicación y carga diferida', html.includes('id="ubicacion"') && html.includes('data-mapa')],
+  ['sin iframe de mapa en la primera carga', !html.includes('<iframe')],
+  ['franja de cierre', html.includes('id="cierre"') && html.includes('Aquí empieza')],
+  ['sin franja negra intermedia', !html.includes('section--dark') && !css.includes('.section--dark')],
+  ['contacto claro', /\.section--contact\s*\{[^}]*background:\s*var\(--paper\)/.test(css)],
+  ['select con las 6 categorías + Otro', selectOk],
+  ['mensaje de WhatsApp con el nombre visible del servicio', js.includes('servicio.value.trim()')],
+  ['marco de promoción 4:5', /\.promo-open\s*\{[^}]*aspect-ratio:\s*4\s*\/\s*5/.test(css)],
+  ['miniatura con object-fit cover', /\.promo-open img\s*\{[^}]*object-fit:\s*cover/.test(css)],
+  ['arte cuadrado con contain', /\.promo-open\.is-square img\s*\{[^}]*object-fit:\s*contain/.test(css)],
+  ['width/height en tarjetas de promoción', js.includes('width="800" height="1000"')],
+  ['detección de miniaturas cuadradas', js.includes('is-square') && js.includes('naturalWidth')],
+  ['filtro desde las tarjetas de servicio', js.includes("closest('[data-filtro]')")],
+  ['mapa lazy en JavaScript', js.includes("iframe.loading = 'lazy'")],
+  ['placeholders TODO-DOMINGO listados', (html.match(/TODO-DOMINGO/g) || []).length >= 8]
+];
+for (const [nombre, cumple] of estructura) {
+  if (!cumple) fallos.push('Fase 2: ' + nombre);
+}
+if (!estructura.some(([, cumple]) => !cumple)) ok.push('estructura de Fase 2 completa: ' + estructura.length + ' comprobaciones');
+
 // 6. Archivos de SEO y de compartir
 for (const archivo of ['robots.txt', 'sitemap.xml', '404.html', 'og-image.jpg']) {
   if (await existe(path.join(sitio, archivo))) ok.push(archivo + ' publicado');

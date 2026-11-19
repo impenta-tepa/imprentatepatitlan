@@ -250,7 +250,7 @@ const tarjeta = producto => {
       <button class="promo-open" type="button" aria-label="Ampliar imagen: ${titulo}">
         <picture>
           <source type="image/webp" srcset="${miniaturaWebp}">
-          <img src="${miniaturaJpg}" alt="${alt}" loading="lazy" decoding="async">
+          <img src="${miniaturaJpg}" alt="${alt}" width="800" height="1000" loading="lazy" decoding="async">
         </picture>
       </button>
       <div class="promo-body">
@@ -267,12 +267,28 @@ const tarjeta = producto => {
     </article>`;
 };
 
+const marcarMiniaturas = contenedor => {
+  if (!contenedor) return;
+  contenedor.querySelectorAll('.promo-open img').forEach(imagen => {
+    const marcar = () => {
+      if (!imagen.naturalWidth || !imagen.naturalHeight) return;
+      const proporcion = imagen.naturalWidth / imagen.naturalHeight;
+      const esCuadrada = proporcion > 0.9 && proporcion < 1.1;
+      const marco = imagen.closest('.promo-open');
+      if (marco) marco.classList.toggle('is-square', esCuadrada);
+    };
+    if (imagen.complete) marcar();
+    else imagen.addEventListener('load', marcar, { once: true });
+  });
+};
+
 const pintarDestacados = () => {
   if (!destacadosGrid) return;
   const seleccion = productos.filter(producto => producto.destacado).slice(0, 4);
   const seccion = document.getElementById('promociones');
   if (seccion) seccion.hidden = !seleccion.length;
   destacadosGrid.innerHTML = seleccion.map(tarjeta).join('');
+  marcarMiniaturas(destacadosGrid);
 };
 
 const pintarFiltros = () => {
@@ -291,6 +307,7 @@ const pintarCatalogo = () => {
   const visibles = expandido || mostrandoFiltro ? resultados : resultados.slice(0, VISIBLES_INICIALES);
 
   galeria.innerHTML = visibles.map(tarjeta).join('');
+  marcarMiniaturas(galeria);
 
   if (estado) {
     if (!resultados.length) {
@@ -407,6 +424,38 @@ if (filtros) {
     expandido = false;
     pintarFiltros();
     pintarCatalogo();
+  });
+}
+
+/* Enlaces "Ver más" de las tarjetas de servicio: aplican el filtro del catálogo. */
+document.addEventListener('click', evento => {
+  const enlace = evento.target.closest('[data-filtro]');
+  if (!enlace) return;
+  const filtro = enlace.dataset.filtro;
+  if (!categorias.some(categoria => categoria.id === filtro)) return;
+  categoriaActiva = filtro;
+  consulta = '';
+  expandido = false;
+  if (buscador) buscador.value = '';
+  pintarFiltros();
+  pintarCatalogo();
+});
+
+/* Mapa con carga diferida: el iframe se crea solo cuando la persona lo abre. */
+const mapaBoton = document.querySelector('[data-mapa]');
+if (mapaBoton) {
+  const MAPA_URL = 'https://www.google.com/maps?q=' + encodeURIComponent('21 de Marzo 603-B, Colonia Del Carmen, Tepatitlán de Morelos, Jalisco') + '&output=embed';
+  mapaBoton.addEventListener('click', () => {
+    const marco = mapaBoton.closest('[data-mapa-contenedor]');
+    if (!marco) return;
+    const iframe = document.createElement('iframe');
+    iframe.src = MAPA_URL;
+    iframe.title = 'Mapa de ubicación de Quad Print en Tepatitlán';
+    iframe.loading = 'lazy';
+    iframe.referrerPolicy = 'no-referrer-when-downgrade';
+    iframe.allowFullscreen = true;
+    iframe.addEventListener('load', () => iframe.focus(), { once: true });
+    marco.replaceChildren(iframe);
   });
 }
 

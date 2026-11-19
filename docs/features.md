@@ -1,9 +1,27 @@
 # Qué hace cada bloque de la home
 
-**Última actualización:** 2026-11-18
+**Última actualización:** 2026-11-19
 **Agente:** DeepSeek V4.1 Flash Free (OpenCode)
+**Fase:** Fase 2 implementada en `borrador`, pendiente de aprobación.
 
 La home es HTML estático con CSS y JavaScript nativo. No hay frameworks, dependencias de interfaz ni pasos de build para editar contenido. El único build (`npm run build`) copia archivos, genera derivados de imagen y arma `_site/`.
+
+---
+
+## Orden de la home
+
+1. Header.
+2. Hero.
+3. Franja de confianza.
+4. Servicios.
+5. Promociones destacadas.
+6. Catálogo.
+7. Testimonios y galería (ocultos).
+8. Banda de foráneos.
+9. Franja de formatos.
+10. Contacto.
+11. Franja de cierre.
+12. Footer.
 
 ---
 
@@ -14,7 +32,10 @@ La home es HTML estático con CSS y JavaScript nativo. No hay frameworks, depend
 - **Comportamiento:** `js/sitio.js`.
 - **Qué hace:**
   - Logo, navegación, teléfono y menú hamburguesa.
-  - El estado abierto/cerrado ya no vive en la barra superior: se muestra en **Contacto > Horario**.
+  - Nav de escritorio: **Servicios**, **Promociones**, **Ubicación**, **Contacto** + botón **Cotizar**.
+  - **Ubicación** lleva a `#ubicacion`, el bloque del mapa dentro de Contacto.
+  - En móvil, el header muestra un icono de WhatsApp siempre visible, el teléfono y el menú hamburguesa.
+  - El estado abierto/cerrado vive en **Contacto > Horario**.
   - El header es sticky y respeta el área segura del iPhone (`env(safe-area-inset-top)`).
   - La barra CMYK va al pie del header como divisoria.
 - **Para cambiar textos o enlaces:** editar `index.html`.
@@ -22,17 +43,35 @@ La home es HTML estático con CSS y JavaScript nativo. No hay frameworks, depend
 ## 2. Hero
 
 - **HTML:** `index.html`.
-- **Qué hace:** headline actual “¡Contáctanos y cotiza tu pedido!”, texto de apoyo, CTA “Cotizar por WhatsApp” y CTA secundario “Ver promociones”.
+- **Qué hace:** headline “Tu idea merece una gran impresión.”, texto de apoyo, CTA primario “Cotiza tu pedido por WhatsApp” y CTA secundario “Ver servicios”.
+- **Imagen:** hoy se usa el banner actual como sustituto. Está marcado `TODO-DOMINGO` para reemplazarlo por una foto real de trabajos, del taller o del equipo.
 - **WhatsApp:** los enlaces con `data-wa` se construyen en `js/sitio.js` desde `WA_NUMBER`.
-- **Para cambiar el headline:** editar `index.html`. Confirmar antes con el dueño: el brief del asesor pedía otro headline.
+- **Para cambiar el headline:** editar `index.html`. El headline actual fue aprobado por el asesor.
 
 ## 3. Franja de confianza
 
-- **HTML:** `index.html` (`.promise-strip`).
-- **Qué hace:** datos cortos de confianza: atención personalizada, lonas urgentes y domingos con cita.
+- **HTML:** `index.html` (`.trust-strip`).
+- **Qué hace:** cuatro datos cortos: Lonas urgentes, Facturación CFDI, Diseño incluido y Domingos con cita.
+- **Diseño:** fondo blanco, cuatro columnas en escritorio y 2 x 2 en móvil.
 - **Para cambiar:** editar `index.html`.
 
-## 4. Promociones destacadas
+## 4. Servicios
+
+- **HTML:** `index.html` (`.services__grid`).
+- **Qué hace:** seis tarjetas claras con las seis macrocategorías exactas:
+  1. Papelería comercial y empresarial.
+  2. Gran formato.
+  3. Textiles y promocionales.
+  4. Corte y grabado láser.
+  5. Toldos y anuncios.
+  6. Diseño gráfico.
+- **Cada tarjeta:** placeholder de foto, nombre, 3–4 ejemplos y enlace “Ver más”.
+- **“Ver más”:** aplica el filtro correspondiente del catálogo (`data-filtro`) y baja a `#catalogo`. Queda preparado para cambiar el enlace a una subpágina futura.
+- **Fotos:** las seis faltan. Los placeholders están marcados `TODO-DOMINGO` y muestran “Foto próximamente”; no se usaron fotos ajenas.
+- **Rejilla:** 3 columnas en escritorio, 2 en tablet y 1 en móvil.
+- **Para cambiar textos:** editar `index.html`.
+
+## 5. Promociones destacadas
 
 - **Datos:** `data/promociones.js`.
 - **Render:** `js/sitio.js` (`pintarDestacados`).
@@ -40,58 +79,68 @@ La home es HTML estático con CSS y JavaScript nativo. No hay frameworks, depend
 - **Tarjeta:** imagen, badge de categoría, título, descripción, precio, vigencia y CTA de WhatsApp.
 - **Para cambiar una destacada:** editar `destacado` en `data/promociones.js`. No tocar HTML.
 
-## 5. Servicios
-
-- **HTML:** `index.html` (`.services__grid`).
-- **Qué hace:** seis tarjetas de servicio con número, título, descripción y enlace de WhatsApp.
-- **Estado actual:** es contenido estático. La Fase 2 las reagrupará en las 6 categorías exactas del brief, incluida “Toldos y anuncios”.
-- **Para cambiar textos:** editar `index.html`.
-
 ## 6. Catálogo
 
 - **Datos:** `data/promociones.js`.
-- **Render:** `js/sitio.js` (`pintarFiltros`, `pintarCatalogo`, `coincidencias`, `tarjeta`).
+- **Render:** `js/sitio.js` (`pintarFiltros`, `pintarCatalogo`, `coincidencias`, `tarjeta`, `marcarMiniaturas`).
 - **Qué hace:**
-  - Muestra 9 promociones y un botón “Ver todas”.
+  - Muestra 9 promociones y un botón “Ver todas” (19 en total).
   - Busca por título, descripción, categoría, etiquetas y nombre de archivo.
   - Filtra por las 6 macrocategorías.
   - Si una categoría no tiene promociones, muestra un mensaje para cotizar por WhatsApp.
   - Si `precio` es `null`, muestra “Precio: confirmar por WhatsApp”.
+- **Marco de imagen:** proporción fija 4:5 con `aspect-ratio` y `width="800" height="1000"` para evitar CLS.
+  - Las imágenes nuevas se muestran con `object-fit: cover`.
+  - Las 19 imágenes actuales son cuadradas; el JS les agrega `is-square` y se muestran completas con `object-fit: contain` para no recortar texto ni precios.
 - **Para agregar o editar:** ver `docs/promociones-format.md`.
 
-## 7. Foráneos / domingos con cita
+## 7. Testimonios y galería (ocultos)
 
-- **HTML:** `index.html` (`.foraneos`).
-- **Qué hace:** bloque para clientes de fuera de Tepatitlán, con CTA para agendar por WhatsApp.
-- **Estado actual:** contenido estático. La Fase 2 lo compactará a una banda.
+- **HTML:** `index.html` (`#testimonios`, con `hidden`).
+- **Estado:** ocultos. No hay testimonios ni fotos de trabajos reales todavía.
+- **Qué falta:** 3 testimonios con nombre y negocio, y fotos propias para la galería. Cuando existan, se quita `hidden` y se llena `#testimonios-grid` y `#galeria-trabajos`.
+- **Regla:** no inventar testimonios.
+
+## 8. Banda de foráneos
+
+- **HTML:** `index.html` (`.foraneos-band`).
+- **Qué hace:** banda compacta para clientes de fuera de Tepatitlán, con el mensaje “Domingos con cita” y CTA para agendar por WhatsApp.
 - **Para cambiar textos:** editar `index.html`.
 
-## 8. Formatos de archivo
+## 9. Franja de formatos
 
-- **HTML:** `index.html` (`.formats`).
-- **Qué hace:** explica que se reciben CDR, AI, PSD, PDF, PNG, JPG/JPEG y que se revisan antes de imprimir.
-- **Estado actual:** contenido estático. La Fase 2 lo compactará a una franja.
+- **HTML:** `index.html` (`.formats-strip`).
+- **Qué hace:** franja breve que recuerda que se reciben CDR, AI, PSD, PDF, PNG y JPG, y que los archivos se revisan antes de imprimir.
 - **Para cambiar textos:** editar `index.html`.
 
-## 9. Contacto
+## 10. Contacto
 
 - **HTML:** `index.html` (`.section--contact`).
 - **Qué hace:**
   - Datos de contacto, horario, pagos y facturación.
   - Estado abierto/cerrado en vivo.
   - Formulario “Quiero cotizar”.
-  - Mapa.
+  - Mapa con carga diferida.
 - **Formulario:** `js/sitio.js` toma servicio, cantidad, fecha y detalles, y abre WhatsApp con el mensaje precargado. No se cambió su lógica.
+  - El select de servicio usa las 6 macrocategorías exactas + “Otro”.
+  - El mensaje de WhatsApp usa el nombre visible de la opción.
+- **Mapa:** se muestra la foto real de la fachada con un botón “Ver mapa interactivo”. Al pulsarlo se crea un iframe de Google Maps con `loading="lazy"`. Así el mapa no se descarga en la primera carga. También hay un enlace directo “Abrir en Google Maps”.
 - **Para cambiar datos de contacto:** confirmar con el dueño antes de editar `index.html`.
 
-## 10. Footer
+## 11. Franja de cierre
+
+- **HTML:** `index.html` (`.closing`).
+- **Qué hace:** franja negra con “Aquí empieza tu próxima impresión”, CTA de WhatsApp, teléfono y recordatorio de diseño incluido y CFDI.
+- **Regla:** es la única franja negra grande de la home; el footer conserva su fondo oscuro.
+
+## 12. Footer
 
 - **HTML:** `index.html`.
-- **Qué hace:** datos del negocio, navegación, horario, redes y año automático.
+- **Qué hace:** datos del negocio, navegación, horario, redes, pagos/facturación y año automático.
 - **Año:** `js/sitio.js` actualiza `#year`.
 - **Para cambiar textos:** editar `index.html`.
 
-## 11. Visor de promociones (lightbox)
+## 13. Visor de promociones (lightbox)
 
 - **HTML:** `index.html` (`<dialog id="visor">`).
 - **Comportamiento:** `js/sitio.js`.
@@ -105,24 +154,32 @@ La home es HTML estático con CSS y JavaScript nativo. No hay frameworks, depend
   - Usa el `alt` descriptivo de la promoción.
 - **Para cambiar el texto del CTA:** editar `js/sitio.js` (`mensajePromo`).
 
-## 12. WhatsApp
+## 14. WhatsApp
 
 - **Número:** `5213781097423` en `js/sitio.js` (`WA_NUMBER`).
 - **Enlaces estáticos:** atributos `data-wa` en `index.html`; el JS les agrega el mensaje y el número.
 - **Mensaje de promoción:** `Hola, vi la promo [TITULO] en su página y quiero pedirla. ¿Sigue vigente?`
-- **Pendiente:** confirmar con el dueño cuál número es el WhatsApp principal.
+- **Pendiente:** confirmar con el dueño cuál número es el WhatsApp principal. El 378 101 1768 sigue listado como dato de contacto, no como número de los botones generados.
 
-## 13. Build y datos
+## 15. Build y datos
 
 - `data/promociones.js`: fuente única de promociones y categorías. **No se sobrescribe.**
 - `scripts/promociones.mjs`: lee la fuente única y lista las imágenes.
 - `scripts/preparar.mjs`: copia `data/`, genera derivados y arma `_site/`.
 - `scripts/imagenes.mjs`: genera 800 px y 1600 px en WebP y JPG.
-- `scripts/verificar.mjs`: revisa fichas, imágenes, derivados, SEO y peso inicial.
+- `scripts/verificar.mjs`: revisa fichas, imágenes, derivados, SEO, peso y 24 comprobaciones estructurales de Fase 2.
 - `scripts/servir.mjs`: servidor local en `http://localhost:4173`.
 
-## 14. Lo que no es dinámico
+## 16. Lo que no es dinámico
 
-- Servicios, hero, franja de confianza, foráneos, formatos, contacto y footer son HTML estático.
-- Los testimonios aún no existen; la Fase 2 dejará la estructura preparada y oculta hasta tener datos reales.
+- Servicios, hero, franja de confianza, foráneos, formatos, contacto, cierre y footer son HTML estático.
+- Los testimonios y la galería están ocultos hasta tener datos reales.
 - No hay base de datos ni panel administrativo. Las promociones se editan en `data/promociones.js`.
+
+## 17. Resultado de Fase 2
+
+- Lighthouse móvil sobre el build local: Performance 87, Accesibilidad 100, Buenas prácticas 100 y SEO 100.
+- LCP 2.9 s, CLS 0, TBT 340 ms y primera carga 303 KiB.
+- Sin scroll horizontal en 320, 360, 390, 430, 768, 844, 1024 y 1280 px.
+- Consola sin errores.
+- La mejora fina de rendimiento (minificación, CSS crítico, fuentes) queda para Fase 3.
