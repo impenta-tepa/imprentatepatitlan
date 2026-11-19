@@ -204,7 +204,23 @@ Una fase a la vez. Al terminar cada fase: build, verificación, commit en `borra
 - **Lighthouse escritorio (mediana):** 100 / 100 / 100 / 100; LCP 0.45 s; TBT 0 ms; CLS 0; 426 KiB.
 - **Elemento LCP:** móvil, 2 de 3 corridas el banner del hero y 1 el logo; escritorio, 2 de 3 el banner y 1 el logo. Ambos muy por debajo de 2.5 s; no se cambia el hero.
 - **Guarda:** PSI móvil 98 ≥ 90 con LCP 1.4 s ≤ 2.5 s; Lighthouse móvil 99 ≥ 90 con LCP 1.56 s ≤ 2.5 s. Cumplida.
-- **Nota:** la corrida PSI móvil confirma el resultado de Lighthouse. Cuando la cola de PSI se libere se pueden repetir las 6 corridas oficiales; no bloquea esta publicación.
+- **Nota:** la corrida PSI móvil confirma el resultado de Lighthouse. El 2026-11-20 el asesor aceptó ambas mediciones y cerró el tema; no se repiten corridas hasta el Lote 4B.
+
+### Cierre de rendimiento y micro-lote de favicon (2026-11-20)
+
+- **Tema cerrado por el asesor:** se aceptan PSI móvil 98 / LCP 1.4 s / TBT 0 / CLS 0 y Lighthouse móvil 99 / LCP 1.56 s / TBT 88 ms / CLS 0; escritorio 100 / LCP 0.45 s. Guarda cumplida en ambos métodos.
+- **Sin nuevas corridas:** no se ejecuta PSI ni Lighthouse hasta el Lote 4B, cuando entren la foto real del hero, las fotos reales de servicios y el SVG del logo.
+- **Observación LCP:** el elemento alterna entre el banner del hero y el logo del header. Refuerza la prueba de `eager` + `fetchpriority="high"` prevista para el hero real en 4B; hoy el LCP de 1.56 s está dentro de la meta.
+- **Favicon:** `LOGOS/quad-print-favicon.png` pasó de 502 × 502 px y 21,251 bytes a 128 × 128 px y 4,454 bytes, conservando proporción y aspecto. Se mantiene la misma ruta en `index.html`, `404.html` y el JSON-LD; 128 px cumple el mínimo de 112 × 112 px del logo estructurado. Ahorro aproximado en la primera carga: 16.6 KiB. El verificador ahora exige favicon menor a 5 KiB.
+- **Verificación:** build + `npm run verificar` en verde; verificación en vivo con `?v=[timestamp]` sin errores y con la etiqueta “Imagen ilustrativa” en las 6 tarjetas.
+- **Firma:** DeepSeek V4.1 Flash Free (OpenCode).
+
+### Condición de imágenes de servicio (confirmada 2026-11-20)
+
+- Las 6 tarjetas renderizadas desde `data/servicios.js` muestran la etiqueta visible **“Imagen ilustrativa”**.
+- El `alt` de cada imagen lleva el prefijo exacto **“Imagen ilustrativa: ”**.
+- El origen y la licencia por archivo están registrados en `docs/notas.md`, decisión 46: mockups con marca Quad Print entregados por Domingo, usados con autorización del dueño, sin licencia de stock identificada.
+- Mientras `ilustrativa: true`, la etiqueta y el prefijo se mantienen; al cambiar a `false`, ambos desaparecen sin editar HTML.
 
 **Regla del hero:** al integrar la foto real se mide una vez en PSI móvil y escritorio con `eager` + `fetchpriority="high"`. Si el LCP móvil sigue ≤ 2.5 s, se deja eager; si empeora, se regresa a `lazy`. Se reportan ambos números.
 
