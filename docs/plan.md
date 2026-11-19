@@ -27,9 +27,21 @@ Una fase a la vez. Al terminar cada fase: build, verificación, commit en `borra
 | 2026-11-18 | Pruebas de viewports 320, 360, 390, 430, 768, 844, 1024 y 1280; sin scroll horizontal. | DeepSeek V4.1 Flash Free (OpenCode) |
 | 2026-11-18 | Build y `npm run verificar` en verde; consola sin errores. | DeepSeek V4.1 Flash Free (OpenCode) |
 | 2026-11-18 | Commit de Fase 1 en `borrador`. | DeepSeek V4.1 Flash Free (OpenCode) |
-| Pendiente | Aprobación del dueño para publicar en `main`. | — |
+| 2026-11-19 | Aprobación del asesor y autorización de publicación en `main`. | Asesor de Domingo |
+| 2026-11-19 | Ajuste aprobado: headline “Tu idea merece una gran impresión.” y CTA “Cotiza tu pedido por WhatsApp”. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Merge `borrador` → `main` (commit `8523497`) y despliegue de GitHub Actions en verde. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Verificación en vivo: 4 destacadas, 9 + “Ver todas” = 19, 7 filtros, buscador, visor, formulario y sin scroll horizontal a 360 px. | DeepSeek V4.1 Flash Free (OpenCode) |
 
-**Estado:** implementación terminada, probada y comprometida en `borrador`; pendiente la aprobación del dueño para publicar en `main`.
+**Estado:** Fase 1 aprobada, publicada en `main` y verificada en vivo.
+
+### Publicación de Fase 1
+
+- **Rama publicada:** `main`.
+- **Commit de merge:** `8523497`.
+- **Flujo:** push a `main` → GitHub Actions ejecutó `npm ci` y `node scripts/preparar.mjs` → publicó `_site` con `/derivados` generado.
+- **Run de Actions:** completado con éxito el 2026-11-19 (05:33 UTC).
+- **URL verificada:** `https://impenta-tepa.github.io/imprentatepatitlan/` con parámetro de caché.
+- **Resultado:** 4 destacadas, catálogo 9 + “Ver todas” = 19, 7 filtros (6 categorías + Todas), buscador, visor con Esc y devolución de foco, formulario que abre WhatsApp, 19 imágenes cargadas, consola sin errores y sin scroll horizontal a 360 px.
 
 ---
 
