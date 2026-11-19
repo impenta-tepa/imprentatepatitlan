@@ -2,7 +2,7 @@
 <html lang="es-MX">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Quad Print Tepatitlán | Impresión, diseño y personalización</title>
   <meta name="description" content="Imprenta en Tepatitlán de Morelos: lonas urgentes, vinil, offset, serigrafía, sublimación, grabado láser y diseño gráfico. Cotiza por WhatsApp.">
   <meta name="theme-color" content="#111111">
@@ -67,12 +67,10 @@
 <body>
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
 
-  <div class="cmyk-strip" aria-hidden="true"><i class="c"></i><i class="m"></i><i class="y"></i><i class="k"></i></div>
-
   <div class="topbar">
     <div class="container topbar__inner">
       <span>21 de Marzo 603-B · Col. Del Carmen, Tepatitlán</span>
-      <span>Lun–Vie 10:00–14:00 / 16:00–20:00</span>
+      <a class="topbar__phone" href="tel:+523781097423">378 109 7423</a>
     </div>
   </div>
 
@@ -81,9 +79,14 @@
       <a class="brand" href="#inicio" aria-label="Quad Print, inicio">
         <img src="LOGOS/logo%20negro.png" width="407" height="295" alt="Quad Print Tepatitlán">
       </a>
-      <button class="nav-toggle" type="button" aria-controls="menu" aria-expanded="false" aria-label="Abrir menú">
-        <span></span><span></span><span></span>
-      </button>
+      <div class="header__actions">
+        <a class="header__icon" href="tel:+523781097423" aria-label="Llamar a Quad Print">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.61 21 3 13.39 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2Z"/></svg>
+        </a>
+        <button class="nav-toggle" type="button" aria-controls="menu" aria-expanded="false" aria-label="Abrir menú">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
       <nav class="nav" id="menu" aria-label="Navegación principal">
         <a href="#promociones">Promociones</a>
         <a href="#servicios">Servicios</a>
@@ -93,18 +96,24 @@
         <a class="btn btn--dark nav__cta" data-wa href="https://wa.me/5213781097423" data-message="Hola, quiero cotizar un proyecto con Quad Print.">Cotizar <span aria-hidden="true">↗</span></a>
       </nav>
     </div>
+    <div class="cmyk-strip" aria-hidden="true"><i class="c"></i><i class="m"></i><i class="y"></i><i class="k"></i></div>
   </header>
 
   <main id="contenido">
     <section class="hero container" id="inicio">
       <div class="hero__copy">
-        <p class="eyebrow"><span class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i></span> Imprenta &amp; diseño · Tepatitlán</p>
-        <h1>Tu idea merece<br>una <span class="mark">gran impresión.</span></h1>
+        <p class="eyebrow"><span class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i></span> Lonas urgentes · Impresión</p>
+        <h1>Tu idea merece<br><span class="mark">una gran impresión.</span></h1>
         <p class="hero__lead">Lonas urgentes, vinil, offset, serigrafía, grabado láser y sublimación. Diseño, impresión y personalización para tu negocio.</p>
         <div class="hero__actions">
-          <a class="btn btn--dark" data-wa href="https://wa.me/5213781097423" data-message="Hola, quiero cotizar un proyecto con Quad Print.">Cotizar por WhatsApp <span aria-hidden="true">↗</span></a>
+          <a class="btn btn--dark" data-wa href="https://wa.me/5213781097423" data-message="Hola, quiero cotizar un proyecto con Quad Print.">Cotiza tu pedido por WhatsApp <span aria-hidden="true">↗</span></a>
           <a class="btn btn--line" href="#promociones">Ver promociones</a>
         </div>
+        <p class="hero__trust">
+          <span>Facturamos CFDI</span>
+          <span>Efectivo y SPEI</span>
+          <span>Domingos con cita</span>
+        </p>
       </div>
 
       <figure class="hero__media">
@@ -196,7 +205,7 @@
             <p class="eyebrow eyebrow--m">Promociones y trabajos</p>
             <h2>Catálogo <span class="mark">a todo color.</span></h2>
           </div>
-          <p class="section__lead">Busca por nombre o filtra por tipo. Los precios y vigencias están dentro de cada imagen; confirma disponibilidad por WhatsApp.</p>
+          <p class="section__lead">Busca por nombre o filtra por categoría. El precio y la vigencia de cada promoción se confirman por WhatsApp.</p>
         </div>
 
         <div class="catalog__tools">
@@ -211,10 +220,10 @@
         <p class="catalog__status" id="estado" role="status" aria-live="polite"></p>
         <div class="catalog__grid" id="galeria"></div>
         <div class="catalog__more">
-          <button class="btn btn--line" id="ver-mas" type="button" aria-controls="galeria" aria-expanded="false" hidden>Ver todas las promociones</button>
+          <button class="btn btn--line" id="ver-mas" type="button" aria-controls="galeria" aria-expanded="false" hidden>Ver todas</button>
         </div>
 
-        <p class="catalog__note">Las imágenes muestran precios y opciones de temporada. Para confirmar existencias, medidas o vigencia, escríbenos por WhatsApp.</p>
+        <p class="catalog__note">Las imágenes son de referencia. Para confirmar precio, existencias, medidas o vigencia, escríbenos por WhatsApp.</p>
 
         <noscript>
           <p class="catalog__note">Activa JavaScript para ver el catálogo completo, o <a href="https://wa.me/5213781097423">consulta las promociones por WhatsApp</a>.</p>
@@ -273,6 +282,10 @@
             </div>
             <div class="contact__item">
               <span class="contact__label">Horario</span>
+              <span class="contact__status" id="estado-negocio">
+                <i class="status-dot" aria-hidden="true"></i>
+                <span id="estado-texto">Consulta el horario</span>
+              </span>
               <p>Lunes a viernes 10:00–14:00 / 16:00–20:00<br>Sábados 10:00–14:00<br>Domingos solo con cita previa</p>
             </div>
             <div class="contact__item">
@@ -373,7 +386,7 @@
   <dialog id="visor" aria-labelledby="visor-titulo">
     <div class="viewer__bar">
       <h2 id="visor-titulo">Promoción</h2>
-      <button id="cerrar-visor" type="button" aria-label="Cerrar imagen">Cerrar ×</button>
+      <button id="cerrar-visor" type="button" aria-label="Cerrar imagen" autofocus>Cerrar ×</button>
     </div>
     <div class="viewer__image">
       <picture>
@@ -387,8 +400,7 @@
     </div>
   </dialog>
 
-  <script src="datos/promociones.js"></script>
-  <script src="datos/catalogo.js"></script>
+  <script src="data/promociones.js"></script>
   <script src="js/sitio.js"></script>
 </body>
 </html>

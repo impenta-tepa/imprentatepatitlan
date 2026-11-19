@@ -1,7 +1,6 @@
 import http from 'node:http';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
-import { listPromotions } from './promociones.mjs';
 import { asegurarDerivado } from './imagenes.mjs';
 const root = process.cwd();
 const mime = {
@@ -23,10 +22,6 @@ const mime = {
 http.createServer(async (req,res) => {
   try {
     const pathname = decodeURIComponent(new URL(req.url,'http://localhost').pathname);
-    if (pathname === '/datos/promociones.js') {
-      res.writeHead(200, {'Content-Type':'text/javascript; charset=utf-8', 'Cache-Control':'no-store'});
-      res.end('window.PROMOCIONES = ' + JSON.stringify(await listPromotions()) + ';'); return;
-    }
     if (pathname.startsWith('/.cache/') || pathname.startsWith('/.git/')) { res.writeHead(404); res.end(); return; }
     if (pathname.startsWith('/derivados/') || pathname === '/og-image.jpg') {
       let file;
