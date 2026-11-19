@@ -31,13 +31,16 @@ const imagenes = (await readdir(path.join(root, 'promociones'), { withFileTypes:
   .sort((a, b) => a.localeCompare(b, 'es', { numeric: true }));
 
 const imagenesEnData = promociones.map(p => basename(p.imagen || ''));
-const sinFicha = imagenes.filter(archivo => !imagenesEnData.includes(archivo));
+// Archivo histórico: se conserva sin ficha porque Domingo confirmó que es el mismo
+// producto que "Sellos varios" con precios dentro del arte. No se publica en el catálogo.
+const IMAGENES_SIN_FICHA_PERMITIDAS = new Set(['sellos varios PRECIOS.jpg']);
+const sinFicha = imagenes.filter(archivo => !imagenesEnData.includes(archivo) && !IMAGENES_SIN_FICHA_PERMITIDAS.has(archivo));
 const sinImagen = imagenesEnData.filter(archivo => !imagenes.includes(archivo));
 
 if (sinFicha.length) fallos.push(`imágenes sin ficha en data/promociones.js: ${sinFicha.join(', ')}`);
 if (sinImagen.length) fallos.push(`fichas que apuntan a imágenes inexistentes: ${sinImagen.join(', ')}`);
 if (!sinFicha.length && !sinImagen.length) {
-  ok.push(`fuente única con ${promociones.length} promociones, igual a promociones/`);
+  ok.push(`fuente única con ${promociones.length} promociones activas; 1 imagen histórica sin ficha permitida`);
 }
 
 // 3. Esquema y reglas de la fuente única
@@ -85,8 +88,13 @@ for (const [indice, promo] of promociones.entries()) {
 }
 if (destacadas > 4) fallos.push(`hay ${destacadas} promociones destacadas; el máximo es 4`);
 if (destacadas === 0) avisos.push('no hay promociones marcadas como destacadas');
-if (promociones.length !== 19) avisos.push(`la fuente única tiene ${promociones.length} promociones; la Fase 1 migró 19`);
+if (promociones.length !== 18) avisos.push(`la fuente única tiene ${promociones.length} promociones; el catálogo activo debe ser 18`);
 if (!fallos.length) ok.push(`esquema validado: ${promociones.length} fichas, ${destacadas} destacadas`);
+
+const activasPorCategoria = new Map(categorias.map(c => [c.id, promociones.filter(p => p.categoria === c.id && p.activo !== false).length]));
+const categoriasVacias = categorias.filter(c => activasPorCategoria.get(c.id) === 0).map(c => c.nombre);
+if (categoriasVacias.length) ok.push('categorías sin promociones para probar el mensaje: ' + categoriasVacias.join(', '));
+else avisos.push('no hay categorías vacías para probar el mensaje de cotización');
 
 // 4. Cada promoción tiene miniatura y visor, en WebP y JPG
 let faltantes = 0;
@@ -220,7 +228,8 @@ if (!fase3.some(([, cumple]) => !cumple)) ok.push('estructura de Fase 3 completa
 const { testimonios, trabajos } = await readTestimonios(root);
 const testimoniosActivos = testimonios.filter(item => item && item.activo !== false);
 const trabajosActivos = trabajos.filter(item => item && item.activo !== false);
-const minimosTestimonios = testimoniosActivos.length >= 3 && trabajosActivos.length >= 4;
+const minimosTestimonios = testimoniosActivos.length >= 3;
+const galeriaLista = trabajosActivos.length >= 4;
 
 for (const [indice, testimonio] of testimoniosActivos.entries()) {
   const etiqueta = testimonio.nombre || `#${indice + 1}`;
@@ -260,9 +269,9 @@ const altsServicios = SERVICIOS.every(servicio =>
 const fase4 = [
   ['fuente de testimonios publicada', await existe(path.join(sitio, 'data/testimonios.js'))],
   ['script de testimonios antes de sitio.js', html.includes('src="data/testimonios.js"') && html.indexOf('data/testimonios.js') < html.indexOf('js/sitio.js')],
-  ['sección oculta sin los mínimos', minimosTestimonios || /<section[^>]*id="testimonios"[^>]*hidden/.test(html)],
+  ['sección oculta sin 3 testimonios', minimosTestimonios || /<section[^>]*id="testimonios"[^>]*hidden/.test(html)],
   ['render de testimonios desde datos', jsFuente.includes("getElementById('testimonios-grid')") && jsFuente.includes("getElementById('galeria-trabajos')")],
-  ['mínimos de activación 3 + 4', jsFuente.includes('testimonios.length < 3') && jsFuente.includes('trabajos.length < 4')],
+  ['activación por 3 testimonios y galería opcional', jsFuente.includes('testimonios.length < 3') && jsFuente.includes('trabajos.length >= 4')],
   ['carpeta de galería publicada', await existe(path.join(sitio, 'galeria/LEEME.txt'))],
   ['6 fotos de servicio en el HTML', serviciosEnHtml],
   ['alt en las 6 fotos de servicio', altsServicios]
@@ -271,7 +280,8 @@ for (const [nombre, cumple] of fase4) {
   if (!cumple) fallos.push('Fase 4: ' + nombre);
 }
 if (!fase4.some(([, cumple]) => !cumple)) ok.push('preparación de Fase 4 completa: ' + fase4.length + ' comprobaciones');
-if (minimosTestimonios) ok.push(`testimonios y galería listos para activarse (${testimoniosActivos.length} testimonios, ${trabajosActivos.length} trabajos)`);
+if (minimosTestimonios) ok.push(`testimonios listos para activarse (${testimoniosActivos.length} testimonios)`);
+if (galeriaLista) ok.push(`galería lista para mostrarse (${trabajosActivos.length} trabajos)`);
 
 const bytesFuente = (await stat(path.join(root, 'css/estilos.css'))).size
   + (await stat(path.join(root, 'fonts/fonts.css'))).size
@@ -324,12 +334,11 @@ const peso = async rutas => {
   for (const rel of rutas) { try { total += (await stat(path.join(sitio, rel))).size; } catch {} }
   return total;
 };
-const miniaturas = promociones.slice(0, 6).map(p => `derivados/promociones/${basename(p.imagen)}-800.webp`);
-const primeraCarga = await peso(['index.html', 'css/estilos.css', 'fonts/fonts.css',
+const primeraCargaBase = await peso(['index.html', 'css/estilos.css', 'fonts/fonts.css',
   'fonts/rP2Hp2ywxg089UriCZOIHQ.woff2', 'fonts/xn7gYHE41ni1AdIRggexSg.woff2',
-  'js/sitio.js', 'data/promociones.js', 'derivados/banner-1600.webp',
-  'derivados/logo-header.webp', ...miniaturas]);
-ok.push('primera carga estimada (incluye fuentes y 6 miniaturas): ' + kb(primeraCarga));
+  'js/sitio.js', 'data/promociones.js', 'data/testimonios.js', 'derivados/banner-1600.webp',
+  'derivados/logo-header.webp']);
+ok.push('peso en disco de la primera carga base (sin catálogo diferido): ' + kb(primeraCargaBase));
 
 for (const linea of ok) console.log('  OK  ' + linea);
 for (const linea of avisos) console.log('  !   ' + linea);

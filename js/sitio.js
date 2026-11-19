@@ -547,12 +547,19 @@ const prepararTestimonios = () => {
   const gridTestimonios = document.getElementById('testimonios-grid');
   const gridTrabajos = document.getElementById('galeria-trabajos');
   if (!seccion || !gridTestimonios || !gridTrabajos) return;
-  if (testimonios.length < 3 || trabajos.length < 4) {
+  if (testimonios.length < 3) {
     seccion.hidden = true;
+    gridTrabajos.hidden = true;
     return;
   }
   gridTestimonios.innerHTML = testimonios.slice(0, 3).map(testimonioHTML).join('');
-  gridTrabajos.innerHTML = trabajos.map(trabajoHTML).join('');
+  if (trabajos.length >= 4) {
+    gridTrabajos.innerHTML = trabajos.map(trabajoHTML).join('');
+    gridTrabajos.hidden = false;
+  } else {
+    gridTrabajos.innerHTML = '';
+    gridTrabajos.hidden = true;
+  }
   seccion.hidden = false;
 };
 prepararTestimonios();

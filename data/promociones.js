@@ -10,12 +10,12 @@
    Lee docs/promociones-format.md. No hace falta tocar HTML, CSS ni JS.
 
    TODO-DOMINGO:
-   - Los 19 precios están en null porque hoy viven dentro de las imágenes.
+   - Los 18 precios están en null porque hoy viven dentro de las imágenes.
      No se leyeron ni se inventaron.
    - El IVA y la vigencia también quedan en null hasta que Domingo los confirme.
    - Las unidades escritas son una propuesta cuando el título o la descripción
      indican cantidad; hay que confirmarlas.
-   - Confirmar cuál número es el WhatsApp principal de todos los botones.
+   - WhatsApp principal confirmado el 2026-11-20: 5213781097423 (378 109 7423).
 
    ORDEN: las promociones se muestran en el orden de este arreglo.
    Para reordenar, mueve el objeto completo. Para ocultar una, usa activo: false.
@@ -220,30 +220,14 @@ window.PROMOCIONES = [
     categoria: "papeleria",
     etiquetas: ["sellos", "goma", "madera", "oficina", "papelería"],
     titulo: "Sellos varios",
-    descripcion: "Sellos personalizados para oficina y negocio.",
+    descripcion: "Sellos personalizados en varios modelos y medidas.",
     precio: null,
     prefijoPrecio: "",
     unidad: "c/u",
     iva: null,
     vigencia: null,
     imagen: "promociones/sellos varios.jpg",
-    alt: "Promoción de sellos personalizados para oficina y negocio.",
-    destacado: false,
-    activo: true
-  },
-  {
-    id: "sellos-varios-precios",
-    categoria: "papeleria",
-    etiquetas: ["sellos", "goma", "madera", "oficina", "papelería"],
-    titulo: "Sellos varios · precios",
-    descripcion: "Sellos de goma y madera; precios y opciones en la imagen.",
-    precio: null,
-    prefijoPrecio: "",
-    unidad: "c/u",
-    iva: null,
-    vigencia: null,
-    imagen: "promociones/sellos varios PRECIOS.jpg",
-    alt: "Promoción de sellos de goma y madera con opciones para oficina y negocio.",
+    alt: "Sellos personalizados en varios modelos y medidas.",
     destacado: false,
     activo: true
   },
@@ -265,17 +249,17 @@ window.PROMOCIONES = [
   },
   {
     id: "anuncio-circular",
-    categoria: "papeleria",
-    etiquetas: ["publicidad", "avisos", "punto de venta", "impresión"],
-    titulo: "Anuncio circular",
-    descripcion: "Impresión circular para promociones, avisos y puntos de venta.",
+    categoria: "toldos",
+    etiquetas: ["anuncio", "letrero", "luminoso", "luz", "doble cara", "señalética"],
+    titulo: "Anuncio circular con luz",
+    descripcion: "Letrero circular iluminado por ambos lados, ideal para negocios.",
     precio: null,
     prefijoPrecio: "",
-    unidad: "",
+    unidad: "c/u",
     iva: null,
     vigencia: null,
     imagen: "promociones/anuncio circular.jpg",
-    alt: "Promoción de impresión circular para avisos y puntos de venta.",
+    alt: "Anuncio circular iluminado por ambos lados para negocios.",
     destacado: false,
     activo: true
   },

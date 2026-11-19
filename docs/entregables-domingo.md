@@ -1,6 +1,6 @@
 # Entregables de Domingo para Fase 4
 
-**Última actualización:** 2026-11-19
+**Última actualización:** 2026-11-20
 **Para:** Domingo (dueño de Quad Print)
 **Regla:** usar los nombres y rutas exactos de este documento. No cambiar mayúsculas, acentos ni guiones.
 
@@ -20,7 +20,7 @@ Peso máximo: 150 KB por archivo.
 | 3 | `promociones/playera-familiar.webp` | Playera familiar | Paquete de playeras personalizadas para dos adultos y un niño. |
 | 4 | `promociones/banner-180.webp` | Banner 1.80 m | Banner de lona de gran formato para anuncios y eventos. |
 
-Nota: estos nombres sustituyen a los archivos actuales de `promociones/`. En el Lote 4A se actualizan las fichas de `data/promociones.js` y se retiran los originales viejos.
+Nota: estos nombres sustituyen a los archivos actuales de `promociones/`. En el Lote 4A solo se actualiza el campo `imagen` de cada ficha. Los originales viejos se conservan en el repo sin uso (no se borran); el verificador los permitirá como imágenes históricas.
 
 ---
 
@@ -69,13 +69,15 @@ Requisitos:
 - Versión clara: logo original para fondo claro.
 - Versión oscura: logo en blanco o claro para fondo oscuro.
 - No incluir fondo, sombra ni margen extra.
+- Conservar la proporción del logo actual: header 200:145 y footer 240:174.
+- El header se muestra a 92 px de ancho x 66.7 px de alto en escritorio, y 80 x 58 px en móvil. El footer se muestra a 120 x 87 px. El CSS ya reserva esas cajas para que el SVG no mueva el header ni las anclas.
 - Mientras lleguen los SVG, el sitio mantiene el WebP/PNG actual.
 
 ---
 
 ## 5. Galería de trabajos
 
-Formato: WebP, 1600 x 1200 px (4:3), mínimo 1200 px de ancho.
+Formato: WebP, 1200 x 900 px (4:3), mínimo 1200 px de ancho.
 Peso máximo: 200 KB por archivo. Mínimo 4 fotos; se pueden entregar hasta 8.
 
 | Archivo exacto | Alt |
@@ -93,7 +95,7 @@ El `alt` definitivo se escribe en `data/testimonios.js` al recibir cada foto. No
 
 ### Retratos opcionales de testimonios
 
-Formato: WebP, 400 x 400 px (1:1). Peso máximo: 60 KB.
+Formato: WebP, 600 x 600 px (1:1). Peso máximo: 60 KB.
 
 | Archivo exacto | Uso | Alt |
 |---|---|---|
@@ -122,7 +124,7 @@ Estos datos llegan en los copies del asesor y se aplican **verbatim**. No se lee
 - `Vigencia`: fecha exacta o `null` si no aplica.
 - `Prefijo`: `Desde` o vacío.
 
-### Precios de las 15 promociones restantes (Lote 4C)
+### Precios de las 14 promociones restantes (Lote 4C)
 
 Se entregan en una tabla con las mismas columnas, en el orden del catálogo.
 
@@ -134,11 +136,11 @@ Se entregan en una tabla con las mismas columnas, en el orden del catálogo.
 | 2 |  |  |  | Sí / No |
 | 3 |  |  |  | Sí / No |
 
-### Confirmaciones (Lote 4C)
+### Confirmaciones (2026-11-20)
 
-- WhatsApp principal: hoy `378 109 7423` (`5213781097423`). ¿Se queda o cambia?
-- Categoría de “Anuncio circular”: hoy en Papelería. ¿Se queda?
-- “Sellos varios · precios”: ¿se fusiona con otra promoción o se mantiene?
+- WhatsApp principal: **confirmado 378 109 7423** (`5213781097423`). No cambian los enlaces; el 378 101 1768 queda como contacto secundario visible.
+- “Anuncio circular”: **confirmado** como letrero circular con luz por ambos lados. Pasa a Toldos y anuncios, con el título “Anuncio circular con luz”.
+- “Sellos varios · precios”: **confirmado** que es el mismo producto que “Sellos varios”. Se conserva una sola ficha y el archivo con precios queda sin uso.
 - Cualquier precio, unidad o vigencia que no cuadre con el título se marca y se pregunta; no se corrige por cuenta propia.
 
 ---

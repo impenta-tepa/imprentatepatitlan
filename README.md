@@ -1,6 +1,6 @@
 # Quad Print Tepatitlán — página web
 
-**Fase 3 publicada y verificada; Fase 4 en preparación (`borrador`)** · 19 de noviembre de 2026
+**Fase 3 publicada y verificada; Fase 4.0 en `borrador`** · 20 de noviembre de 2026
 
 Sitio estático de Quad Print Tepatitlán, publicado en:
 
@@ -38,7 +38,7 @@ No se usaron la dirección de Go, los horarios de Figma ni sus textos de «Impre
 - `index.html`: página completa, con el orden de la Fase 2 (hero, confianza, servicios, destacadas, catálogo, foráneos, formatos, contacto, cierre y footer).
 - `css/estilos.css`: diseño nuevo, sin Bootstrap.
 - `js/sitio.js`: menú móvil, catálogo, búsqueda, visor y cotización.
-- `data/promociones.js`: fuente única de las 19 promociones y las 6 macrocategorías.
+- `data/promociones.js`: fuente única de las 18 promociones activas y las 6 macrocategorías.
 - `data/testimonios.js`: fuente única de testimonios y fotos de la galería; la sección se activa sola con 3 testimonios y 4 fotos.
 - `docs/`: plan, funcionamiento, formato de promociones, formato de testimonios y entregables de Domingo.
 - `promociones/`: imágenes originales.
@@ -73,6 +73,7 @@ Si no existe `node_modules`, ejecutar `npm install`. En GitHub Actions se ejecut
 - No se sube `_site` ni `node_modules`; GitHub Actions los genera en cada publicación.
 - **Fase 3:** publicada y verificada en vivo. Incluye logo optimizado, minificación, lazy render, safe areas, tap targets, foco al catálogo y menú `inert`. PSI móvil 98/100/100/100 y escritorio 100/100/100/100.
 - **Fase 4:** preparación en `borrador`; no publicada en `main`. Incluye `docs/entregables-domingo.md`, `data/testimonios.js`, render automático de testimonios y galería, y el reemplazo de logo SVG preparado. Los lotes de datos esperan los copies del asesor.
+- **Fase 4.0:** correcciones confirmadas por Domingo (WhatsApp, Anuncio circular, Sellos) y ajustes del asesor aplicados en `borrador`; se publicarán junto con el Lote 4A.
 
 ## Límites de GitHub Pages (plan gratuito)
 
@@ -94,7 +95,7 @@ Para una promoción nueva:
 2. Agregar su objeto en `data/promociones.js` con un `id` nuevo.
 3. Ejecutar `npm run build` y `npm run verificar`.
 
-La tarjeta usa un marco fijo 4:5 y reserva el espacio con `width="800" height="1000"` para evitar CLS. Las 19 imágenes cuadradas actuales se detectan y se muestran completas con `object-fit: contain`; cuando llegue el arte 4:5, se mostrarán con `object-fit: cover` sin tocar código.
+La tarjeta usa un marco fijo 4:5 y reserva el espacio con `width="800" height="1000"` para evitar CLS. Las 18 imágenes activas cuadradas se detectan y se muestran completas con `object-fit: contain`; cuando llegue el arte 4:5, se mostrarán con `object-fit: cover` sin tocar código.
 
 Para cambiar precio, vigencia, destacada o activa, editar solo ese objeto. El detalle está en `docs/promociones-format.md`.
 
@@ -103,9 +104,9 @@ No editar `_site/` ni los derivados: se generan en cada build.
 ## Pendientes
 
 - Llenar precios, unidades, IVA y vigencia en `data/promociones.js`; hoy están en `null` y marcados como TODO-DOMINGO.
-- Re-exportar las 19 imágenes a 1080 x 1350 px, 4:5, WebP menor a 150 KB, sin texto ni precio.
-- Confirmar con el dueño cuál número es el WhatsApp principal de todos los botones.
-- Entregar 6 fotos de servicio (una por categoría) y una foto real para el hero.
+- Re-exportar las 18 imágenes activas a 1080 x 1350 px, 4:5, WebP menor a 150 KB, sin texto ni precio.
+- Confirmar si las 6 fotos de servicio provisionales se quedan o se reemplazan por fotos reales.
+- Entregar una foto real para el hero.
 - Entregar 3 testimonios reales con nombre y negocio, y fotos propias para la galería.
 - Decidir si se mantiene el catálogo solo con promociones reales o se agrega un catálogo de productos con fotografías definitivas.
 - Entregar el SVG del logo para sustituir el WebP/PNG interino.

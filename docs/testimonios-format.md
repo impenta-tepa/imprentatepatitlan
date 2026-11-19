@@ -1,6 +1,6 @@
 # Formato de testimonios y galería
 
-**Última actualización:** 2026-11-19
+**Última actualización:** 2026-11-20
 **Archivo que se edita:** `data/testimonios.js`
 **No se toca:** `index.html`, `css/estilos.css` ni `js/sitio.js` para agregar contenido.
 
@@ -8,12 +8,12 @@
 
 ## Activación automática
 
-La sección `#testimonios` se muestra sola cuando se cumplen **las dos** condiciones:
+La sección `#testimonios` se muestra sola cuando hay **al menos 3 testimonios** activos con nombre, negocio y texto. La galería es opcional y se agrega dentro de la misma sección cuando hay **al menos 4 trabajos** activos con imagen y `alt`.
 
-- Al menos **3 testimonios** activos con nombre, negocio y texto.
-- Al menos **4 trabajos** activos con imagen y `alt`.
-
-Mientras falte una de las dos, la sección permanece oculta. No hay que quitar `hidden` a mano.
+- Con 3 testimonios y 0 fotos: la sección se muestra solo con los testimonios.
+- Con 3 testimonios y 4 o más fotos: se muestran testimonios y galería.
+- Con fotos pero sin 3 testimonios: la sección sigue oculta, porque el encabezado habla de clientes reales.
+- No hay que quitar `hidden` a mano.
 
 ---
 
@@ -82,8 +82,8 @@ window.TRABAJOS = [
 
 | Uso | Ruta | Formato | Medida | Peso máximo |
 |---|---|---|---|---|
-| Retrato de testimonio | `galeria/testimonio-01.webp` | WebP | 400 x 400 (1:1) | 60 KB |
-| Trabajo de galería | `galeria/trabajo-01.webp` | WebP | 1600 x 1200 (4:3) | 200 KB |
+| Retrato de testimonio | `galeria/testimonio-01.webp` | WebP | 600 x 600 (1:1) | 60 KB |
+| Trabajo de galería | `galeria/trabajo-01.webp` | WebP | 1200 x 900 (4:3) | 200 KB |
 
 - Las fotos de la galería se copian tal cual al sitio publicado; no se regeneran derivados.
 - Si una foto no existe, `npm run verificar` lo reporta y el build no debe publicarse.

@@ -1,6 +1,6 @@
 # Plan de trabajo — Home Quad Print Tepatitlán
 
-**Última actualización:** 2026-11-19
+**Última actualización:** 2026-11-20
 **Agente:** DeepSeek V4.1 Flash Free (OpenCode)
 **Rama de trabajo:** `borrador`
 **Rama de publicación:** `main` (solo con aprobación explícita del dueño)
@@ -161,14 +161,14 @@ Una fase a la vez. Al terminar cada fase: build, verificación, commit en `borra
 
 ## Fase 4 — Datos y contenido
 
-**Estado:** preparación completada en `borrador`; no publicada en `main`. Los lotes 4A, 4B y 4C esperan los copies del asesor y los archivos de Domingo.
+**Estado:** Fase 4.0 (correcciones confirmadas y ajustes del asesor) aplicada en `borrador`; no publicada en `main`. Los lotes 4A, 4B y 4C esperan los copies y archivos de Domingo.
 
 ### Preparación (2026-11-19)
 
 - [x] `docs/entregables-domingo.md`: rutas y nombres exactos, formatos, pesos máximos y `alt` sugerido por archivo.
 - [x] `data/testimonios.js`: fuente única de testimonios y trabajos de galería, con arreglos vacíos hasta tener datos reales.
 - [x] `docs/testimonios-format.md`: esquema, umbrales de activación y reglas.
-- [x] Render automático desde datos: la sección se muestra solo con 3 testimonios y 4 trabajos activos; no se edita el HTML.
+- [x] Render automático desde datos: la sección se muestra con 3 testimonios activos; la galería es opcional con 4 trabajos. No se edita el HTML.
 - [x] Logo SVG preparado: puntos de sustitución comentados en header y footer, reglas CSS para SVG en línea y WebP interino conservado.
 - [x] Build: minifica `data/testimonios.js` y copia `galeria/`.
 - [x] Verificación: 6 comprobaciones nuevas de Fase 4.
@@ -176,7 +176,19 @@ Una fase a la vez. Al terminar cada fase: build, verificación, commit en `borra
 - [ ] Lote 4A: precios de las 4 destacadas y su arte 4:5.
 - [x] Fotos de servicio recibidas e integradas como provisionales: 6 mockups de 1376 x 768, recorte 16:10 y derivados de 800 y 1200 px en WebP/JPG.
 - [ ] Lote 4B completo: foto real del hero, SVG del logo y medición eager/lazy.
-- [ ] Lote 4C: precios de las 15 restantes, testimonios, galería y correcciones confirmadas.
+- [ ] Lote 4C: precios de las 14 restantes, testimonios, galería y correcciones confirmadas.
+
+### Fase 4.0 — Correcciones confirmadas (2026-11-20)
+
+- WhatsApp principal confirmado: `5213781097423` (378 109 7423). No se cambió ningún enlace; el 378 101 1768 queda como secundario.
+- “Anuncio circular” pasa a Toldos y anuncios como “Anuncio circular con luz”; se conservan id e imagen. Toldos deja de estar vacía; la prueba de categoría vacía usa Láser o Diseño.
+- “Sellos varios · precios” se consolida en “Sellos varios”. El catálogo queda en 18 fichas activas; `sellos varios PRECIOS.jpg` se conserva sin ficha y el verificador lo permite.
+- Activación de testimonios desacoplada: 3 testimonios muestran la sección; la galería se agrega con 4 trabajos. Solo fotos, sin testimonios, no muestra la sección.
+- Entregables de galería actualizados a 1200 x 900 (4:3) y retratos a 600 x 600 (1:1).
+- Logo SVG con caja reservada: header 92 x 66.7 px (80 x 58 px en móvil) y footer 120 x 87 px. Al sustituir se re-verifican header, anclas, safe areas y LCP.
+- Primera carga medida por transferencia real, no por tamaño en disco: **255.4 KiB** móvil (HTML 6.8, CSS 6.6, JS 5.5, datos 2.3, fuentes 85.8, imágenes 127.5, favicon 21.0). Coincide con los ~250 KiB de PSI de Fase 3. Lighthouse móvil actual: 98/100/100/100, LCP 2.4 s, TBT 0 ms, CLS 0.
+- Pruebas de activación: 3 testimonios sin galería → sección visible; 0 testimonios + 4 fotos → oculta; 3 + 4 → ambas visibles.
+- Pruebas de categorías: Láser muestra el mensaje de categoría vacía; Toldos muestra “Anuncio circular con luz”; Todas muestra 18 promociones.
 
 **Regla del hero:** al integrar la foto real se mide una vez en PSI móvil y escritorio con `eager` + `fetchpriority="high"`. Si el LCP móvil sigue ≤ 2.5 s, se deja eager; si empeora, se regresa a `lazy`. Se reportan ambos números.
 

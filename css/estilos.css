@@ -1777,6 +1777,7 @@ dialog::backdrop { background: rgba(0, 0, 0, .82); }
   :root { --pad: 16px; --header-h: 68px; }
 
   .brand img { width: 80px; }
+  .brand svg { width: 80px; height: 58px; }
 
   .hero { padding-top: 24px; }
 
@@ -1903,14 +1904,17 @@ dialog::backdrop { background: rgba(0, 0, 0, .82); }
   line-height: 1.5;
 }
 
-.brand svg,
-.footer__brand svg {
+.brand svg {
   display: block;
   width: 92px;
-  height: auto;
+  height: 66.7px;
 }
 
-.footer__brand svg { width: 120px; }
+.footer__brand svg {
+  display: block;
+  width: 120px;
+  height: 87px;
+}
 
 @media (max-width: 960px) {
   .testimonials__grid { grid-template-columns: 1fr; }
