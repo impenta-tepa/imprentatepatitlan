@@ -199,12 +199,12 @@ Una fase a la vez. Al terminar cada fase: build, verificación, commit en `borra
 - **Run de Actions:** `44576882173`, completado con éxito el 2026-11-20 (17:24 UTC).
 - **URL verificada:** `https://impenta-tepa.github.io/imprentatepatitlan/?v=f40-live`.
 - **Verificación en vivo:** Toldos muestra 1 promoción, “Anuncio circular con luz”; “Sellos varios” aparece una sola vez; Todas + “Ver todas” = 18; Láser y Diseño muestran el mensaje de categoría vacía; 4 destacadas; 9 iniciales; 7 filtros; buscador “sellos” = 1; visor abre y cierra con Escape; mapa 0 → 1 iframe; formulario arma `wa.me/5213781097423`; las 6 tarjetas muestran “Imagen ilustrativa” y su `alt` lleva el prefijo; consola sin errores; sin scroll horizontal a 320 y 360 px.
-- **PSI:** no disponible en esta sesión. La API respondió 429 por cuota diaria agotada y la web de PSI devolvió “No se pudo cargar” para la URL. Se usó Lighthouse 13.6 sobre la URL publicada, 3 corridas por modo.
+- **PSI:** disponible parcialmente. La API respondió 429 por cuota diaria agotada. La web de PSI completó **1 corrida móvil**: 98 / 100 / 100 / 100; LCP 1.4 s; TBT 0 ms; CLS 0. Las corridas 2-3 y las de escritorio quedaron atascadas en “Ejecutando análisis” y no terminaron. Se usó Lighthouse 13.6 sobre la URL publicada, 3 corridas por modo, como respaldo.
 - **Lighthouse móvil (mediana):** 99 / 100 / 100 / 100; LCP 1.56 s; TBT 88 ms; CLS 0; 360 KiB.
 - **Lighthouse escritorio (mediana):** 100 / 100 / 100 / 100; LCP 0.45 s; TBT 0 ms; CLS 0; 426 KiB.
 - **Elemento LCP:** móvil, 2 de 3 corridas el banner del hero y 1 el logo; escritorio, 2 de 3 el banner y 1 el logo. Ambos muy por debajo de 2.5 s; no se cambia el hero.
-- **Guarda:** Performance móvil 99 ≥ 90; LCP 1.56 s ≤ 2.5 s. Cumplida.
-- **Nota:** cuando la cuota de PSI se restablezca se puede repetir la medición oficial; no bloquea esta publicación.
+- **Guarda:** PSI móvil 98 ≥ 90 con LCP 1.4 s ≤ 2.5 s; Lighthouse móvil 99 ≥ 90 con LCP 1.56 s ≤ 2.5 s. Cumplida.
+- **Nota:** la corrida PSI móvil confirma el resultado de Lighthouse. Cuando la cola de PSI se libere se pueden repetir las 6 corridas oficiales; no bloquea esta publicación.
 
 **Regla del hero:** al integrar la foto real se mide una vez en PSI móvil y escritorio con `eager` + `fetchpriority="high"`. Si el LCP móvil sigue ≤ 2.5 s, se deja eager; si empeora, se regresa a `lazy`. Se reportan ambos números.
 
