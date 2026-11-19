@@ -1,6 +1,6 @@
 # Plan de trabajo — Home Quad Print Tepatitlán
 
-**Última actualización:** 2026-11-18
+**Última actualización:** 2026-11-19
 **Agente:** DeepSeek V4.1 Flash Free (OpenCode)
 **Rama de trabajo:** `borrador`
 **Rama de publicación:** `main` (solo con aprobación explícita del dueño)
@@ -8,6 +8,15 @@
 ## Regla de trabajo
 
 Una fase a la vez. Al terminar cada fase: build, verificación, commit en `borrador`, reporte y pausa. No se publica en `main` hasta que el dueño lo apruebe.
+
+### Límites de GitHub Pages (plan gratuito)
+
+- **10 compilaciones por hora.** Agrupar los cambios en un solo commit/push; no publicar por cada ajuste pequeño.
+- **1 GB máximo** para el sitio y el repositorio, y **100 GB de ancho de banda al mes**.
+- Ejecutar `npm run build` y `npm run verificar` en local antes de publicar.
+- Optimizar las imágenes antes de subirlas: WebP/JPG ligero, ideal 1080 x 1350 px y menos de 150 KB.
+- No subir `_site/` ni `node_modules/`; GitHub Actions los genera en cada publicación.
+- Si se acumulan varios ajustes, esperar y agruparlos en un solo push.
 
 ---
 
@@ -47,22 +56,42 @@ Una fase a la vez. Al terminar cada fase: build, verificación, commit en `borra
 
 ## Fase 2 — Servicios agrupados + nuevo orden de la home
 
-- [ ] Reordenar la home exactamente como pide el brief.
-- [ ] Header fijo: logo + nav (Servicios, Promociones, Ubicación, Contacto) + botón de WhatsApp siempre visible.
-- [ ] Hero: headline actual + foto real de trabajos o placeholder marcado + CTA primario “Cotizar por WhatsApp” + secundario “Ver servicios”.
-- [ ] Franja de confianza con 4 datos: Lonas urgentes · Facturación CFDI · Diseño incluido · Domingos con cita.
-- [ ] Servicios sobre fondo claro: 6 tarjetas, rejilla 3x2 en desktop, 2 columnas en tablet, 1 en móvil.
-- [ ] Usar las 6 categorías exactas del brief, incluida la nueva “Toldos y anuncios”.
-- [ ] Cada tarjeta de servicio: foto real o placeholder, nombre, 3–4 ejemplos y enlace “Ver más” preparado para la subpágina futura.
-- [ ] Promociones destacadas desde `data/promociones.js`.
-- [ ] Catálogo con filtros alineados a las 6 categorías.
-- [ ] Estructura de 3 testimonios reales + galería de trabajos; oculta si no hay datos reales.
-- [ ] Compactar “¿Vienes de fuera de Tepatitlán? Domingos con cita” a una banda.
-- [ ] Compactar “¿Ya tienes tu diseño?” a una franja breve con CDR/AI/PSD/PDF/PNG/JPG.
-- [ ] Contacto: formulario actual + mapa con carga diferida + horarios + pagos y facturación.
-- [ ] Franja oscura de cierre: “Aquí empieza tu próxima impresión” + WhatsApp.
-- [ ] Footer completo con los datos del negocio.
-- [ ] Reporte de Fase 2 y pausa para aprobación.
+- [x] Reordenar la home exactamente como pide el brief.
+- [x] Header fijo: logo + nav (Servicios, Promociones, Ubicación, Contacto) + botón de WhatsApp siempre visible.
+- [x] Hero: headline actual + foto real de trabajos o placeholder marcado + CTA primario “Cotiza tu pedido por WhatsApp” + secundario “Ver servicios”.
+- [x] Franja de confianza con 4 datos: Lonas urgentes · Facturación CFDI · Diseño incluido · Domingos con cita.
+- [x] Servicios sobre fondo claro: 6 tarjetas, rejilla 3x2 en desktop, 2 columnas en tablet, 1 en móvil.
+- [x] Usar las 6 categorías exactas del brief, incluida “Toldos y anuncios”.
+- [x] Cada tarjeta de servicio: foto real o placeholder, nombre, 3–4 ejemplos y enlace “Ver más” preparado para la subpágina futura.
+- [x] Promociones destacadas desde `data/promociones.js`.
+- [x] Catálogo con filtros alineados a las 6 categorías.
+- [x] Estructura de 3 testimonios reales + galería de trabajos; oculta si no hay datos reales.
+- [x] Compactar “¿Vienes de fuera de Tepatitlán? Domingos con cita” a una banda.
+- [x] Compactar “¿Ya tienes tu diseño?” a una franja breve con CDR/AI/PSD/PDF/PNG/JPG.
+- [x] Contacto: formulario actual + mapa con carga diferida + horarios + pagos y facturación.
+- [x] Franja oscura de cierre: “Aquí empieza tu próxima impresión” + WhatsApp.
+- [x] Footer completo con los datos del negocio.
+- [x] Reporte de Fase 2 y pausa para aprobación.
+
+**Estado:** Fase 2 implementada, construida y verificada en `borrador`. **No publicada en `main`**; espera aprobación del dueño/asesor.
+
+### Registro de Fase 2
+
+| Fecha | Intervención | Firma |
+|---|---|---|
+| 2026-11-19 | Reordenar la home: hero → franja de confianza → servicios → destacadas → catálogo → testimonios ocultos → foráneos → formatos → contacto → cierre → footer. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Header con nav Servicios, Promociones, Ubicación, Contacto + Cotizar; icono de WhatsApp en móvil; “Ubicación” ancla al mapa. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Hero con headline aprobado, CTA primario de WhatsApp y secundario “Ver servicios”; banner actual marcado como TODO-DOMINGO. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Franja de confianza de 4 datos y 6 tarjetas de servicio claras con las 6 macrocategorías exactas, ejemplos y “Ver más” que aplica el filtro del catálogo. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Placeholders dignos de las 6 fotos de servicio y de la foto de hero/testimonios, marcados TODO-DOMINGO; testimonios y galería ocultos. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Tarjetas de promoción con marco fijo 4:5, `object-fit: cover`, `width`/`height` 800x1000 y detección `is-square` para el arte cuadrado legado con `contain`. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Banda compacta de foráneos y franja compacta de formatos; contacto claro con formulario, mapa diferido por clic, horarios, pagos y CFDI; cierre negro único y footer completo. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Select del formulario alineado a las 6 macrocategorías + “Otro”; el mensaje de WhatsApp usa el nombre visible. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Build y `npm run verificar` en verde; 24 comprobaciones estructurales de Fase 2; viewports 320, 360, 390, 430, 768, 844, 1024 y 1280 sin scroll horizontal; consola sin errores. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Lighthouse móvil sobre el build local: Performance 87, Accesibilidad 100, Buenas prácticas 100, SEO 100. LCP 2.9 s, CLS 0, TBT 340 ms, primera carga 303 KiB. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-19 | Commit único de Fase 2 en `borrador`; sin merge a `main`. | DeepSeek V4.1 Flash Free (OpenCode) |
+
+**Pendiente de aprobación:** el dueño/asesor debe revisar el reporte de Fase 2 antes de publicar. No se hace merge a `main` en esta fase.
 
 ---
 

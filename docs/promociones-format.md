@@ -1,7 +1,7 @@
 # Formato de promociones
 
 **Archivo único:** `data/promociones.js`
-**Última actualización:** 2026-11-18
+**Última actualización:** 2026-11-19
 **Agente:** DeepSeek V4.1 Flash Free (OpenCode)
 
 Este archivo es la única fuente de verdad de las promociones. De aquí se alimentan:
@@ -10,6 +10,7 @@ Este archivo es la única fuente de verdad de las promociones. De aquí se alime
 - El **catálogo** completo.
 - El **buscador** y los **filtros** de las 6 macrocategorías.
 - La **tarjeta unificada** y el **visor de imagen**.
+- Los enlaces **“Ver más”** de las tarjetas de servicio, que aplican el filtro de su categoría.
 
 No hace falta editar `index.html`, `css/estilos.css` ni `js/sitio.js` para agregar, cambiar el precio, la vigencia, desactivar o destacar una promoción.
 
@@ -87,6 +88,14 @@ Reglas:
 - `destacado: true` manda la promoción a la sección de destacadas, en el orden del arreglo. Si hay más de 4, el build falla.
 - `activo: false` la oculta de destacadas y del catálogo. La imagen puede quedarse en `promociones/`.
 - Las `etiquetas` no se muestran; solo alimentan el buscador.
+
+### Marco de imagen 4:5 y arte cuadrado legado
+
+- La tarjeta reserva un marco fijo 4:5 con `aspect-ratio` y `width="800" height="1000"` para evitar saltos de diseño (CLS).
+- El arte nuevo de 1080 x 1350 px se muestra con `object-fit: cover`.
+- Las 19 imágenes actuales son cuadradas. `js/sitio.js` detecta su proporción y les aplica la clase `is-square`; entonces se muestran completas con `object-fit: contain` para no recortar texto ni precios.
+- Al reemplazar el arte por una imagen 4:5, la clase `is-square` desaparece sola. No hay que tocar HTML, CSS ni JS.
+- El visor de imagen no cambia: sigue usando el derivado de 1600 px y el `alt` de la ficha.
 
 ---
 

@@ -1,6 +1,6 @@
 # Quad Print Tepatitlán — página web
 
-**Versión 1.0** · 16 de noviembre de 2026
+**Versión 1.0 publicada; Fase 2 en `borrador`** · 19 de noviembre de 2026
 
 Sitio estático de Quad Print Tepatitlán, publicado en:
 
@@ -35,7 +35,7 @@ No se usaron la dirección de Go, los horarios de Figma ni sus textos de «Impre
 
 ## Estructura
 
-- `index.html`: página completa.
+- `index.html`: página completa, con el orden de la Fase 2 (hero, confianza, servicios, destacadas, catálogo, foráneos, formatos, contacto, cierre y footer).
 - `css/estilos.css`: diseño nuevo, sin Bootstrap.
 - `js/sitio.js`: menú móvil, catálogo, búsqueda, visor y cotización.
 - `data/promociones.js`: fuente única de las 19 promociones y las 6 macrocategorías.
@@ -59,15 +59,26 @@ Si no existe `node_modules`, ejecutar `npm install`. En GitHub Actions se ejecut
 
 ## Publicación
 
-- Versión: 1.0 (etiqueta de Git `v1.0`).
-- Commit del sitio: `4cd3c5e`.
+- Versión publicada: 1.0 (etiqueta de Git `v1.0`).
+- Fase 1 publicada: merge `8523497` (sitio) y registro `819fbe9` (documentación).
 - URL: https://impenta-tepa.github.io/imprentatepatitlan/
 - Repositorio: https://github.com/impenta-tepa/imprentatepatitlan
 - Rama de publicación: `main`.
 - Flujo: `.github/workflows/pages.yml` ejecuta `npm ci`, `node scripts/preparar.mjs` y publica `_site` con GitHub Pages.
 - Respaldo del sitio anterior: rama `respaldo-antes-quad-print-2026-11-16`.
-- Para actualizar: editar, ejecutar `npm run build`, `npm run verificar`, hacer commit y push a `main`.
+- Para actualizar: agrupar los cambios, ejecutar `npm run build` y `npm run verificar` en local, hacer un solo commit y push a `main`.
 - No se sube `_site` ni `node_modules`; GitHub Actions los genera en cada publicación.
+- **Fase 2:** implementada y verificada en `borrador`; **no publicada en `main`** hasta que el dueño/asesor la apruebe.
+
+## Límites de GitHub Pages (plan gratuito)
+
+- **10 compilaciones por hora.** No hacer un push por cada ajuste pequeño. Agrupar los cambios en un solo commit/push.
+- **1 GB máximo** para el sitio y el repositorio.
+- **100 GB de ancho de banda al mes.**
+- Antes de publicar: ejecutar `npm run build` y `npm run verificar` en local; subir solo cuando el cambio esté completo.
+- Optimizar las imágenes antes de subirlas: WebP o JPG ligero, ideal 1080 x 1350 px y menos de 150 KB. Evitar originales pesados.
+- No subir `_site/` ni `node_modules/`; se generan en el build.
+- Si después de publicar aparece otro ajuste, esperar y agrupar varios cambios; no hacer despliegues continuos.
 
 ## Promociones
 
@@ -79,6 +90,8 @@ Para una promoción nueva:
 2. Agregar su objeto en `data/promociones.js` con un `id` nuevo.
 3. Ejecutar `npm run build` y `npm run verificar`.
 
+La tarjeta usa un marco fijo 4:5 y reserva el espacio con `width="800" height="1000"` para evitar CLS. Las 19 imágenes cuadradas actuales se detectan y se muestran completas con `object-fit: contain`; cuando llegue el arte 4:5, se mostrarán con `object-fit: cover` sin tocar código.
+
 Para cambiar precio, vigencia, destacada o activa, editar solo ese objeto. El detalle está en `docs/promociones-format.md`.
 
 No editar `_site/` ni los derivados: se generan en cada build.
@@ -88,5 +101,7 @@ No editar `_site/` ni los derivados: se generan en cada build.
 - Llenar precios, unidades, IVA y vigencia en `data/promociones.js`; hoy están en `null` y marcados como TODO-DOMINGO.
 - Re-exportar las 19 imágenes a 1080 x 1350 px, 4:5, WebP menor a 150 KB, sin texto ni precio.
 - Confirmar con el dueño cuál número es el WhatsApp principal de todos los botones.
-- Confirmar el headline actual y los textos comerciales antes de publicar.
+- Entregar 6 fotos de servicio (una por categoría) y una foto real para el hero.
+- Entregar 3 testimonios reales con nombre y negocio, y fotos propias para la galería.
 - Decidir si se mantiene el catálogo solo con promociones reales o se agrega un catálogo de productos con fotografías definitivas.
+- Fase 3: pulir rendimiento (minificación, CSS crítico, fuentes), accesibilidad y SEO.
