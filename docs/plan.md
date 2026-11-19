@@ -192,6 +192,20 @@ Una fase a la vez. Al terminar cada fase: build, verificación, commit en `borra
 - Fotos de servicio con etiqueta “Imagen ilustrativa”: origen y licencia registrados por archivo en `docs/notas.md`; el flag `ilustrativa` vive en `data/servicios.js` y al cambiarlo a `false` desaparece la etiqueta y el prefijo del `alt`, sin tocar HTML.
 - Publicación de Fase 4.0 autorizada el 2026-11-20; se publica junto con esta condición y se registran las mediciones en vivo.
 
+### Publicación de Fase 4.0
+
+- **Rama publicada:** `main`.
+- **Commit de merge:** `f3d0109`.
+- **Run de Actions:** `44576882173`, completado con éxito el 2026-11-20 (17:24 UTC).
+- **URL verificada:** `https://impenta-tepa.github.io/imprentatepatitlan/?v=f40-live`.
+- **Verificación en vivo:** Toldos muestra 1 promoción, “Anuncio circular con luz”; “Sellos varios” aparece una sola vez; Todas + “Ver todas” = 18; Láser y Diseño muestran el mensaje de categoría vacía; 4 destacadas; 9 iniciales; 7 filtros; buscador “sellos” = 1; visor abre y cierra con Escape; mapa 0 → 1 iframe; formulario arma `wa.me/5213781097423`; las 6 tarjetas muestran “Imagen ilustrativa” y su `alt` lleva el prefijo; consola sin errores; sin scroll horizontal a 320 y 360 px.
+- **PSI:** no disponible en esta sesión. La API respondió 429 por cuota diaria agotada y la web de PSI devolvió “No se pudo cargar” para la URL. Se usó Lighthouse 13.6 sobre la URL publicada, 3 corridas por modo.
+- **Lighthouse móvil (mediana):** 99 / 100 / 100 / 100; LCP 1.56 s; TBT 88 ms; CLS 0; 360 KiB.
+- **Lighthouse escritorio (mediana):** 100 / 100 / 100 / 100; LCP 0.45 s; TBT 0 ms; CLS 0; 426 KiB.
+- **Elemento LCP:** móvil, 2 de 3 corridas el banner del hero y 1 el logo; escritorio, 2 de 3 el banner y 1 el logo. Ambos muy por debajo de 2.5 s; no se cambia el hero.
+- **Guarda:** Performance móvil 99 ≥ 90; LCP 1.56 s ≤ 2.5 s. Cumplida.
+- **Nota:** cuando la cuota de PSI se restablezca se puede repetir la medición oficial; no bloquea esta publicación.
+
 **Regla del hero:** al integrar la foto real se mide una vez en PSI móvil y escritorio con `eager` + `fetchpriority="high"`. Si el LCP móvil sigue ≤ 2.5 s, se deja eager; si empeora, se regresa a `lazy`. Se reportan ambos números.
 
 **Datos:** se aplican verbatim desde los copies del asesor. No se transcriben precios de imágenes ni se inventan testimonios. Categorías y WhatsApp solo cambian con confirmación explícita.

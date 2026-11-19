@@ -1,6 +1,6 @@
 # Quad Print Tepatitlán — página web
 
-**Fase 3 publicada y verificada; Fase 4.0 en `borrador`** · 20 de noviembre de 2026
+**Fase 4.0 publicada; Lotes 4A-4C pendientes** · 20 de noviembre de 2026
 
 Sitio estático de Quad Print Tepatitlán, publicado en:
 
@@ -63,6 +63,7 @@ Si no existe `node_modules`, ejecutar `npm install`. En GitHub Actions se ejecut
 ## Publicación
 
 - Versión publicada: 1.0 (etiqueta de Git `v1.0`).
+- Fase 4.0 publicada: merge `f3d0109` y run `44576882173`.
 - Fase 3 publicada: merge `767f87b` (sitio y documentación) y run `44553795932`.
 - Fase 2 publicada: merge `1a84847` (sitio) y run `44471747493`.
 - URL: https://impenta-tepa.github.io/imprentatepatitlan/

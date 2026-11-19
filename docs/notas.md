@@ -2,7 +2,7 @@
 
 **Última actualización:** 2026-11-20
 **Agente:** DeepSeek V4.1 Flash Free (OpenCode)
-**Fase actual:** Fase 3 publicada y verificada; Fase 4.0 (correcciones confirmadas) aplicada en `borrador`, pendiente de aprobación para publicar con el Lote 4A.
+**Fase actual:** Fase 4.0 publicada y verificada; Lotes 4A, 4B y 4C pendientes de datos y fotos reales.
 
 ---
 
@@ -235,3 +235,4 @@
 | 2026-11-19 | Fase 4: recibidas 6 fotos de servicio (mockups de 1376 x 768); integradas con recorte 16:10 y 24 derivados de 800/1200 px en WebP/JPG. Pendientes hero, SVG, galería y testimonios. | DeepSeek V4.1 Flash Free (OpenCode) |
 | 2026-11-20 | Fase 4.0: WhatsApp confirmado; Anuncio circular pasa a Toldos; Sellos consolidado y catálogo en 18 fichas; activación de testimonios desacoplada; peso real 255.4 KiB y Lighthouse móvil 98/100/100/100. | DeepSeek V4.1 Flash Free (OpenCode) |
 | 2026-11-20 | Fase 4.0: etiqueta “Imagen ilustrativa” y origen/licencia de las 6 fotos de servicio registrados; fotos renderizadas desde data/servicios.js. | DeepSeek V4.1 Flash Free (OpenCode) |
+| 2026-11-20 | Fase 4.0 publicada en `main` (merge `f3d0109`, run `44576882173`); verificación en vivo completa y Lighthouse móvil 99/100/100/100 (LCP 1.56 s). | DeepSeek V4.1 Flash Free (OpenCode) |
