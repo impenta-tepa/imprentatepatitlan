@@ -13,6 +13,63 @@ const waLink = mensaje => 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURICom
 const year = document.getElementById('year');
 if (year) year.textContent = new Date().getFullYear();
 
+/* ---------- Estado del negocio: abierto / cerrado ---------- */
+const estadoNegocio = document.getElementById('estado-negocio');
+const estadoTexto = document.getElementById('estado-texto');
+
+const HORARIO = {
+  0: [],
+  1: [[600, 840], [960, 1200]],
+  2: [[600, 840], [960, 1200]],
+  3: [[600, 840], [960, 1200]],
+  4: [[600, 840], [960, 1200]],
+  5: [[600, 840], [960, 1200]],
+  6: [[600, 840]]
+};
+const NOMBRE_DIA = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+
+const dosDigitos = n => String(n).padStart(2, '0');
+const aHora = minutos => dosDigitos(Math.floor(minutos / 60)) + ':' + dosDigitos(minutos % 60);
+
+function actualizarEstado() {
+  if (!estadoNegocio || !estadoTexto) return;
+
+  const partes = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/Mexico_City',
+    weekday: 'short',
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23'
+  }).formatToParts(new Date());
+
+  const dato = tipo => (partes.find(parte => parte.type === tipo) || {}).value || '';
+  const dias = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+  const hoy = dias[dato('weekday')];
+  const ahora = Number(dato('hour')) * 60 + Number(dato('minute'));
+  const tramosHoy = HORARIO[hoy] || [];
+  const tramoAbierto = tramosHoy.find(([inicio, fin]) => ahora >= inicio && ahora < fin);
+
+  estadoNegocio.classList.toggle('is-open', Boolean(tramoAbierto));
+  estadoNegocio.classList.toggle('is-closed', !tramoAbierto);
+
+  if (tramoAbierto) {
+    estadoTexto.textContent = 'Abierto ahora · cierra ' + aHora(tramoAbierto[1]);
+    return;
+  }
+
+  for (let salto = 0; salto <= 7; salto++) {
+    const dia = (hoy + salto) % 7;
+    const tramo = (HORARIO[dia] || []).find(([inicio]) => salto > 0 || inicio > ahora);
+    if (!tramo) continue;
+    const cuando = salto === 0 ? 'hoy' : salto === 1 ? 'mañana' : 'el ' + NOMBRE_DIA[dia];
+    estadoTexto.textContent = 'Cerrado · abre ' + cuando + ' ' + aHora(tramo[0]);
+    return;
+  }
+}
+
+actualizarEstado();
+setInterval(actualizarEstado, 60000);
+
 /* Todos los enlaces de WhatsApp se construyen desde un solo número. */
 document.querySelectorAll('[data-wa]').forEach(enlace => {
   enlace.href = waLink(enlace.dataset.message || WA_DEFAULT);
