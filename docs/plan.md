@@ -222,6 +222,14 @@ Una fase a la vez. Al terminar cada fase: build, verificación, commit en `borra
 - El origen y la licencia por archivo están registrados en `docs/notas.md`, decisión 46: mockups con marca Quad Print entregados por Domingo, usados con autorización del dueño, sin licencia de stock identificada.
 - Mientras `ilustrativa: true`, la etiqueta y el prefijo se mantienen; al cambiar a `false`, ambos desaparecen sin editar HTML.
 
+### Cambio de cuenta a imprenta-tepa (2026-11-20)
+
+- La cuenta de GitHub pasó de `impenta-tepa` a `imprenta-tepa`; el repositorio conserva el nombre `imprentatepatitlan`.
+- Nueva base pública: `https://imprenta-tepa.github.io/imprentatepatitlan/`.
+- Se actualizaron `canonical`, `og:url`, `og:image`, `twitter:image`, JSON-LD, `sitemap.xml`, `robots.txt`, README, checklist de dispositivos y la base del verificador.
+- Las entradas históricas de este plan conservan la URL con la que se verificó cada fase.
+- **Firma:** DeepSeek V4.1 Flash Free (OpenCode).
+
 **Regla del hero:** al integrar la foto real se mide una vez en PSI móvil y escritorio con `eager` + `fetchpriority="high"`. Si el LCP móvil sigue ≤ 2.5 s, se deja eager; si empeora, se regresa a `lazy`. Se reportan ambos números.
 
 **Datos:** se aplican verbatim desde los copies del asesor. No se transcriben precios de imágenes ni se inventan testimonios. Categorías y WhatsApp solo cambian con confirmación explícita.

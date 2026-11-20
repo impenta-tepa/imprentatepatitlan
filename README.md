@@ -4,9 +4,9 @@
 
 Sitio estático de Quad Print Tepatitlán, publicado en:
 
-**https://impenta-tepa.github.io/imprentatepatitlan/**
+**https://imprenta-tepa.github.io/imprentatepatitlan/**
 
-Repositorio: `impenta-tepa/imprentatepatitlan` (rama `main`). Cada push a `main` ejecuta GitHub Actions, genera `_site` y publica en GitHub Pages.
+Repositorio: `imprenta-tepa/imprentatepatitlan` (rama `main`). Cada push a `main` ejecuta GitHub Actions, genera `_site` y publica en GitHub Pages.
 
 ## Qué se tomó de cada proyecto
 
@@ -66,8 +66,8 @@ Si no existe `node_modules`, ejecutar `npm install`. En GitHub Actions se ejecut
 - Fase 4.0 publicada: merge `f3d0109` y run `44576882173`.
 - Fase 3 publicada: merge `767f87b` (sitio y documentación) y run `44553795932`.
 - Fase 2 publicada: merge `1a84847` (sitio) y run `44471747493`.
-- URL: https://impenta-tepa.github.io/imprentatepatitlan/
-- Repositorio: https://github.com/impenta-tepa/imprentatepatitlan
+- URL: https://imprenta-tepa.github.io/imprentatepatitlan/
+- Repositorio: https://github.com/imprenta-tepa/imprentatepatitlan
 - Rama de publicación: `main`.
 - Flujo: `.github/workflows/pages.yml` ejecuta `npm ci`, `node scripts/preparar.mjs` y publica `_site` con GitHub Pages.
 - Respaldo del sitio anterior: rama `respaldo-antes-quad-print-2026-11-16`.

@@ -10,7 +10,7 @@ Instrucciones: abrir la URL publicada, hacer cada punto y anotar **OK** o **Fall
 
 ## Checklist de 2 minutos
 
-1. Abrir `https://impenta-tepa.github.io/imprentatepatitlan/` y confirmar que carga sin quedar en blanco.
+1. Abrir `https://imprenta-tepa.github.io/imprentatepatitlan/` y confirmar que carga sin quedar en blanco.
 2. Revisar que el logo del header se vea nítido y que el header no tape el contenido al hacer scroll.
 3. Tocar el menú hamburguesa: debe abrir, dejar navegar y cerrar con el mismo botón.
 4. Tocar **Ver servicios**, luego **Ver más** de una tarjeta: debe bajar al catálogo con el filtro aplicado y el título enfocado.
