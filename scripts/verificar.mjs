@@ -6,7 +6,7 @@ import { root, readPromociones, readTestimonios, readServicios } from './promoci
 import { SERVICIOS, ANCHOS_SERVICIO } from './imagenes.mjs';
 
 const sitio = path.join(root, '_site');
-const BASE = 'https://impenta-tepa.github.io/imprentatepatitlan/';
+const BASE = 'https://imprenta-tepa.github.io/imprentatepatitlan/';
 const fallos = [];
 const avisos = [];
 const ok = [];

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://impenta-tepa.github.io/imprentatepatitlan/sitemap.xml
+Sitemap: https://imprenta-tepa.github.io/imprentatepatitlan/sitemap.xml
